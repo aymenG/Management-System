@@ -9,12 +9,12 @@ import 'dart:io';
 import 'views/LoginForm.dart';
 
 void main() {
-   if (defaultTargetPlatform == TargetPlatform.windows ||
+  if (defaultTargetPlatform == TargetPlatform.windows ||
       defaultTargetPlatform == TargetPlatform.linux ||
       defaultTargetPlatform == TargetPlatform.macOS) {
     sqfliteFfiInit();
   }
-  
+
   runApp(MainApp());
 }
 
@@ -34,9 +34,7 @@ class MainApp extends StatelessWidget {
           bodyLarge: TextStyle(fontSize: 18, color: Colors.black),
         ),
       ),
-      home: Scaffold(
-        body: loginFormWidget(passwordController: _passwordController),
-      ),
+      home: Scaffold(body: LoginFormWidget()),
     );
   }
 }
