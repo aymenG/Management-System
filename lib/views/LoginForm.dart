@@ -21,7 +21,9 @@ class _LoginFormWidgetState extends State<LoginFormWidget> {
 
     if (username.isEmpty || rawPassword.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please enter both username and password.')),
+        const SnackBar(
+          content: Text('Please enter both username and password.'),
+        ),
       );
       return;
     }
@@ -29,22 +31,23 @@ class _LoginFormWidgetState extends State<LoginFormWidget> {
     final hashedPassword = _hashPassword(rawPassword);
 
     final user = await _dbHelper.getUserByUsername(username);
+
     if (user == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('User not found.')),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('User not found.')));
       return;
     }
 
     if (user['hashed_password'] == hashedPassword) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Welcome, $username!')),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('Welcome, $username!')));
       // Navigate to another screen or update the state
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Incorrect password.')),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('Incorrect password.')));
     }
   }
 
