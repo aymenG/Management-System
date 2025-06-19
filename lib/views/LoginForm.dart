@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'database_helper.dart';
 
 class LoginFormWidget extends StatefulWidget {
@@ -62,51 +63,75 @@ class _LoginFormWidgetState extends State<LoginFormWidget> {
     return Container(
       padding: const EdgeInsets.all(16),
       alignment: Alignment.center,
-      child: Column(
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const Text('Login to your account', style: TextStyle(fontSize: 24)),
-          const SizedBox(height: 30),
-
-          // Username field
-          SizedBox(
-            width: 300,
-            child: TextField(
-              controller: _usernameController,
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: 'Enter your username',
-              ),
-            ),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [SvgPicture.asset('assets/images/login.svg')],
           ),
-
-          const SizedBox(height: 20),
-
-          // Password field
-          SizedBox(
-            width: 300,
-            child: TextField(
-              controller: _passwordController,
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: 'Enter your password',
+          SizedBox(width: 50),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Text(
+                'Login to your account',
+                style: TextStyle(fontSize: 24),
               ),
-              obscureText: true,
-              enableSuggestions: false,
-              autocorrect: false,
-            ),
-          ),
+              const SizedBox(height: 30),
 
-          const SizedBox(height: 30),
+              // Username field
+              SizedBox(
+                width: 300,
+                child: TextField(
+                  controller: _usernameController,
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'Enter your username',
+                  ),
+                ),
+              ),
 
-          TextButton(
-            style: TextButton.styleFrom(
-              backgroundColor: Colors.deepPurple,
-              foregroundColor: Colors.white,
-              padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
-            ),
-            onPressed: _handleLogin,
-            child: const Text('Login'),
+              const SizedBox(height: 20),
+
+              // Password field
+              SizedBox(
+                width: 300,
+                child: TextField(
+                  controller: _passwordController,
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'Enter your password',
+                  ),
+                  obscureText: true,
+                  enableSuggestions: false,
+                  autocorrect: false,
+                ),
+              ),
+
+              const SizedBox(height: 30),
+
+              SizedBox(
+                width: 200, // Fixed width
+                height: 60,
+                child: TextButton(
+                  style: TextButton.styleFrom(
+                    backgroundColor: Colors.deepPurple,
+                    foregroundColor: Colors.white,
+                    textStyle: const TextStyle(
+                      fontSize: 22.0, // Larger font size
+                    ),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 32,
+                      vertical: 16,
+                    ),
+                  ),
+                  onPressed: _handleLogin,
+                  child: const Text('Login'),
+                ),
+              ),
+            ],
           ),
         ],
       ),
