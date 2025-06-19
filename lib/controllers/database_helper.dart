@@ -1,7 +1,6 @@
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
-import 'dart:io';
 
 class DatabaseHelper {
   static Database? _database; // Make it nullable for initialization
@@ -25,6 +24,35 @@ class DatabaseHelper {
             hashed_password TEXT
           )
         ''');
+        await db.execute('''
+    CREATE TABLE classes (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      name TEXT,
+      level TEXT,
+      teacher_id INTEGER
+    )
+  ''');
+
+  await db.execute('''
+    CREATE TABLE teachers (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      name TEXT,
+      subject TEXT,
+      phone TEXT,
+      status TEXT
+    )
+  ''');
+
+  await db.execute('''
+    CREATE TABLE students (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      name TEXT,
+      dob TEXT,
+      class_id INTEGER,
+      parent_contact TEXT,
+      status TEXT
+    )
+  ''');
       },
       onUpgrade: (db, oldVersion, newVersion) async {
         // Handle database upgrades here if your schema changes

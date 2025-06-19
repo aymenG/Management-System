@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'database_helper.dart';
+import '../controllers/database_helper.dart';
 
 class LoginFormWidget extends StatefulWidget {
   const LoginFormWidget({super.key});
