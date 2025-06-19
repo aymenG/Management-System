@@ -3,6 +3,7 @@ import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import '../controllers/database_helper.dart';
+import 'dashboard.dart';
 
 class LoginFormWidget extends StatefulWidget {
   const LoginFormWidget({super.key});
@@ -41,9 +42,9 @@ class _LoginFormWidgetState extends State<LoginFormWidget> {
     }
 
     if (user['hashed_password'] == hashedPassword) {
-      ScaffoldMessenger.of(
-        context,
+      ScaffoldMessenger.of(context,
       ).showSnackBar(SnackBar(content: Text('Welcome, $username!')));
+      Navigator.push(context, MaterialPageRoute(builder: (_) => Dashboard()));
       // Navigate to another screen or update the state
     } else {
       ScaffoldMessenger.of(
