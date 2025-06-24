@@ -42,7 +42,8 @@ class _LoginFormWidgetState extends State<LoginFormWidget> {
     }
 
     if (user['hashed_password'] == hashedPassword) {
-      ScaffoldMessenger.of(context,
+      ScaffoldMessenger.of(
+        context,
       ).showSnackBar(SnackBar(content: Text('Welcome, $username!')));
       Navigator.push(context, MaterialPageRoute(builder: (_) => Dashboard()));
       // Navigate to another screen or update the state
