@@ -14,7 +14,7 @@ class Dashboard extends StatelessWidget {
 
       appBar: AppBar(
         title: const Text('Dashboard'),
-        backgroundColor: Colors.deepPurple,
+        backgroundColor: Colors.deepPurpleAccent,
         titleTextStyle: TextStyle(fontSize: 24, color: Colors.white),
         iconTheme: const IconThemeData(color: Colors.white),
       ),
@@ -23,14 +23,14 @@ class Dashboard extends StatelessWidget {
           // 🔵 Sidebar
           Container(
             width: 220,
-            color: Colors.deepPurpleAccent,
+            color: Colors.deepPurple,
             padding: const EdgeInsets.symmetric(vertical: 24),
             child: Column(
               children: [
                 const Padding(
                   padding: EdgeInsets.all(16.0),
                   child: Text(
-                    'Clinic System',
+                    'School System',
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 22,
