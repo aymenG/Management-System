@@ -18,48 +18,91 @@ class Dashboard extends StatelessWidget {
         titleTextStyle: TextStyle(fontSize: 24, color: Colors.white),
         iconTheme: const IconThemeData(color: Colors.white),
       ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+      body: Row(
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              CustomCard(
-                svgPath: 'assets/images/browse.svg',
-                label: 'Browse Users',
-                onTap: () {
-                  print('Browse Users tapped!');
-                },
-              ),
-              CustomCard(
-                svgPath: 'assets/images/edit.svg',
-                label: 'Edit User',
-                onTap: () {
-                  print('Edit User tapped!');
-                },
-              ),
-
-              CustomCard(
-                svgPath: 'assets/images/add.svg',
-                label: 'Add User',
-                onTap: () {
-                  print('Add User tapped!');
-                },
-              ),
-              CustomCard(
-                svgPath: 'assets/images/delete.svg',
-                label: 'Delete User',
-                onTap: () {
-                  print('Delete User tapped!');
-                },
-              ),
-            ],
+          // 🔵 Sidebar
+          Container(
+            width: 220,
+            color: Colors.deepPurpleAccent,
+            padding: const EdgeInsets.symmetric(vertical: 24),
+            child: Column(
+              children: [
+                const Padding(
+                  padding: EdgeInsets.all(16.0),
+                  child: Text(
+                    'Clinic System',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 22,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+                const Divider(color: Colors.white54),
+                _buildSidebarItem(Icons.dashboard, 'Dashboard', () {
+                  // TODO: Handle navigation
+                }),
+                _buildSidebarItem(Icons.person, 'Users', () {}),
+                _buildSidebarItem(Icons.logout, 'Logout', () {}),
+              ],
+            ),
           ),
-          SizedBox(height: 50),
-          const WelcomeDashboard(),
+          Expanded(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    CustomCard(
+                      svgPath: 'assets/images/browse.svg',
+                      label: 'Browse Users',
+                      onTap: () {
+                        print('Browse Users tapped!');
+                      },
+                    ),
+                    CustomCard(
+                      svgPath: 'assets/images/edit.svg',
+                      label: 'Edit User',
+                      onTap: () {
+                        print('Edit User tapped!');
+                      },
+                    ),
+
+                    CustomCard(
+                      svgPath: 'assets/images/add.svg',
+                      label: 'Add User',
+                      onTap: () {
+                        print('Add User tapped!');
+                      },
+                    ),
+                    CustomCard(
+                      svgPath: 'assets/images/delete.svg',
+                      label: 'Delete User',
+                      onTap: () {
+                        print('Delete User tapped!');
+                      },
+                    ),
+                  ],
+                ),
+                SizedBox(height: 50),
+                const WelcomeDashboard(),
+              ],
+            ),
+          ),
         ],
       ),
+    );
+  }
+
+  // 🔧 Sidebar item builder
+  Widget _buildSidebarItem(IconData icon, String label, VoidCallback onTap) {
+    return ListTile(
+      leading: Icon(icon, color: Colors.white),
+      title: Text(label, style: const TextStyle(color: Colors.white)),
+      hoverColor: Colors.deepPurpleAccent,
+      onTap: onTap,
     );
   }
 }
