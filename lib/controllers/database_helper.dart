@@ -24,35 +24,7 @@ class DatabaseHelper {
             hashed_password TEXT
           )
         ''');
-        await db.execute('''
-    CREATE TABLE classes (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      name TEXT,
-      level TEXT,
-      teacher_id INTEGER
-    )
-  ''');
-
-  await db.execute('''
-    CREATE TABLE teachers (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      name TEXT,
-      subject TEXT,
-      phone TEXT,
-      status TEXT
-    )
-  ''');
-
-  await db.execute('''
-    CREATE TABLE students (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      name TEXT,
-      dob TEXT,
-      class_id INTEGER,
-      parent_contact TEXT,
-      status TEXT
-    )
-  ''');
+     
       },
       onUpgrade: (db, oldVersion, newVersion) async {
         // Handle database upgrades here if your schema changes
@@ -97,4 +69,34 @@ class DatabaseHelper {
     }
     return null; // User not found
   }
+
+
+
+Future<void> printDatabaseDetails() async {
+  final db = await database;
+
+  print("📄 Database path: ${db.path}");
+
+  int version = await db.getVersion();
+  print("🔢 Database version: $version");
+
+  // List all tables
+  final tables = await db.rawQuery(
+      "SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%';");
+
+  print("\n📂 Tables in the database:");
+  for (var table in tables) {
+    String tableName = table['name'] as String;
+    print("➡️ Table: $tableName");
+
+    // Show table columns
+    final columns = await db.rawQuery("PRAGMA table_info($tableName);");
+    for (var column in columns) {
+      print("   - ${column['name']} (${column['type']})");
+    }
+  }
+}
+
+
+  
 }

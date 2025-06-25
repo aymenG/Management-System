@@ -15,6 +15,8 @@ class Dashboard extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Dashboard'),
         backgroundColor: Colors.deepPurple,
+        titleTextStyle: TextStyle(fontSize: 24, color: Colors.white),
+        iconTheme: const IconThemeData(color: Colors.white),
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -30,7 +32,6 @@ class Dashboard extends StatelessWidget {
                   print('Browse Users tapped!');
                 },
               ),
-              SizedBox(width: 16),
               CustomCard(
                 svgPath: 'assets/images/edit.svg',
                 label: 'Edit User',
@@ -38,7 +39,6 @@ class Dashboard extends StatelessWidget {
                   print('Edit User tapped!');
                 },
               ),
-              SizedBox(width: 16),
 
               CustomCard(
                 svgPath: 'assets/images/add.svg',
@@ -47,7 +47,6 @@ class Dashboard extends StatelessWidget {
                   print('Add User tapped!');
                 },
               ),
-              SizedBox(width: 16),
               CustomCard(
                 svgPath: 'assets/images/delete.svg',
                 label: 'Delete User',
@@ -57,7 +56,7 @@ class Dashboard extends StatelessWidget {
               ),
             ],
           ),
-
+          SizedBox(height: 50),
           const WelcomeDashboard(),
         ],
       ),
@@ -80,6 +79,7 @@ class WelcomeDashboard extends StatelessWidget {
             style: TextStyle(fontSize: 36, color: Colors.deepPurple),
           ),
         ),
+        SizedBox(height: 30),
         SizedBox(
           width: 200, // Fixed width
           height: 60,

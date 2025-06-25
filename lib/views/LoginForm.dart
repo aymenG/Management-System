@@ -38,6 +38,7 @@ class _LoginFormWidgetState extends State<LoginFormWidget> {
       ScaffoldMessenger.of(
         context,
       ).showSnackBar(const SnackBar(content: Text('User not found.')));
+
       return;
     }
 

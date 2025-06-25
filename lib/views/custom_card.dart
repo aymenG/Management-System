@@ -17,26 +17,43 @@ class CustomCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: onTap,
-      child: Card(
-        color: const Color.fromARGB(255, 248, 221, 253),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-        elevation: 4,
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              SvgPicture.asset(svgPath, height: 70),
-              const SizedBox(height: 8),
-              Text(
-                label,
-                style: const TextStyle(
-                  fontSize: 18,
-                  color: Colors.deepPurple,
-                  fontWeight: FontWeight.bold,
+      child: Container(
+        width: 250,
+        height: 250,
+        margin: const EdgeInsets.only(left: 24),
+        child: Card(
+          margin: const EdgeInsets.all(0),
+          color: Colors.deepPurple,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+          elevation: 4,
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(12), // Match Card radius
+            child: Column(
+              //  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const SizedBox(height: 16), // Space before SVG
+                SvgPicture.asset(svgPath, height: 150),
+
+                const Spacer(flex: 1),
+                Container(
+                  width: double.infinity,
+                  color: Colors.deepPurpleAccent,
+                  padding: const EdgeInsets.all(12),
+                  child: Text(
+                    label,
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                      fontSize: 18,
+                      color: Colors.white,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

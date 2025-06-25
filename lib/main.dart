@@ -25,10 +25,10 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Clinic Management System',
+      title: 'Management System',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.deepPurple,
         textTheme: const TextTheme(
           bodyMedium: TextStyle(fontSize: 16, color: Colors.black),
           bodyLarge: TextStyle(fontSize: 18, color: Colors.black),
