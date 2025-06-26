@@ -1,7 +1,14 @@
 import 'package:flutter/material.dart';
 
-class CRSDashboard extends StatelessWidget {
+class CRSDashboard extends StatefulWidget {
   const CRSDashboard({super.key});
+
+  @override
+  State<CRSDashboard> createState() => _CRSDashboardState();
+}
+
+class _CRSDashboardState extends State<CRSDashboard> {
+  int selectedIndex = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -13,22 +20,7 @@ class CRSDashboard extends StatelessWidget {
           Expanded(
             child: Padding(
               padding: const EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  _buildTopCards(),
-                  const SizedBox(height: 20),
-                  Expanded(
-                    child: Row(
-                      children: [
-                        Expanded(child: _buildIncomeChartPlaceholder()),
-                        const SizedBox(width: 20),
-                        Expanded(child: _buildCustomerChartPlaceholder()),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
+              child: _buildContent(selectedIndex),
             ),
           ),
         ],
@@ -51,30 +43,64 @@ class CRSDashboard extends StatelessWidget {
             style: TextStyle(color: Colors.white, fontSize: 18),
           ),
           const SizedBox(height: 30),
-          _buildSidebarItem(Icons.home, 'Home', () {
-            print("Home tapped");
-          }),
-          _buildSidebarItem(Icons.directions_car, 'Available Cars', () {
-            print("Available Cars tapped");
-          }),
-          _buildSidebarItem(Icons.assignment_returned, 'Rent Car', () {
-            print("Rent Car tapped");
-          }),
+          _buildSidebarItem(Icons.home, 'Home', 0),
+          _buildSidebarItem(Icons.directions_car, 'Available Cars', 1),
+          _buildSidebarItem(Icons.assignment_returned, 'Rent Car', 2),
           const Spacer(),
-          _buildSidebarItem(Icons.logout, 'Sign Out', () {
-            print("Sign Out tapped");
-          }),
+          _buildSidebarItem(Icons.logout, 'Sign Out', -1),
         ],
       ),
     );
   }
 
-  Widget _buildSidebarItem(IconData icon, String title, Function()? onTap) {
+  Widget _buildSidebarItem(IconData icon, String title, int index) {
     return ListTile(
       leading: Icon(icon, color: Colors.white),
       title: Text(title, style: const TextStyle(color: Colors.white)),
-      hoverColor: Colors.deepPurple,
-      onTap: onTap,
+      hoverColor: Colors.deepPurpleAccent,
+      selected: selectedIndex == index,
+      selectedTileColor: Colors.deepPurpleAccent,
+      onTap: () {
+        if (index == -1) {
+          print("Sign Out");
+        } else {
+          setState(() {
+            selectedIndex = index;
+          });
+        }
+      },
+    );
+  }
+
+  Widget _buildContent(int index) {
+    switch (index) {
+      case 0:
+        return _buildDashboardContent();
+      case 1:
+        return const Center(child: Text("Available Cars Page"));
+      case 2:
+        return const Center(child: Text("Rent Car Page"));
+      default:
+        return const Center(child: Text("Page Not Found"));
+    }
+  }
+
+  Widget _buildDashboardContent() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _buildTopCards(),
+        const SizedBox(height: 20),
+        Expanded(
+          child: Row(
+            children: [
+              Expanded(child: _buildIncomeChartPlaceholder()),
+              const SizedBox(width: 20),
+              Expanded(child: _buildCustomerChartPlaceholder()),
+            ],
+          ),
+        ),
+      ],
     );
   }
 
