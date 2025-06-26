@@ -39,9 +39,7 @@ class Dashboard extends StatelessWidget {
                   ),
                 ),
                 const Divider(color: Colors.white54),
-                _buildSidebarItem(Icons.dashboard, 'Dashboard', () {
-                  // TODO: Handle navigation
-                }),
+                _buildSidebarItem(Icons.dashboard, 'Dashboard', () {}),
                 _buildSidebarItem(Icons.person, 'Users', () {}),
                 _buildSidebarItem(Icons.logout, 'Logout', () {}),
               ],

@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:ClinicManagementSystem/views/crs_dashboard.dart';
 import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -46,7 +47,10 @@ class _LoginFormWidgetState extends State<LoginFormWidget> {
       ScaffoldMessenger.of(
         context,
       ).showSnackBar(SnackBar(content: Text('Welcome, $username!')));
-      Navigator.push(context, MaterialPageRoute(builder: (_) => Dashboard()));
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (_) => CRSDashboard()),
+      );
       // Navigate to another screen or update the state
     } else {
       ScaffoldMessenger.of(
