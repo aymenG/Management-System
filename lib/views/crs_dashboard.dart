@@ -1,3 +1,7 @@
+import 'package:ClinicManagementSystem/views/LoginForm.dart';
+import 'package:ClinicManagementSystem/views/available_cars.dart';
+import 'package:ClinicManagementSystem/views/rent_car.dart';
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
 class CRSDashboard extends StatefulWidget {
@@ -62,6 +66,13 @@ class _CRSDashboardState extends State<CRSDashboard> {
       selectedTileColor: Colors.deepPurpleAccent,
       onTap: () {
         if (index == -1) {
+          Navigator.pop(
+            context,
+            MaterialPageRoute(
+              builder: (context) =>
+                  LoginFormWidget(), // Navigate back to the LoginForm
+            ),
+          );
           print("Sign Out");
         } else {
           setState(() {
@@ -77,9 +88,9 @@ class _CRSDashboardState extends State<CRSDashboard> {
       case 0:
         return _buildDashboardContent();
       case 1:
-        return const Center(child: Text("Available Cars Page"));
+        return const Center(child: AvailableCars());
       case 2:
-        return const Center(child: Text("Rent Car Page"));
+        return const Center(child: RentCar());
       default:
         return const Center(child: Text("Page Not Found"));
     }
@@ -94,9 +105,9 @@ class _CRSDashboardState extends State<CRSDashboard> {
         Expanded(
           child: Row(
             children: [
-              Expanded(child: _buildIncomeChartPlaceholder()),
+              Expanded(child: _buildIncomeChart()),
               const SizedBox(width: 20),
-              Expanded(child: _buildCustomerChartPlaceholder()),
+              Expanded(child: _buildCustomerChart()),
             ],
           ),
         ),
@@ -153,22 +164,117 @@ class _CRSDashboardState extends State<CRSDashboard> {
     );
   }
 
-  Widget _buildIncomeChartPlaceholder() {
+  Widget _buildIncomeChart() {
     return Card(
       elevation: 3,
-      child: Container(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      child: Padding(
         padding: const EdgeInsets.all(16),
-        child: const Center(child: Text('Income Data Chart Placeholder')),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              'Income (Last 6 Months)',
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 20),
+            SizedBox(
+              height: 500,
+              child: BarChart(
+                BarChartData(
+                  borderData: FlBorderData(show: false),
+                  titlesData: FlTitlesData(
+                    leftTitles: AxisTitles(
+                      sideTitles: SideTitles(showTitles: true),
+                    ),
+                    bottomTitles: AxisTitles(
+                      sideTitles: SideTitles(
+                        showTitles: true,
+                        getTitlesWidget: (value, meta) {
+                          final months = [
+                            'Jan',
+                            'Feb',
+                            'Mar',
+                            'Apr',
+                            'May',
+                            'Jun',
+                          ];
+                          return Text(months[value.toInt()]);
+                        },
+                      ),
+                    ),
+                    rightTitles: AxisTitles(
+                      sideTitles: SideTitles(showTitles: false),
+                    ),
+                    topTitles: AxisTitles(
+                      sideTitles: SideTitles(showTitles: false),
+                    ),
+                  ),
+                  barGroups: [
+                    for (int i = 0; i < 6; i++)
+                      BarChartGroupData(
+                        x: i,
+                        barRods: [
+                          BarChartRodData(
+                            toY: [8, 10, 14, 6, 11, 13][i].toDouble(),
+                            color: Colors.deepPurple,
+                            width: 16,
+                            borderRadius: BorderRadius.circular(4),
+                          ),
+                        ],
+                      ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
 
-  Widget _buildCustomerChartPlaceholder() {
+  Widget _buildCustomerChart() {
     return Card(
       elevation: 3,
-      child: Container(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      child: Padding(
         padding: const EdgeInsets.all(16),
-        child: const Center(child: Text('Customers Data Chart Placeholder')),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              'Customer Type Distribution',
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 16),
+            SizedBox(
+              height: 500,
+              child: PieChart(
+                PieChartData(
+                  sectionsSpace: 4,
+                  centerSpaceRadius: 40,
+                  sections: [
+                    PieChartSectionData(
+                      value: 40,
+                      color: Colors.deepPurple,
+                      title: 'Regular',
+                    ),
+                    PieChartSectionData(
+                      value: 30,
+                      color: Colors.purpleAccent,
+                      title: 'New',
+                    ),
+                    PieChartSectionData(
+                      value: 30,
+                      color: Colors.deepOrange,
+                      title: 'VIP',
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
