@@ -1,6 +1,7 @@
 import 'package:ClinicManagementSystem/views/LoginForm.dart';
 import 'package:ClinicManagementSystem/views/available_cars.dart';
 import 'package:ClinicManagementSystem/views/rent_car.dart';
+import 'package:ClinicManagementSystem/views/user_profile.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
@@ -42,7 +43,7 @@ class _CRSDashboardState extends State<CRSDashboard> {
           const Icon(Icons.person, size: 50, color: Colors.white),
           const SizedBox(height: 10),
           const Text(
-            'Welcome,\nAdmin',
+            'Welcome',
             textAlign: TextAlign.center,
             style: TextStyle(color: Colors.white, fontSize: 18),
           ),
@@ -50,6 +51,8 @@ class _CRSDashboardState extends State<CRSDashboard> {
           _buildSidebarItem(Icons.home, 'Home', 0),
           _buildSidebarItem(Icons.directions_car, 'Available Cars', 1),
           _buildSidebarItem(Icons.assignment_returned, 'Rent Car', 2),
+          _buildSidebarItem(Icons.person, 'Profile', 3),
+
           const Spacer(),
           _buildSidebarItem(Icons.logout, 'Sign Out', -1),
         ],
@@ -91,6 +94,8 @@ class _CRSDashboardState extends State<CRSDashboard> {
         return const Center(child: AvailableCars());
       case 2:
         return const Center(child: RentCar());
+      case 3:
+        return const UserProfile();
       default:
         return const Center(child: Text("Page Not Found"));
     }
@@ -105,9 +110,9 @@ class _CRSDashboardState extends State<CRSDashboard> {
         Expanded(
           child: Row(
             children: [
-             // Expanded(child: _buildIncomeChart()),
+              // Expanded(child: _buildIncomeChart()),
               const SizedBox(width: 20),
-             // Expanded(child: _buildCustomerChart()),
+              // Expanded(child: _buildCustomerChart()),
             ],
           ),
         ),
