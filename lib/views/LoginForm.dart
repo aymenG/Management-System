@@ -19,9 +19,9 @@ class _LoginFormWidgetState extends State<LoginFormWidget> {
   final _dbHelper = DatabaseHelper();
 
   void _handleLogin() async {
+   // _dbHelper.printDatabaseDetails();
     final username = _usernameController.text.trim();
     final rawPassword = _passwordController.text;
-
     if (username.isEmpty || rawPassword.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(

@@ -16,16 +16,64 @@ class DatabaseHelper {
       await _getDatabasePath(), // Use a helper for the path
       version: 1,
       onCreate: (db, version) async {
-        // Define your tables here when the database is first created
+        // Users table (already exists)
         await db.execute('''
-          CREATE TABLE $tableName(
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            username TEXT UNIQUE,
-            hashed_password TEXT
-          )
-        ''');
-     
+    CREATE TABLE users (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      username TEXT UNIQUE,
+      hashed_password TEXT
+    )
+  ''');
+
+        // Cars table
+        await db.execute('''
+    CREATE TABLE cars (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      brand TEXT NOT NULL,
+      model TEXT NOT NULL,
+      year INTEGER,
+      plate_number TEXT UNIQUE NOT NULL,
+      daily_price REAL,
+      status TEXT DEFAULT 'available'
+    )
+  ''');
+
+        // Customers table
+        await db.execute('''
+    CREATE TABLE customers (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      full_name TEXT NOT NULL,
+      phone TEXT,
+      email TEXT
+    )
+  ''');
+
+        // Rentals table
+        await db.execute('''
+    CREATE TABLE rentals (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      customer_id INTEGER NOT NULL,
+      car_id INTEGER NOT NULL,
+      rent_date TEXT NOT NULL,
+      return_date TEXT,
+      total_price REAL,
+      FOREIGN KEY (customer_id) REFERENCES customers(id),
+      FOREIGN KEY (car_id) REFERENCES cars(id)
+    )
+  ''');
+
+        // Payments table (optional)
+        await db.execute('''
+    CREATE TABLE payments (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      rental_id INTEGER NOT NULL,
+      amount_paid REAL,
+      payment_date TEXT,
+      FOREIGN KEY (rental_id) REFERENCES rentals(id)
+    )
+  ''');
       },
+
       onUpgrade: (db, oldVersion, newVersion) async {
         // Handle database upgrades here if your schema changes
         // For example, if you add new columns in a future version:
@@ -70,33 +118,29 @@ class DatabaseHelper {
     return null; // User not found
   }
 
+  Future<void> printDatabaseDetails() async {
+    final db = await database;
 
+    print("📄 Database path: ${db.path}");
 
-Future<void> printDatabaseDetails() async {
-  final db = await database;
+    int version = await db.getVersion();
+    print("🔢 Database version: $version");
 
-  print("📄 Database path: ${db.path}");
+    // List all tables
+    final tables = await db.rawQuery(
+      "SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%';",
+    );
 
-  int version = await db.getVersion();
-  print("🔢 Database version: $version");
+    print("\n📂 Tables in the database:");
+    for (var table in tables) {
+      String tableName = table['name'] as String;
+      print("➡️ Table: $tableName");
 
-  // List all tables
-  final tables = await db.rawQuery(
-      "SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%';");
-
-  print("\n📂 Tables in the database:");
-  for (var table in tables) {
-    String tableName = table['name'] as String;
-    print("➡️ Table: $tableName");
-
-    // Show table columns
-    final columns = await db.rawQuery("PRAGMA table_info($tableName);");
-    for (var column in columns) {
-      print("   - ${column['name']} (${column['type']})");
+      // Show table columns
+      final columns = await db.rawQuery("PRAGMA table_info($tableName);");
+      for (var column in columns) {
+        print("   - ${column['name']} (${column['type']})");
+      }
     }
   }
-}
-
-
-  
 }

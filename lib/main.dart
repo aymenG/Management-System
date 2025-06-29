@@ -9,6 +9,7 @@ import 'dart:io';
 import 'views/LoginForm.dart';
 
 void main() {
+  
   if (defaultTargetPlatform == TargetPlatform.windows ||
       defaultTargetPlatform == TargetPlatform.linux ||
       defaultTargetPlatform == TargetPlatform.macOS) {
