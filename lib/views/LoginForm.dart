@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import '../controllers/database_helper.dart';
 import 'dashboard.dart';
+import '../controllers/my_scripts.dart';
 
 class LoginFormWidget extends StatefulWidget {
   const LoginFormWidget({super.key});
@@ -19,7 +20,7 @@ class _LoginFormWidgetState extends State<LoginFormWidget> {
   final _dbHelper = DatabaseHelper();
 
   void _handleLogin() async {
-   // _dbHelper.printDatabaseDetails();
+    // _dbHelper.printDatabaseDetails();
     final username = _usernameController.text.trim();
     final rawPassword = _passwordController.text;
     if (username.isEmpty || rawPassword.isEmpty) {
@@ -31,7 +32,7 @@ class _LoginFormWidgetState extends State<LoginFormWidget> {
       return;
     }
 
-    final hashedPassword = _hashPassword(rawPassword);
+    final hashedPassword = hashPassword(rawPassword);
 
     final user = await _dbHelper.getUserByUsername(username);
 
@@ -59,12 +60,7 @@ class _LoginFormWidgetState extends State<LoginFormWidget> {
     }
   }
 
-  String _hashPassword(String password) {
-    final bytes = utf8.encode(password);
-    final digest = sha256.convert(bytes);
-    return digest.toString();
-  }
-
+ 
   @override
   Widget build(BuildContext context) {
     return Container(
