@@ -4,7 +4,6 @@ import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import '../controllers/my_scripts.dart';
 
-
 class DatabaseHelper {
   static Database? _database; // Make it nullable for initialization
   static const String tableName = 'users'; // Define table name as a constant
@@ -27,6 +26,7 @@ class DatabaseHelper {
       role TEXT DEFAULT 'user'
     )
   ''');
+        await insertInitialUsers(db);
 
         // Cars table
         await db.execute('''
@@ -146,18 +146,18 @@ class DatabaseHelper {
       }
     }
   }
+
   Future<void> insertInitialUsers(Database db) async {
-  await db.insert('users', {
-    'username': 'admin',
-    'hashed_password': hashPassword('admin123'), // Example hash function
-    'role': 'admin'
-  });
+    await db.insert('users', {
+      'username': 'admin',
+      'hashed_password': hashPassword('admin123'), // Example hash function
+      'role': 'admin',
+    });
 
-  await db.insert('users', {
-    'username': 'manager',
-    'hashed_password': hashPassword('manager123'), // Example hash function
-    'role': 'manager'
-  });
-}
-
+    await db.insert('users', {
+      'username': 'manager',
+      'hashed_password': hashPassword('manager123'), // Example hash function
+      'role': 'manager',
+    });
+  }
 }
