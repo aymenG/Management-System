@@ -1,5 +1,5 @@
-name: ClinicManagementSystem
-description: "A Clinic Management System."
+name: management_system
+description: "A Management System."
 publish_to: 'none'
 version: 0.1.0
 

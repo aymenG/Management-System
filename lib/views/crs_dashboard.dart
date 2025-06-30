@@ -1,7 +1,7 @@
-import 'package:ClinicManagementSystem/views/LoginForm.dart';
-import 'package:ClinicManagementSystem/views/available_cars.dart';
-import 'package:ClinicManagementSystem/views/rent_car.dart';
-import 'package:ClinicManagementSystem/views/user_profile.dart';
+import 'package:management_system/views/LoginForm.dart';
+import 'package:management_system/views/available_cars.dart';
+import 'package:management_system/views/rent_car.dart';
+import 'package:management_system/views/user_profile.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 

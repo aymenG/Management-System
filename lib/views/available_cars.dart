@@ -1,4 +1,4 @@
-import 'package:ClinicManagementSystem/models/car.dart';
+import 'package:management_system/models/car.dart';
 import 'package:flutter/material.dart';
 
 // available_cars_page.dart

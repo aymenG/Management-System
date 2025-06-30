@@ -1,5 +1,5 @@
-import 'package:ClinicManagementSystem/views/LoginForm.dart';
-import 'package:ClinicManagementSystem/views/custom_card.dart';
+import 'package:management_system/views/LoginForm.dart';
+import 'package:management_system/views/custom_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:path/path.dart';

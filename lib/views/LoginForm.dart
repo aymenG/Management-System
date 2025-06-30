@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'package:ClinicManagementSystem/views/crs_dashboard.dart';
+import 'package:management_system/views/crs_dashboard.dart';
 import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
