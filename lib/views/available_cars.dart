@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:management_system/models/car.dart';
+import 'package:management_system/views/rent_car_dialog.dart';
 
 class AvailableCars extends StatelessWidget {
   const AvailableCars({super.key});
@@ -109,9 +110,9 @@ class AvailableCars extends StatelessWidget {
                   width: double.infinity,
                   child: ElevatedButton.icon(
                     onPressed: () {
-                      // Navigate to rent screen
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text("Rent ${car.name}")),
+                      showDialog(
+                        context: context,
+                        builder: (_) => RentCarDialog(car: car),
                       );
                     },
                     icon: const Icon(Icons.car_rental),

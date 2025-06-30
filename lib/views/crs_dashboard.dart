@@ -1,7 +1,6 @@
 import 'package:management_system/views/LoginForm.dart';
 import 'package:management_system/views/available_cars.dart';
-import 'package:management_system/views/rent_car.dart';
-import 'package:management_system/views/user_profile.dart';
+import 'package:management_system/views/settings.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
@@ -50,8 +49,7 @@ class _CRSDashboardState extends State<CRSDashboard> {
           const SizedBox(height: 30),
           _buildSidebarItem(Icons.home, 'Home', 0),
           _buildSidebarItem(Icons.directions_car, 'Available Cars', 1),
-          _buildSidebarItem(Icons.assignment_returned, 'Rent Car', 2),
-          _buildSidebarItem(Icons.person, 'Profile', 3),
+          _buildSidebarItem(Icons.settings, 'Settings', 2),
 
           const Spacer(),
           _buildSidebarItem(Icons.logout, 'Sign Out', -1),
@@ -92,10 +90,9 @@ class _CRSDashboardState extends State<CRSDashboard> {
         return _buildDashboardContent();
       case 1:
         return const Center(child: AvailableCars());
+
       case 2:
-        return const Center(child: RentCar());
-      case 3:
-        return const UserProfile();
+        return const SettingsPage();
       default:
         return const Center(child: Text("Page Not Found"));
     }
@@ -110,9 +107,9 @@ class _CRSDashboardState extends State<CRSDashboard> {
         Expanded(
           child: Row(
             children: [
-              // Expanded(child: _buildIncomeChart()),
+              //  Expanded(child: _buildIncomeChart()),
               const SizedBox(width: 20),
-              // Expanded(child: _buildCustomerChart()),
+              //  Expanded(child: _buildCustomerChart()),
             ],
           ),
         ),
