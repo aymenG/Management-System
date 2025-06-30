@@ -1,4 +1,4 @@
-import 'package:ClinicManagementSystem/views/LoginForm.dart';
+import 'package:management_system/views/LoginForm.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';

@@ -4,7 +4,6 @@ import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import '../controllers/database_helper.dart';
-import 'dashboard.dart';
 import '../controllers/my_scripts.dart';
 
 class LoginFormWidget extends StatefulWidget {
