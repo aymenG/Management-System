@@ -11,29 +11,25 @@ class AvailableCars extends StatelessWidget {
     final List<Car> cars = [
       Car(
         name: 'Toyota Corolla',
-        model: '2021',
-        plateNumber: 'ABC-123',
+        matricule: 'COR-2023',
         dailyPrice: 45.0,
         imagePath: 'assets/images/corolla.jpg',
       ),
       Car(
         name: 'Hyundai Elantra',
-        model: '2020',
-        plateNumber: 'XYZ-789',
+        matricule: 'ELN-2023',
         dailyPrice: 50.0,
         imagePath: 'assets/images/elantra.png',
       ),
       Car(
         name: 'Honda Civic',
-        model: '2022',
-        plateNumber: 'DEF-456',
+        matricule: 'CIV-2022',
         dailyPrice: 55.0,
         imagePath: 'assets/images/civic.png',
       ),
       Car(
         name: 'Kia Rio',
-        model: '2019',
-        plateNumber: 'JKL-321',
+        matricule: 'RIO-2023',
         dailyPrice: 40.0,
         imagePath: 'assets/images/rio.jpg',
       ),
@@ -89,14 +85,10 @@ class AvailableCars extends StatelessWidget {
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  "Model: ${car.model}",
+                  "Matricule: ${car.matricule}",
                   style: const TextStyle(color: Colors.grey),
                 ),
-                const SizedBox(height: 4),
-                Text(
-                  "Plate: ${car.plateNumber}",
-                  style: const TextStyle(color: Colors.grey),
-                ),
+
                 const SizedBox(height: 4),
                 Text(
                   "Price/day: \$${car.dailyPrice.toStringAsFixed(2)}",
