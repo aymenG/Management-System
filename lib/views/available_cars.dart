@@ -33,6 +33,54 @@ class AvailableCars extends StatelessWidget {
         dailyPrice: 40.0,
         imagePath: 'assets/images/rio.jpg',
       ),
+      Car(
+        name: 'Toyota Corolla',
+        matricule: 'COR-2023',
+        dailyPrice: 45.0,
+        imagePath: 'assets/images/corolla.jpg',
+      ),
+      Car(
+        name: 'Hyundai Elantra',
+        matricule: 'ELN-2023',
+        dailyPrice: 50.0,
+        imagePath: 'assets/images/elantra.png',
+      ),
+      Car(
+        name: 'Honda Civic',
+        matricule: 'CIV-2022',
+        dailyPrice: 55.0,
+        imagePath: 'assets/images/civic.png',
+      ),
+      Car(
+        name: 'Kia Rio',
+        matricule: 'RIO-2023',
+        dailyPrice: 40.0,
+        imagePath: 'assets/images/rio.jpg',
+      ),
+      Car(
+        name: 'Toyota Corolla',
+        matricule: 'COR-2023',
+        dailyPrice: 45.0,
+        imagePath: 'assets/images/corolla.jpg',
+      ),
+      Car(
+        name: 'Hyundai Elantra',
+        matricule: 'ELN-2023',
+        dailyPrice: 50.0,
+        imagePath: 'assets/images/elantra.png',
+      ),
+      Car(
+        name: 'Honda Civic',
+        matricule: 'CIV-2022',
+        dailyPrice: 55.0,
+        imagePath: 'assets/images/civic.png',
+      ),
+      Car(
+        name: 'Kia Rio',
+        matricule: 'RIO-2023',
+        dailyPrice: 40.0,
+        imagePath: 'assets/images/rio.jpg',
+      ),
     ];
 
     return Container(
