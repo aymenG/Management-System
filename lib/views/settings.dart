@@ -198,7 +198,7 @@ class _SettingsPageState extends State<SettingsPage> {
                     onPressed: _handleCreateManager,
                     icon: Icons.add,
                     label: 'Create Manager Account',
-                    color: Colors.green,
+                    color: Colors.deepPurple,
                     minWidth: 200,
                   ),
                 ),

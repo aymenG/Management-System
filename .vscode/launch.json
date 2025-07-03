@@ -1,0 +1,18 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Run on Windows",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "debug", // or "profile", "release"
+            "args": ["-d", "windows"]
+        },
+        // You can keep other configurations for other platforms if needed
+        {
+            "name": "Flutter", // Default Flutter configuration
+            "request": "launch",
+            "type": "dart"
+        }
+    ]
+}

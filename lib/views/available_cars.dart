@@ -41,28 +41,28 @@ class AvailableCars extends StatelessWidget {
       child: GridView.builder(
         itemCount: cars.length,
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: _calculateCrossAxisCount(context),
+          crossAxisCount: calculateCrossAxisCount(context),
           crossAxisSpacing: 16,
           mainAxisSpacing: 16,
           childAspectRatio: 1.3,
         ),
         itemBuilder: (context, index) {
           final car = cars[index];
-          return _buildCarCard(context, car);
+          return buildCarCard(context, car);
         },
       ),
     );
   }
 
   /// Calculate columns based on screen width
-  int _calculateCrossAxisCount(BuildContext context) {
+  int calculateCrossAxisCount(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     if (width > 1400) return 4;
     if (width > 1000) return 3;
     return 2;
   }
 
-  Widget _buildCarCard(BuildContext context, Car car) {
+  Widget buildCarCard(BuildContext context, Car car) {
     return Card(
       elevation: 4,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
@@ -88,7 +88,6 @@ class AvailableCars extends StatelessWidget {
                   "Matricule: ${car.matricule}",
                   style: const TextStyle(color: Colors.grey),
                 ),
-
                 const SizedBox(height: 4),
                 Text(
                   "Price/day: \$${car.dailyPrice.toStringAsFixed(2)}",
@@ -98,22 +97,44 @@ class AvailableCars extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 12),
-                SizedBox(
-                  width: double.infinity,
-                  child: ElevatedButton.icon(
-                    onPressed: () {
-                      showDialog(
-                        context: context,
-                        builder: (_) => RentCarDialog(car: car),
-                      );
-                    },
-                    icon: const Icon(Icons.car_rental),
-                    label: const Text("Rent Car"),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.deepPurple,
-                      foregroundColor: Colors.white,
+                // --- Buttons Row ---
+                Row(
+                  children: [
+                    Expanded(
+                      child: ElevatedButton.icon(
+                        onPressed: () {
+                          showDialog(
+                            context: context,
+                            builder: (context) => RentCarDialog(car: car),
+                          );
+                        },
+                        icon: const Icon(Icons.car_rental),
+                        label: const Text("Rent Car"),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.deepPurple,
+                          foregroundColor: Colors.white,
+                        ),
+                      ),
                     ),
-                  ),
+                    const SizedBox(width: 8), // Spacer between buttons
+                    Expanded(
+                      child: OutlinedButton.icon(
+                        onPressed: () {
+                          // TODO: Implement edit functionality
+                          print('Edit button pressed for ${car.name}');
+                          // Example: Navigator.push(context, MaterialPageRoute(builder: (context) => EditCarScreen(car: car)));
+                        },
+                        icon: const Icon(Icons.edit),
+                        label: const Text("Edit"),
+                        style: OutlinedButton.styleFrom(
+                          foregroundColor: Colors.deepPurple,
+                          side: const BorderSide(
+                            color: Colors.deepPurple,
+                          ), // Choose an appropriate color
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),
