@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:management_system/models/car.dart';
+import 'package:management_system/models/car_brand.dart';
+import 'package:management_system/models/car_status.dart';
 import 'package:management_system/views/rent_car_dialog.dart';
 
 class AvailableCars extends StatelessWidget {
@@ -7,77 +9,37 @@ class AvailableCars extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Sample cars (replace with DB data later)
+    /// Sample cars (for testing only)
     final List<Car> cars = [
       Car(
-        name: 'Toyota Corolla',
-        matricule: 'COR-2023',
+        brand: CarBrand.toyota,
+        model: 'Corolla',
+        year: 2023,
+        plateNumber: 'COR-2023',
         dailyPrice: 45.0,
         imagePath: 'assets/images/corolla.jpg',
       ),
       Car(
-        name: 'Hyundai Elantra',
-        matricule: 'ELN-2023',
+        brand: CarBrand.hyundai,
+        model: 'Elantra',
+        year: 2023,
+        plateNumber: 'ELN-2023',
         dailyPrice: 50.0,
         imagePath: 'assets/images/elantra.png',
       ),
       Car(
-        name: 'Honda Civic',
-        matricule: 'CIV-2022',
+        brand: CarBrand.honda,
+        model: 'Civic',
+        year: 2022,
+        plateNumber: 'CIV-2022',
         dailyPrice: 55.0,
         imagePath: 'assets/images/civic.png',
       ),
       Car(
-        name: 'Kia Rio',
-        matricule: 'RIO-2023',
-        dailyPrice: 40.0,
-        imagePath: 'assets/images/rio.jpg',
-      ),
-      Car(
-        name: 'Toyota Corolla',
-        matricule: 'COR-2023',
-        dailyPrice: 45.0,
-        imagePath: 'assets/images/corolla.jpg',
-      ),
-      Car(
-        name: 'Hyundai Elantra',
-        matricule: 'ELN-2023',
-        dailyPrice: 50.0,
-        imagePath: 'assets/images/elantra.png',
-      ),
-      Car(
-        name: 'Honda Civic',
-        matricule: 'CIV-2022',
-        dailyPrice: 55.0,
-        imagePath: 'assets/images/civic.png',
-      ),
-      Car(
-        name: 'Kia Rio',
-        matricule: 'RIO-2023',
-        dailyPrice: 40.0,
-        imagePath: 'assets/images/rio.jpg',
-      ),
-      Car(
-        name: 'Toyota Corolla',
-        matricule: 'COR-2023',
-        dailyPrice: 45.0,
-        imagePath: 'assets/images/corolla.jpg',
-      ),
-      Car(
-        name: 'Hyundai Elantra',
-        matricule: 'ELN-2023',
-        dailyPrice: 50.0,
-        imagePath: 'assets/images/elantra.png',
-      ),
-      Car(
-        name: 'Honda Civic',
-        matricule: 'CIV-2022',
-        dailyPrice: 55.0,
-        imagePath: 'assets/images/civic.png',
-      ),
-      Car(
-        name: 'Kia Rio',
-        matricule: 'RIO-2023',
+        brand: CarBrand.kia,
+        model: 'Rio',
+        year: 2023,
+        plateNumber: 'RIO-2023',
         dailyPrice: 40.0,
         imagePath: 'assets/images/rio.jpg',
       ),
@@ -118,22 +80,45 @@ class AvailableCars extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Expanded(child: Image.asset(car.imagePath, fit: BoxFit.cover)),
+          Expanded(
+            child: car.imagePath.isNotEmpty
+                ? Image.asset(
+                    car.imagePath,
+                    fit: BoxFit.cover,
+                    errorBuilder: (context, error, stackTrace) => Container(
+                      color: Colors.grey[200],
+                      alignment: Alignment.center,
+                      child: const Icon(Icons.car_rental, size: 50, color: Colors.grey),
+                    ),
+                  )
+                : Container(
+                    color: Colors.grey[200],
+                    alignment: Alignment.center,
+                    child: const Icon(Icons.car_rental, size: 50, color: Colors.grey),
+                  ),
+          ),
           Padding(
             padding: const EdgeInsets.all(12.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  car.name,
+                  car.fullName,
                   style: const TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
                   ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  "Matricule: ${car.matricule}",
+                  "Plate: ${car.plateNumber}",
+                  style: const TextStyle(color: Colors.grey),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  "Year: ${car.year}",
                   style: const TextStyle(color: Colors.grey),
                 ),
                 const SizedBox(height: 4),
@@ -145,7 +130,6 @@ class AvailableCars extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 12),
-                // --- Buttons Row ---
                 Row(
                   children: [
                     Expanded(
@@ -164,13 +148,12 @@ class AvailableCars extends StatelessWidget {
                         ),
                       ),
                     ),
-                    const SizedBox(width: 8), // Spacer between buttons
+                    const SizedBox(width: 8),
                     Expanded(
                       child: OutlinedButton.icon(
                         onPressed: () {
                           // TODO: Implement edit functionality
-                          print('Edit button pressed for ${car.name}');
-                          // Example: Navigator.push(context, MaterialPageRoute(builder: (context) => EditCarScreen(car: car)));
+                          print('Edit button pressed for ${car.fullName}');
                         },
                         icon: const Icon(Icons.edit),
                         label: const Text("Edit"),
@@ -178,7 +161,7 @@ class AvailableCars extends StatelessWidget {
                           foregroundColor: Colors.deepPurple,
                           side: const BorderSide(
                             color: Colors.deepPurple,
-                          ), // Choose an appropriate color
+                          ),
                         ),
                       ),
                     ),
