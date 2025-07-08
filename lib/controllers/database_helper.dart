@@ -1,3 +1,4 @@
+import 'package:management_system/models/car.dart';
 import 'package:management_system/views/LoginForm.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 import 'package:path/path.dart';
@@ -162,5 +163,51 @@ CREATE TABLE cars (
       'hashed_password': hashPassword('manager123'), // Example hash function
       'role': 'manager',
     });
+  }
+
+  // in DatabaseHelper
+
+  Future<int> insertCar(Car car) async {
+    final db = await database;
+    return await db.insert(
+      'cars',
+      car.toMap(),
+      conflictAlgorithm: ConflictAlgorithm.replace,
+    );
+  }
+
+  Future<List<Car>> getAllCars() async {
+    final db = await database;
+    final result = await db.query('cars');
+    return result.map((e) => Car.fromMap(e)).toList();
+  }
+
+  Future<Car?> getCarById(int id) async {
+    final db = await database;
+    final res = await db.query(
+      'cars',
+      where: 'id = ?',
+      whereArgs: [id],
+      limit: 1,
+    );
+    if (res.isNotEmpty) {
+      return Car.fromMap(res.first);
+    }
+    return null;
+  }
+
+  Future<int> updateCar(Car car) async {
+    final db = await database;
+    return await db.update(
+      'cars',
+      car.toMap(),
+      where: 'id = ?',
+      whereArgs: [car.id],
+    );
+  }
+
+  Future<int> deleteCar(int id) async {
+    final db = await database;
+    return await db.delete('cars', where: 'id = ?', whereArgs: [id]);
   }
 }
