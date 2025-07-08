@@ -1,6 +1,6 @@
-import 'dart:io';
-
+// lib/models/car.dart
 import 'package:management_system/models/car_brand.dart';
+import 'package:management_system/models/car_status.dart';
 
 class Car {
   final int? id;
@@ -9,8 +9,8 @@ class Car {
   final int year;
   final String plateNumber;
   final double dailyPrice;
-  final String imagePath; // local file path chosen by user
-  String status;
+  final String imagePath;
+  CarStatus status;
 
   Car({
     this.id,
@@ -20,12 +20,10 @@ class Car {
     required this.plateNumber,
     required this.dailyPrice,
     required this.imagePath,
-    this.status = 'available',
+    this.status = CarStatus.available,
   });
 
-  String get brandName => brand.name[0].toUpperCase() + brand.name.substring(1);
-
-  String get fullName => "$brandName $model";
+  String get fullName => "${brand.displayName} $model";
 
   Map<String, dynamic> toMap() {
     return {
@@ -36,7 +34,7 @@ class Car {
       'plate_number': plateNumber,
       'daily_price': dailyPrice,
       'image_path': imagePath,
-      'status': status,
+      'status': status.name,
     };
   }
 
@@ -51,8 +49,11 @@ class Car {
       year: map['year'],
       plateNumber: map['plate_number'],
       dailyPrice: map['daily_price'],
-      imagePath: map['image_path'],
-      status: map['status'],
+      imagePath: map['image_path'] ?? '',
+      status: CarStatus.values.firstWhere(
+        (s) => s.name == map['status'],
+        orElse: () => CarStatus.available,
+      ),
     );
   }
 }

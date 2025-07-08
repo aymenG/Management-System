@@ -30,7 +30,7 @@ class DatabaseHelper {
 
         // Cars table
         await db.execute('''
-   CREATE TABLE cars (
+CREATE TABLE cars (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   brand TEXT NOT NULL,
   model TEXT NOT NULL,
@@ -39,7 +39,8 @@ class DatabaseHelper {
   daily_price REAL,
   image_path TEXT,
   status TEXT DEFAULT 'available'
-)
+);
+
 
   ''');
 
