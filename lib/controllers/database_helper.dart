@@ -30,15 +30,17 @@ class DatabaseHelper {
 
         // Cars table
         await db.execute('''
-    CREATE TABLE cars (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      brand TEXT NOT NULL,
-      model TEXT NOT NULL,
-      year INTEGER,
-      plate_number TEXT UNIQUE NOT NULL,
-      daily_price REAL,
-      status TEXT DEFAULT 'available'
-    )
+   CREATE TABLE cars (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  brand TEXT NOT NULL,
+  model TEXT NOT NULL,
+  year INTEGER NOT NULL,
+  plate_number TEXT UNIQUE NOT NULL,
+  daily_price REAL,
+  image_path TEXT,
+  status TEXT DEFAULT 'available'
+)
+
   ''');
 
         // Customers table
@@ -150,7 +152,7 @@ class DatabaseHelper {
   Future<void> insertInitialUsers(Database db) async {
     await db.insert('users', {
       'username': 'admin',
-      'hashed_password': hashPassword('admin123'), // Example hash function
+      'hashed_password': hashPassword('1234'), // Example hash function
       'role': 'admin',
     });
 
