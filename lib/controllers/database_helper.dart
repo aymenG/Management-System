@@ -1,4 +1,5 @@
 import 'package:management_system/models/car.dart';
+import 'package:management_system/models/rental.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
@@ -56,16 +57,15 @@ CREATE TABLE cars (
 
         // Rentals table
         await db.execute('''
-    CREATE TABLE rentals (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      customer_id INTEGER NOT NULL,
-      car_id INTEGER NOT NULL,
-      rent_date TEXT NOT NULL,
-      return_date TEXT,
-      total_price REAL,
-      FOREIGN KEY (customer_id) REFERENCES customers(id),
-      FOREIGN KEY (car_id) REFERENCES cars(id)
-    )
+CREATE TABLE rentals (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  customer_name TEXT NOT NULL,
+  car_id INTEGER NOT NULL,
+  rent_date TEXT NOT NULL,
+  return_date TEXT,
+  total_price REAL
+)
+
   ''');
 
         // Payments table (optional)
@@ -210,4 +210,15 @@ CREATE TABLE cars (
     final db = await database;
     return await db.delete('cars', where: 'id = ?', whereArgs: [id]);
   }
+
+Future<int> insertRental(Rental rental) async {
+  final db = await database;
+  return await db.insert(
+    'rentals',
+    rental.toMap(),
+    conflictAlgorithm: ConflictAlgorithm.replace,
+  );
+}
+
+
 }

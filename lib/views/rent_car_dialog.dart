@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:management_system/models/car.dart';
+import 'package:management_system/controllers/database_helper.dart';
 import 'package:management_system/models/car_brand.dart';
+import 'package:management_system/models/rental.dart';
+import 'package:management_system/models/car.dart';
 
 class RentCarDialog extends StatefulWidget {
   final Car car;
@@ -16,6 +18,11 @@ class _RentCarDialogState extends State<RentCarDialog> {
   final TextEditingController _rentDateController = TextEditingController();
   final TextEditingController _returnDateController = TextEditingController();
 
+  DateTime? _selectedRentDate;
+  DateTime? _selectedReturnDate;
+
+  final DatabaseHelper _dbHelper = DatabaseHelper();
+
   @override
   void dispose() {
     _customerNameController.dispose();
@@ -24,7 +31,23 @@ class _RentCarDialogState extends State<RentCarDialog> {
     super.dispose();
   }
 
-  void _confirmRental() {
+  Future<void> _pickDate({
+    required TextEditingController controller,
+    required Function(DateTime) onDatePicked,
+  }) async {
+    final picked = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(2020),
+      lastDate: DateTime(2100),
+    );
+    if (picked != null) {
+      onDatePicked(picked);
+      controller.text = picked.toIso8601String().split('T').first;
+    }
+  }
+
+  Future<void> _confirmRental() async {
     if (_customerNameController.text.isEmpty ||
         _rentDateController.text.isEmpty ||
         _returnDateController.text.isEmpty) {
@@ -34,21 +57,41 @@ class _RentCarDialogState extends State<RentCarDialog> {
       return;
     }
 
-    // In the future, save to DB here!
-    print("Renting ${widget.car.brand.displayName} ${widget.car.model} "
-        "(${widget.car.plateNumber}) "
-        "to ${_customerNameController.text}, "
-        "from ${_rentDateController.text} to ${_returnDateController.text}");
+    final rental = Rental(
+      customerName: _customerNameController.text.trim(),
+      carId: widget.car.id!,
+      rentDate: _selectedRentDate!,
+      returnDate: _selectedReturnDate!,
+      totalPrice: null,
+    );
 
-    Navigator.of(context).pop();
+    try {
+      await _dbHelper.insertRental(rental);
+      if (mounted) {
+        Navigator.of(context).pop();
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              'Car rented successfully to ${_customerNameController.text}',
+            ),
+            backgroundColor: Colors.green,
+          ),
+        );
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Error saving rental: $e'),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text(
-        "Rent ${widget.car.brand.displayName} ${widget.car.model}",
-      ),
+      title: Text("Rent ${widget.car.brand.displayName} ${widget.car.model}"),
       content: SingleChildScrollView(
         child: Column(
           children: [
@@ -71,6 +114,11 @@ class _RentCarDialogState extends State<RentCarDialog> {
             const SizedBox(height: 12),
             TextField(
               controller: _rentDateController,
+              readOnly: true,
+              onTap: () => _pickDate(
+                controller: _rentDateController,
+                onDatePicked: (date) => _selectedRentDate = date,
+              ),
               decoration: const InputDecoration(
                 labelText: 'Rent Date',
                 hintText: 'YYYY-MM-DD',
@@ -80,6 +128,11 @@ class _RentCarDialogState extends State<RentCarDialog> {
             const SizedBox(height: 12),
             TextField(
               controller: _returnDateController,
+              readOnly: true,
+              onTap: () => _pickDate(
+                controller: _returnDateController,
+                onDatePicked: (date) => _selectedReturnDate = date,
+              ),
               decoration: const InputDecoration(
                 labelText: 'Return Date',
                 hintText: 'YYYY-MM-DD',
