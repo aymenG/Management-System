@@ -168,6 +168,7 @@ CREATE TABLE cars (
 
   Future<int> insertCar(Car car) async {
     final db = await database;
+    print('Inserting car: ${car.toMap()}');
     return await db.insert(
       'cars',
       car.toMap(),

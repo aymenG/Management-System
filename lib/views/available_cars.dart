@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:management_system/controllers/database_helper.dart';
 import 'package:management_system/models/car.dart';
 import 'package:management_system/models/car_status.dart';
+import 'package:management_system/views/car_form_dialog.dart';
 import 'package:management_system/views/rent_car_dialog.dart';
-import 'package:management_system/views/add_car_dialog.dart';
 import 'dart:io';
 
 class AvailableCars extends StatefulWidget {
@@ -72,7 +72,12 @@ class _AvailableCarsState extends State<AvailableCars> {
                   onPressed: () {
                     showDialog(
                       context: context,
-                      builder: (context) => AddCarDialog(onCarAdded: _loadCars),
+                      builder: (context) => CarFormDialog(
+                        onSave: (car) async {
+                          await _dbHelper.insertCar(car);
+                          _loadCars();
+                        },
+                      ),
                     );
                   },
                   icon: const Icon(Icons.add),
@@ -241,8 +246,18 @@ class _AvailableCarsState extends State<AvailableCars> {
                     Expanded(
                       child: OutlinedButton.icon(
                         onPressed: () {
-                          // TODO: Implement edit functionality
-                          print('Edit button pressed for ${car.fullName}');
+                          showDialog(
+                            context: context,
+                            builder: (context) => CarFormDialog(
+                              existingCar: car,
+                              onSave: (updatedCar) async {
+                                await _dbHelper.updateCar(updatedCar);
+                                _loadCars();
+                              },
+                            ),
+                          );
+
+                         
                         },
                         icon: const Icon(Icons.edit),
                         label: const Text("Edit"),
