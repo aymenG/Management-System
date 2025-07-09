@@ -1,65 +1,142 @@
 import 'package:flutter/material.dart';
+import 'package:management_system/controllers/database_helper.dart';
 import 'package:management_system/models/car.dart';
-import 'package:management_system/models/car_brand.dart';
 import 'package:management_system/models/car_status.dart';
 import 'package:management_system/views/rent_car_dialog.dart';
+import 'package:management_system/views/add_car_dialog.dart';
+import 'dart:io';
 
-class AvailableCars extends StatelessWidget {
+class AvailableCars extends StatefulWidget {
   const AvailableCars({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    /// Sample cars (for testing only)
-    final List<Car> cars = [
-      Car(
-        brand: CarBrand.toyota,
-        model: 'Corolla',
-        year: 2023,
-        plateNumber: 'COR-2023',
-        dailyPrice: 45.0,
-        imagePath: 'assets/images/corolla.jpg',
-      ),
-      Car(
-        brand: CarBrand.hyundai,
-        model: 'Elantra',
-        year: 2023,
-        plateNumber: 'ELN-2023',
-        dailyPrice: 50.0,
-        imagePath: 'assets/images/elantra.png',
-      ),
-      Car(
-        brand: CarBrand.honda,
-        model: 'Civic',
-        year: 2022,
-        plateNumber: 'CIV-2022',
-        dailyPrice: 55.0,
-        imagePath: 'assets/images/civic.png',
-      ),
-      Car(
-        brand: CarBrand.kia,
-        model: 'Rio',
-        year: 2023,
-        plateNumber: 'RIO-2023',
-        dailyPrice: 40.0,
-        imagePath: 'assets/images/rio.jpg',
-      ),
-    ];
+  State<AvailableCars> createState() => _AvailableCarsState();
+}
 
+class _AvailableCarsState extends State<AvailableCars> {
+  List<Car> cars = [];
+  bool isLoading = true;
+  final DatabaseHelper _dbHelper = DatabaseHelper();
+
+  @override
+  void initState() {
+    super.initState();
+    _loadCars();
+  }
+
+  Future<void> _loadCars() async {
+    try {
+      setState(() {
+        isLoading = true;
+      });
+
+      final loadedCars = await _dbHelper.getAllCars();
+
+      setState(() {
+        cars = loadedCars;
+        isLoading = false;
+      });
+    } catch (e) {
+      setState(() {
+        isLoading = false;
+      });
+
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error loading cars: $e'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Container(
       color: Colors.grey[100],
-      padding: const EdgeInsets.all(16),
-      child: GridView.builder(
-        itemCount: cars.length,
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: calculateCrossAxisCount(context),
-          crossAxisSpacing: 16,
-          mainAxisSpacing: 16,
-          childAspectRatio: 1.3,
-        ),
-        itemBuilder: (context, index) {
-          final car = cars[index];
-          return buildCarCard(context, car);
-        },
+      child: Column(
+        children: [
+          // Header with Add Car button
+          Container(
+            padding: const EdgeInsets.all(16),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text(
+                  'Available Cars',
+                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                ),
+                ElevatedButton.icon(
+                  onPressed: () {
+                    showDialog(
+                      context: context,
+                      builder: (context) => AddCarDialog(onCarAdded: _loadCars),
+                    );
+                  },
+                  icon: const Icon(Icons.add),
+                  label: const Text('Add Car'),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.deepPurple,
+                    foregroundColor: Colors.white,
+                  ),
+                ),
+              ],
+            ),
+          ),
+
+          // Cars Grid
+          Expanded(
+            child: isLoading
+                ? const Center(child: CircularProgressIndicator())
+                : cars.isEmpty
+                ? Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.car_rental,
+                          size: 64,
+                          color: Colors.grey[400],
+                        ),
+                        const SizedBox(height: 16),
+                        Text(
+                          'No cars available',
+                          style: TextStyle(
+                            fontSize: 18,
+                            color: Colors.grey[600],
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          'Add your first car to get started',
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: Colors.grey[500],
+                          ),
+                        ),
+                      ],
+                    ),
+                  )
+                : Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: GridView.builder(
+                      itemCount: cars.length,
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: calculateCrossAxisCount(context),
+                        crossAxisSpacing: 16,
+                        mainAxisSpacing: 16,
+                        childAspectRatio: 1.3,
+                      ),
+                      itemBuilder: (context, index) {
+                        final car = cars[index];
+                        return buildCarCard(context, car);
+                      },
+                    ),
+                  ),
+          ),
+        ],
       ),
     );
   }
@@ -80,23 +157,7 @@ class AvailableCars extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Expanded(
-            child: car.imagePath.isNotEmpty
-                ? Image.asset(
-                    car.imagePath,
-                    fit: BoxFit.cover,
-                    errorBuilder: (context, error, stackTrace) => Container(
-                      color: Colors.grey[200],
-                      alignment: Alignment.center,
-                      child: const Icon(Icons.car_rental, size: 50, color: Colors.grey),
-                    ),
-                  )
-                : Container(
-                    color: Colors.grey[200],
-                    alignment: Alignment.center,
-                    child: const Icon(Icons.car_rental, size: 50, color: Colors.grey),
-                  ),
-          ),
+          Expanded(child: _buildCarImage(car)),
           Padding(
             padding: const EdgeInsets.all(12.0),
             child: Column(
@@ -129,22 +190,50 @@ class AvailableCars extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
+                const SizedBox(height: 8),
+                // Status indicator
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 8,
+                    vertical: 4,
+                  ),
+                  decoration: BoxDecoration(
+                    color: car.status == CarStatus.available
+                        ? Colors.green.withOpacity(0.1)
+                        : Colors.orange.withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(4),
+                  ),
+                  child: Text(
+                    car.status.name.toUpperCase(),
+                    style: TextStyle(
+                      color: car.status == CarStatus.available
+                          ? Colors.green
+                          : Colors.orange,
+                      fontSize: 12,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
                 const SizedBox(height: 12),
                 Row(
                   children: [
                     Expanded(
                       child: ElevatedButton.icon(
-                        onPressed: () {
-                          showDialog(
-                            context: context,
-                            builder: (context) => RentCarDialog(car: car),
-                          );
-                        },
+                        onPressed: car.status == CarStatus.available
+                            ? () {
+                                showDialog(
+                                  context: context,
+                                  builder: (context) => RentCarDialog(car: car),
+                                );
+                              }
+                            : null,
                         icon: const Icon(Icons.car_rental),
                         label: const Text("Rent Car"),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.deepPurple,
                           foregroundColor: Colors.white,
+                          disabledBackgroundColor: Colors.grey[300],
+                          disabledForegroundColor: Colors.grey[600],
                         ),
                       ),
                     ),
@@ -159,9 +248,7 @@ class AvailableCars extends StatelessWidget {
                         label: const Text("Edit"),
                         style: OutlinedButton.styleFrom(
                           foregroundColor: Colors.deepPurple,
-                          side: const BorderSide(
-                            color: Colors.deepPurple,
-                          ),
+                          side: const BorderSide(color: Colors.deepPurple),
                         ),
                       ),
                     ),
@@ -172,6 +259,37 @@ class AvailableCars extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+
+  Widget _buildCarImage(Car car) {
+    if (car.imagePath.isNotEmpty) {
+      // Try to load as file first (for picked images)
+      final file = File(car.imagePath);
+      if (file.existsSync()) {
+        return Image.file(
+          file,
+          fit: BoxFit.cover,
+          errorBuilder: (context, error, stackTrace) => _buildPlaceholder(),
+        );
+      } else {
+        // Try to load as asset (for asset images)
+        return Image.asset(
+          car.imagePath,
+          fit: BoxFit.cover,
+          errorBuilder: (context, error, stackTrace) => _buildPlaceholder(),
+        );
+      }
+    } else {
+      return _buildPlaceholder();
+    }
+  }
+
+  Widget _buildPlaceholder() {
+    return Container(
+      color: Colors.grey[200],
+      alignment: Alignment.center,
+      child: const Icon(Icons.car_rental, size: 50, color: Colors.grey),
     );
   }
 }
