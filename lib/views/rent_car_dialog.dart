@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:management_system/controllers/database_helper.dart';
 import 'package:management_system/models/car_brand.dart';
 import 'package:management_system/models/rental.dart';
@@ -57,14 +58,20 @@ class _RentCarDialogState extends State<RentCarDialog> {
       return;
     }
 
+    // Assuming this code is in an "Add Rental" context
     final rental = Rental(
       customerName: _customerNameController.text.trim(),
       carId: widget.car.id!,
-      rentDate: _selectedRentDate!,
-      returnDate: _selectedReturnDate!,
-      totalPrice: null,
+      rentDate: DateFormat(
+        'yyyy-MM-dd',
+      ).format(_selectedRentDate!), // <--- FIX HERE
+      returnDate:
+          _selectedReturnDate !=
+              null // <--- FIX HERE for nullability
+          ? DateFormat('yyyy-MM-dd').format(_selectedReturnDate!)
+          : null,
+      totalPrice: 0.0, // Assuming you want 0.0 as initial non-nullable price
     );
-
     try {
       await _dbHelper.insertRental(rental);
       if (mounted) {
