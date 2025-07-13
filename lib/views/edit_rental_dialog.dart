@@ -1,12 +1,11 @@
 // lib/widgets/edit_rental_dialog.dart
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:management_system/controllers/database_helper.dart';
 import 'package:management_system/models/car.dart';
 import 'package:management_system/models/rental.dart';
 
-/// Shows a dialog to edit an existing rental.
-/// Returns true if the rental was successfully updated, false otherwise.
 Future<bool?> showEditRentalDialog({
   required BuildContext context,
   required DatabaseHelper dbHelper,
@@ -30,11 +29,9 @@ Future<bool?> showEditRentalDialog({
   List<Car> availableCars = [];
   bool carsLoading = true;
 
-  // Fetch cars when the dialog is opened
   try {
     availableCars = await dbHelper.getAllCars();
     carsLoading = false;
-    // If selectedCarId is null or not in availableCars, try to set a default
     if (selectedCarId == null ||
         !availableCars.any((car) => car.id == selectedCarId)) {
       selectedCarId = availableCars.isNotEmpty ? availableCars.first.id : null;
@@ -43,7 +40,6 @@ Future<bool?> showEditRentalDialog({
     print("Error fetching cars for dialog: $e");
     carsLoading = false;
     if (context.mounted) {
-      // Use context.mounted check
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Failed to load cars for editing: $e'),
@@ -58,7 +54,6 @@ Future<bool?> showEditRentalDialog({
     barrierDismissible: false,
     builder: (BuildContext dialogContext) {
       return StatefulBuilder(
-        // Use StatefulBuilder to update dialog content
         builder: (context, setStateInDialog) {
           return AlertDialog(
             title: Text('Edit Rental ID: ${rentalData['id']}'),
@@ -81,7 +76,6 @@ Future<bool?> showEditRentalDialog({
                       },
                     ),
                     const SizedBox(height: 16),
-                    // Car Dropdown
                     carsLoading
                         ? const CircularProgressIndicator()
                         : availableCars.isEmpty
@@ -192,9 +186,7 @@ Future<bool?> showEditRentalDialog({
             ),
             actions: [
               TextButton(
-                onPressed: () => Navigator.of(
-                  dialogContext,
-                ).pop(false), // Return false on cancel
+                onPressed: () => Navigator.of(dialogContext).pop(false),
                 child: const Text('Cancel'),
               ),
               ElevatedButton(
@@ -202,7 +194,6 @@ Future<bool?> showEditRentalDialog({
                   if (_formKey.currentState!.validate()) {
                     if (selectedCarId == null) {
                       if (context.mounted) {
-                        // Use context.mounted check
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(
                             content: Text('Please select a car.'),
@@ -213,23 +204,56 @@ Future<bool?> showEditRentalDialog({
                       return;
                     }
 
+                    // --- YOUR DATE VERIFICATION LOGIC GOES HERE ---
+                    final DateTime? rentDate = DateTime.tryParse(
+                      rentDateController.text,
+                    );
+                    final DateTime? returnDate = DateTime.tryParse(
+                      returnDateController.text,
+                    );
+
+                    if (rentDate == null) {
+                      // Should be caught by TextFormField validator, but a double check
+                      if (context.mounted) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('Rent Date is required.'),
+                            backgroundColor: Colors.red,
+                          ),
+                        );
+                      }
+                      return;
+                    }
+
+                    if (returnDate != null && returnDate.isBefore(rentDate)) {
+                      if (context.mounted) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text(
+                              'Return Date must be after Rent Date.',
+                            ),
+                            backgroundColor: Colors.red,
+                          ),
+                        );
+                      }
+                      return; // Stop the process if validation fails
+                    }
+                    // --- END OF DATE VERIFICATION LOGIC ---
+
                     final updatedRental = Rental(
-                      id:
-                          rentalData['id']
-                              as int?, // Corrected: Safely cast to nullable int
+                      id: rentalData['id'] as int?,
                       customerName: customerNameController.text,
                       carId: selectedCarId!,
                       rentDate: rentDateController.text,
                       returnDate: returnDateController.text.isNotEmpty
                           ? returnDateController.text
-                          : null, // Allow null if empty
+                          : null,
                       totalPrice: double.parse(totalPriceController.text),
                     );
 
                     try {
                       await dbHelper.updateRental(updatedRental);
                       if (context.mounted) {
-                        // Use context.mounted check
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(
                             content: Text('Rental updated successfully!'),
@@ -237,12 +261,9 @@ Future<bool?> showEditRentalDialog({
                           ),
                         );
                       }
-                      Navigator.of(
-                        dialogContext,
-                      ).pop(true); // Dismiss dialog and return true
+                      Navigator.of(dialogContext).pop(true);
                     } catch (e) {
                       if (context.mounted) {
-                        // Use context.mounted check
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
                             content: Text('Error updating rental: $e'),
@@ -250,9 +271,7 @@ Future<bool?> showEditRentalDialog({
                           ),
                         );
                       }
-                      Navigator.of(
-                        dialogContext,
-                      ).pop(false); // Dismiss dialog and return false on error
+                      Navigator.of(dialogContext).pop(false);
                     }
                   }
                 },
