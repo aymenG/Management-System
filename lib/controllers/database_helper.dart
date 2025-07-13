@@ -63,7 +63,8 @@ CREATE TABLE rentals (
   car_id INTEGER NOT NULL,
   rent_date TEXT NOT NULL,
   return_date TEXT,
-  total_price REAL
+  total_price REAL,
+  FOREIGN KEY (car_id) REFERENCES cars(id) ON DELETE CASCADE
 )
 
   ''');
@@ -211,14 +212,54 @@ CREATE TABLE rentals (
     return await db.delete('cars', where: 'id = ?', whereArgs: [id]);
   }
 
-Future<int> insertRental(Rental rental) async {
-  final db = await database;
-  return await db.insert(
-    'rentals',
-    rental.toMap(),
-    conflictAlgorithm: ConflictAlgorithm.replace,
-  );
-}
+  Future<int> insertRental(Rental rental) async {
+    final db = await database;
+    return await db.insert(
+      'rentals',
+      rental.toMap(),
+      conflictAlgorithm: ConflictAlgorithm.replace,
+    );
+  }
 
+  Future<List<Map<String, dynamic>>> getRentalsWithCarDetails() async {
+    final db = await database;
+    final result = await db.rawQuery('''
+    SELECT 
+      r.id,
+      r.customer_name,
+      r.car_id,
+      r.rent_date,
+      r.return_date,
+      r.total_price,
+      c.brand,
+      c.model,
+      c.plate_number
+    FROM rentals r
+    LEFT JOIN cars c ON r.car_id = c.id
+    ORDER BY r.rent_date DESC
+  ''');
+    return result;
+  }
 
+  Future<int> deleteRental(int id) async {
+    final db = await database;
+    print("Attempting to delete rental with ID: $id"); // Debug print
+    final result = await db.delete(
+      'rentals', // Your rental table name as defined in your onCreate
+      where: 'id = ?', // This targets the 'id' column of the rentals table
+      whereArgs: [id],
+    );
+    print("Deleted $result rows for rental ID: $id"); // Debug print
+    return result;
+  }
+
+  Future<int> updateRental(Rental rental) async {
+    final db = await database;
+    return await db.update(
+      'rentals',
+      rental.toMap(),
+      where: 'id = ?',
+      whereArgs: [rental.id], // Assuming your Rental model has an 'id' field
+    );
+  }
 }
