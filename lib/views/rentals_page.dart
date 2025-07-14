@@ -53,14 +53,15 @@ class _RentalsPageState extends State<RentalsPage> {
     }
   }
 
-  // Helper method to format price
+  // Helper method to format price - NOW RETURNS ONLY THE NUMBER
   String _formatPrice(dynamic price) {
     if (price == null) return "-";
     try {
       final doublePrice = double.parse(price.toString());
+      // Format as currency, but then remove the symbol
       return NumberFormat.currency(
             locale: 'en_DZ', // Algeria locale for currency
-            symbol: 'DZD', // Explicitly set symbol
+            symbol: '', // Set symbol to empty string
             decimalDigits: 2,
           ) // Ensure 2 decimal places
           .format(doublePrice);
@@ -165,12 +166,11 @@ class _RentalsPageState extends State<RentalsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey[100],
-
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Padding(
-            padding: const EdgeInsets.all(16.0),
+          const Padding(
+            padding: EdgeInsets.all(16.0),
             child: Text(
               "Active & Past Rentals",
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
@@ -213,7 +213,8 @@ class _RentalsPageState extends State<RentalsPage> {
                 : RefreshIndicator(
                     onRefresh: _loadRentals,
                     color: Colors.deepPurple,
-                    child: _buildDesktopTableView(), // Always show DataTable
+                    child:
+                        _buildDesktopTableView(), // Your original table widget
                   ),
           ),
         ],
@@ -261,7 +262,9 @@ class _RentalsPageState extends State<RentalsPage> {
                 DataColumn(label: _TableHeader("Plate Number")),
                 DataColumn(label: _TableHeader("Rent Date")),
                 DataColumn(label: _TableHeader("Return Date")),
-                DataColumn(label: _TableHeader("Total Price")),
+                // --- Currency symbol moved to column label here ---
+                DataColumn(label: _TableHeader("Total Price (DZD)")),
+                // --- End of currency symbol move ---
                 DataColumn(label: _TableHeader("Status")),
                 DataColumn(label: _TableHeader("Actions")),
               ],
@@ -289,7 +292,9 @@ class _RentalsPageState extends State<RentalsPage> {
                     DataCell(Text(rental['plate_number']?.toString() ?? "-")),
                     DataCell(Text(_formatDate(rental['rent_date']))),
                     DataCell(Text(_formatDate(rental['return_date']))),
+                    // --- Price displayed without symbol here ---
                     DataCell(Text(_formatPrice(rental['total_price']))),
+                    // --- End of price display without symbol ---
                     DataCell(
                       isOverdue
                           ? const Chip(
