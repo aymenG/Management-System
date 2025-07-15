@@ -5,7 +5,7 @@ class Rental {
   final String customerName;
   final int carId;
   final String rentDate; // Stored as 'YYYY-MM-DD' string
-  final String? returnDate; // Stored as 'YYYY-MM-DD' string, can be null
+  final String returnDate; // Stored as 'YYYY-MM-DD' string, can be null
   final double totalPrice; // <--- This is now NON-NULLABLE
 
   Rental({
@@ -13,7 +13,7 @@ class Rental {
     required this.customerName,
     required this.carId,
     required this.rentDate,
-    this.returnDate, // 'returnDate' is optional
+    required this.returnDate,
     required this.totalPrice, // <--- This is now REQUIRED in constructor
   });
 
@@ -37,7 +37,7 @@ class Rental {
       carId: map['car_id'] as int,
       rentDate: map['rent_date'] as String,
       returnDate:
-          map['return_date'] as String?, // Safely cast to nullable String
+          map['return_date'] as String, // Safely cast to nullable String
       totalPrice:
           map['total_price']
               as double, // <--- Safely cast to NON-NULLABLE double

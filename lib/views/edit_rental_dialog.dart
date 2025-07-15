@@ -12,6 +12,7 @@ Future<bool?> showEditRentalDialog({
   required Map<String, dynamic> rentalData,
 }) async {
   final _formKey = GlobalKey<FormState>();
+
   TextEditingController customerNameController = TextEditingController(
     text: rentalData['customer_name']?.toString() ?? '',
   );
@@ -66,7 +67,7 @@ Future<bool?> showEditRentalDialog({
                     TextFormField(
                       controller: customerNameController,
                       decoration: const InputDecoration(
-                        labelText: 'Customer Name',
+                        labelText: 'Customer Name *',
                       ),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
@@ -82,7 +83,9 @@ Future<bool?> showEditRentalDialog({
                         ? const Text("No cars available. Add cars first.")
                         : DropdownButtonFormField<int>(
                             value: selectedCarId,
-                            decoration: const InputDecoration(labelText: 'Car'),
+                            decoration: const InputDecoration(
+                              labelText: 'Car *',
+                            ),
                             items: availableCars.map((car) {
                               return DropdownMenuItem<int>(
                                 value: car.id,
@@ -107,7 +110,7 @@ Future<bool?> showEditRentalDialog({
                     TextFormField(
                       controller: rentDateController,
                       decoration: const InputDecoration(
-                        labelText: 'Rent Date',
+                        labelText: 'Rent Date *',
                         suffixIcon: Icon(Icons.calendar_today),
                       ),
                       readOnly: true,
@@ -140,7 +143,7 @@ Future<bool?> showEditRentalDialog({
                     TextFormField(
                       controller: returnDateController,
                       decoration: const InputDecoration(
-                        labelText: 'Return Date (Optional)',
+                        labelText: 'Return Date *',
                         suffixIcon: Icon(Icons.calendar_today),
                       ),
                       readOnly: true,
@@ -162,12 +165,18 @@ Future<bool?> showEditRentalDialog({
                           });
                         }
                       },
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please select a return date';
+                        }
+                        return null;
+                      },
                     ),
                     const SizedBox(height: 16),
                     TextFormField(
                       controller: totalPriceController,
                       decoration: const InputDecoration(
-                        labelText: 'Total Price (DZD)',
+                        labelText: 'Total Price (DZD) *',
                       ),
                       keyboardType: TextInputType.number,
                       validator: (value) {
@@ -204,7 +213,6 @@ Future<bool?> showEditRentalDialog({
                       return;
                     }
 
-                    // --- YOUR DATE VERIFICATION LOGIC GOES HERE ---
                     final DateTime? rentDate = DateTime.tryParse(
                       rentDateController.text,
                     );
@@ -213,7 +221,6 @@ Future<bool?> showEditRentalDialog({
                     );
 
                     if (rentDate == null) {
-                      // Should be caught by TextFormField validator, but a double check
                       if (context.mounted) {
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(
@@ -225,7 +232,19 @@ Future<bool?> showEditRentalDialog({
                       return;
                     }
 
-                    if (returnDate != null && returnDate.isBefore(rentDate)) {
+                    if (returnDate == null) {
+                      if (context.mounted) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('Return Date is required.'),
+                            backgroundColor: Colors.red,
+                          ),
+                        );
+                      }
+                      return;
+                    }
+
+                    if (returnDate.isBefore(rentDate)) {
                       if (context.mounted) {
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(
@@ -236,18 +255,15 @@ Future<bool?> showEditRentalDialog({
                           ),
                         );
                       }
-                      return; // Stop the process if validation fails
+                      return;
                     }
-                    // --- END OF DATE VERIFICATION LOGIC ---
 
                     final updatedRental = Rental(
                       id: rentalData['id'] as int?,
-                      customerName: customerNameController.text,
+                      customerName: customerNameController.text.trim(),
                       carId: selectedCarId!,
                       rentDate: rentDateController.text,
-                      returnDate: returnDateController.text.isNotEmpty
-                          ? returnDateController.text
-                          : null,
+                      returnDate: returnDateController.text,
                       totalPrice: double.parse(totalPriceController.text),
                     );
 
@@ -289,7 +305,7 @@ Future<bool?> showEditRentalDialog({
   );
 }
 
-// Helper to format date into 'yyyy-MM-dd' for TextFormField initial values
+// Helper to format a string to yyyy-MM-dd or return empty string
 String _formatDateToYYYYMMDD(String? dateString) {
   if (dateString == null || dateString.isEmpty) return '';
   try {

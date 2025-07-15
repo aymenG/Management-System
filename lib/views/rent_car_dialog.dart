@@ -1,9 +1,10 @@
 // lib/views/rent_car_dialog.dart
+
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart'; // Import for DateFormat
-import 'package:management_system/models/car.dart'; // Make sure this path is correct
-import 'package:management_system/models/rental.dart'; // Make sure this path is correct
-import 'package:management_system/controllers/database_helper.dart'; // Make sure this path is correct
+import 'package:intl/intl.dart';
+import 'package:management_system/models/car.dart';
+import 'package:management_system/models/rental.dart';
+import 'package:management_system/controllers/database_helper.dart';
 
 class RentCarDialog extends StatefulWidget {
   final Car car;
@@ -16,6 +17,7 @@ class RentCarDialog extends StatefulWidget {
 
 class _RentCarDialogState extends State<RentCarDialog> {
   final _formKey = GlobalKey<FormState>();
+
   final TextEditingController _customerNameController = TextEditingController();
   final TextEditingController _rentDateController = TextEditingController();
   final TextEditingController _returnDateController = TextEditingController();
@@ -23,13 +25,11 @@ class _RentCarDialogState extends State<RentCarDialog> {
   DateTime? _selectedRentDate;
   DateTime? _selectedReturnDate;
 
-  final DatabaseHelper _dbHelper =
-      DatabaseHelper(); // Instantiate your DB helper
+  final DatabaseHelper _dbHelper = DatabaseHelper();
 
   @override
   void initState() {
     super.initState();
-    // Initialize dates if needed, e.g., rent date to today
     _selectedRentDate = DateTime.now();
     _rentDateController.text = DateFormat(
       'yyyy-MM-dd',
@@ -47,10 +47,9 @@ class _RentCarDialogState extends State<RentCarDialog> {
   Future<void> _pickDate(
     BuildContext context,
     TextEditingController controller,
-    Function(DateTime?) onDateSelected,
+    Function(DateTime) onDateSelected,
   ) async {
-    DateTime? initialDate =
-        DateTime.tryParse(controller.text) ?? DateTime.now();
+    DateTime initialDate = DateTime.tryParse(controller.text) ?? DateTime.now();
     DateTime? picked = await showDatePicker(
       context: context,
       initialDate: initialDate,
@@ -67,7 +66,6 @@ class _RentCarDialogState extends State<RentCarDialog> {
 
   Future<void> _rentCar() async {
     if (_formKey.currentState!.validate()) {
-      // Ensure rent date is selected (should be handled by validator/initialization)
       if (_selectedRentDate == null) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
@@ -78,41 +76,35 @@ class _RentCarDialogState extends State<RentCarDialog> {
         return;
       }
 
-      // --- DATE VERIFICATION LOGIC ---
-      if (_selectedReturnDate != null &&
-          _selectedReturnDate!.isBefore(_selectedRentDate!)) {
+      if (_selectedReturnDate == null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Please select a return date.'),
+            backgroundColor: Colors.orange,
+          ),
+        );
+        return;
+      }
+
+      if (_selectedReturnDate!.isBefore(_selectedRentDate!)) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text('Return Date must be after Rent Date.'),
             backgroundColor: Colors.red,
           ),
         );
-        return; // Stop the process if validation fails
+        return;
       }
-      // --- END OF DATE VERIFICATION LOGIC ---
 
-      // Calculate total price (example: daily price * number of days)
-      double totalPrice = 0.0;
-      if (_selectedReturnDate != null) {
-        final Duration duration = _selectedReturnDate!.difference(
-          _selectedRentDate!,
-        );
-        totalPrice =
-            widget.car.dailyPrice *
-            (duration.inDays + 1); // +1 to include rent day
-      } else {
-        // If no return date, it's an ongoing rental, price is 0.0 initially
-        totalPrice = 0.0;
-      }
+      final duration = _selectedReturnDate!.difference(_selectedRentDate!);
+      final totalPrice = widget.car.dailyPrice * (duration.inDays + 1);
 
       final rental = Rental(
         customerName: _customerNameController.text.trim(),
         carId: widget.car.id!,
         rentDate: DateFormat('yyyy-MM-dd').format(_selectedRentDate!),
-        returnDate: _selectedReturnDate != null
-            ? DateFormat('yyyy-MM-dd').format(_selectedReturnDate!)
-            : null,
-        totalPrice: totalPrice, // Use the calculated total price
+        returnDate: DateFormat('yyyy-MM-dd').format(_selectedReturnDate!),
+        totalPrice: totalPrice,
       );
 
       try {
@@ -124,12 +116,8 @@ class _RentCarDialogState extends State<RentCarDialog> {
               backgroundColor: Colors.green,
             ),
           );
-          Navigator.of(context).pop(); // Close the dialog
+          Navigator.of(context).pop();
         }
-        // You might want to refresh the cars list on the previous page
-        // A common pattern is to pass a callback to RentCarDialog,
-        // or use Provider/Riverpod for state management.
-        // For simplicity, we'll just reload the cars on the main page after the dialog closes.
       } catch (e) {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
@@ -155,7 +143,7 @@ class _RentCarDialogState extends State<RentCarDialog> {
             children: [
               TextFormField(
                 controller: _customerNameController,
-                decoration: const InputDecoration(labelText: 'Customer Name'),
+                decoration: const InputDecoration(labelText: 'Customer Name *'),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please enter customer name';
@@ -167,13 +155,12 @@ class _RentCarDialogState extends State<RentCarDialog> {
               TextFormField(
                 controller: _rentDateController,
                 decoration: const InputDecoration(
-                  labelText: 'Rent Date',
+                  labelText: 'Rent Date *',
                   suffixIcon: Icon(Icons.calendar_today),
                 ),
                 readOnly: true,
                 onTap: () => _pickDate(context, _rentDateController, (date) {
                   _selectedRentDate = date;
-                  // If rent date changes, clear return date if it's before new rent date
                   if (_selectedReturnDate != null &&
                       _selectedReturnDate!.isBefore(_selectedRentDate!)) {
                     setState(() {
@@ -193,16 +180,21 @@ class _RentCarDialogState extends State<RentCarDialog> {
               TextFormField(
                 controller: _returnDateController,
                 decoration: const InputDecoration(
-                  labelText: 'Return Date (Optional)',
+                  labelText: 'Return Date *',
                   suffixIcon: Icon(Icons.calendar_today),
                 ),
                 readOnly: true,
                 onTap: () => _pickDate(context, _returnDateController, (date) {
                   _selectedReturnDate = date;
                 }),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please select a return date';
+                  }
+                  return null;
+                },
               ),
               const SizedBox(height: 16),
-              // Display daily price
               Text(
                 'Daily Price: DZD ${widget.car.dailyPrice.toStringAsFixed(2)}',
                 style: const TextStyle(
@@ -210,8 +202,6 @@ class _RentCarDialogState extends State<RentCarDialog> {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              // You might want to add a field to display the calculated total price here
-              // which updates as dates are picked.
             ],
           ),
         ),
