@@ -17,7 +17,6 @@ class _LoginFormWidgetState extends State<LoginFormWidget> {
   final _dbHelper = DatabaseHelper();
 
   void _handleLogin() async {
-    // _dbHelper.printDatabaseDetails();
     final username = _usernameController.text.trim();
     final rawPassword = _passwordController.text;
     if (username.isEmpty || rawPassword.isEmpty) {
@@ -57,7 +56,6 @@ class _LoginFormWidgetState extends State<LoginFormWidget> {
     }
   }
 
- 
   @override
   Widget build(BuildContext context) {
     return Container(

@@ -9,7 +9,7 @@ class Car {
   final int year;
   final String plateNumber;
   final double dailyPrice;
-  final String imagePath;
+  final String? imagePath;
   CarStatus status;
 
   Car({
@@ -33,7 +33,7 @@ class Car {
       'year': year,
       'plate_number': plateNumber,
       'daily_price': dailyPrice,
-      'image_path': imagePath,
+      'image_path': (imagePath?.isEmpty ?? true) ? null : imagePath,
       'status': status.name,
     };
   }
@@ -49,7 +49,9 @@ class Car {
       year: map['year'],
       plateNumber: map['plate_number'],
       dailyPrice: map['daily_price'],
-      imagePath: map['image_path'] ?? '',
+      imagePath: (map['image_path'] != null && map['image_path'] != '')
+          ? map['image_path'] as String
+          : null,
       status: CarStatus.values.firstWhere(
         (s) => s.name == map['status'],
         orElse: () => CarStatus.available,

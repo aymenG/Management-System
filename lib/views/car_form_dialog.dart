@@ -29,6 +29,7 @@ class _CarFormDialogState extends State<CarFormDialog> {
   bool _isLoading = false;
 
   @override
+  @override
   void initState() {
     super.initState();
     final c = widget.existingCar;
@@ -39,9 +40,15 @@ class _CarFormDialogState extends State<CarFormDialog> {
     _priceController = TextEditingController(
       text: c?.dailyPrice?.toString() ?? '',
     );
-    _pickedImage = (c?.imagePath?.isNotEmpty ?? false)
-        ? File(c!.imagePath)
-        : null;
+
+    if (c?.imagePath != null &&
+        c!.imagePath!.isNotEmpty &&
+        File(c.imagePath!).existsSync()) {
+      _pickedImage = File(c.imagePath!);
+    } else {
+      _pickedImage = null;
+    }
+
     _status = c?.status ?? CarStatus.available;
   }
 
@@ -66,16 +73,6 @@ class _CarFormDialogState extends State<CarFormDialog> {
   void _save() {
     if (!_formKey.currentState!.validate()) return;
 
-    if (_pickedImage == null && widget.existingCar == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Please pick an image.'),
-          backgroundColor: Colors.orange,
-        ),
-      );
-      return;
-    }
-
     final car = Car(
       id: widget.existingCar?.id,
       brand: _selectedBrand!,
@@ -83,7 +80,12 @@ class _CarFormDialogState extends State<CarFormDialog> {
       year: int.parse(_yearController.text.trim()),
       plateNumber: _plateController.text.trim(),
       dailyPrice: double.parse(_priceController.text.trim()),
-      imagePath: _pickedImage?.path ?? widget.existingCar?.imagePath ?? '',
+      imagePath:
+          _pickedImage?.path ??
+          (widget.existingCar?.imagePath?.isNotEmpty == true
+              ? widget.existingCar!.imagePath
+              : null),
+
       status: _status!,
     );
 
@@ -165,7 +167,7 @@ class _CarFormDialogState extends State<CarFormDialog> {
                   controller: _priceController,
                   keyboardType: TextInputType.number,
                   decoration: const InputDecoration(
-                    labelText: "Daily Price (\$)",
+                    labelText: "Daily Price (DZD)",
                     border: OutlineInputBorder(),
                   ),
                   validator: (value) {

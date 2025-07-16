@@ -132,9 +132,7 @@ class _AvailableCarsState extends State<AvailableCars> {
                         crossAxisCount: calculateCrossAxisCount(context),
                         crossAxisSpacing: 16,
                         mainAxisSpacing: 16,
-                        childAspectRatio: calculateAspectRatio(
-                          context,
-                        ), // Re-evaluated
+                        childAspectRatio: calculateAspectRatio(context),
                       ),
                       itemBuilder: (context, index) {
                         final car = cars[index];
@@ -148,7 +146,6 @@ class _AvailableCarsState extends State<AvailableCars> {
     );
   }
 
-  /// Calculate columns based on screen width
   int calculateCrossAxisCount(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     if (width > 1400) return 4;
@@ -157,17 +154,12 @@ class _AvailableCarsState extends State<AvailableCars> {
     return 1;
   }
 
-  /// Calculate aspect ratio based on screen size for better card content fitting
-  // Adjusted for the new layout where content area is not Expanded with flex
   double calculateAspectRatio(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
-    // These ratios are an estimation. You'll need to fine-tune them by running
-    // and resizing your window/device to find the perfect balance.
-    // A HIGHER childAspectRatio makes the card SHORTER relative to its width.
-    if (width > 1400) return 1.1; // More columns, need shorter cards
-    if (width > 1000) return 1.0; // 3 columns
-    if (width > 600) return 0.95; // 2 columns
-    return 0.9; // 1 column
+    if (width > 1400) return 1.1;
+    if (width > 1000) return 1.0;
+    if (width > 600) return 0.95;
+    return 0.9;
   }
 
   Widget buildCarCard(BuildContext context, Car car) {
@@ -178,30 +170,23 @@ class _AvailableCarsState extends State<AvailableCars> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          // Image takes available space. We expect it to fill the top portion
-          // and look good due to BoxFit.cover
           Expanded(child: _buildCarImage(car)),
-          // Content area: its height will be determined by its children's intrinsic size
-          // and the padding. It's no longer 'Expanded' with a flex.
           Padding(
             padding: const EdgeInsets.all(10.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              // mainAxisSize: MainAxisSize.min is good here, to prevent it from
-              // taking more space than its children need.
               mainAxisSize: MainAxisSize.min,
               children: [
-                // Car details grouped
                 Text(
                   car.fullName,
                   style: const TextStyle(
-                    fontSize: 16, // Slightly larger font
+                    fontSize: 16,
                     fontWeight: FontWeight.bold,
                   ),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                 ),
-                const SizedBox(height: 4), // Consistent small spacing
+                const SizedBox(height: 4),
                 Text(
                   "Plate: ${car.plateNumber}",
                   style: const TextStyle(color: Colors.grey, fontSize: 12),
@@ -218,8 +203,7 @@ class _AvailableCarsState extends State<AvailableCars> {
                     fontSize: 13,
                   ),
                 ),
-                const SizedBox(height: 8), // More space before status
-                // Status indicator
+                const SizedBox(height: 8),
                 Container(
                   padding: const EdgeInsets.symmetric(
                     horizontal: 8,
@@ -242,8 +226,7 @@ class _AvailableCarsState extends State<AvailableCars> {
                     ),
                   ),
                 ),
-                const SizedBox(height: 12), // Consistent spacing before buttons
-                // Buttons at bottom
+                const SizedBox(height: 12),
                 Row(
                   children: [
                     Expanded(
@@ -256,26 +239,18 @@ class _AvailableCarsState extends State<AvailableCars> {
                                 );
                               }
                             : null,
-                        icon: const Icon(
-                          Icons.car_rental,
-                          size: 18,
-                        ), // Slightly larger icon
+                        icon: const Icon(Icons.car_rental, size: 18),
                         label: const Text(
                           "Rent",
                           style: TextStyle(fontSize: 13),
-                        ), // Slightly larger text
+                        ),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.deepPurple,
                           foregroundColor: Colors.white,
                           disabledBackgroundColor: Colors.grey[300],
                           disabledForegroundColor: Colors.grey[600],
-                          padding: const EdgeInsets.symmetric(
-                            vertical: 10,
-                          ), // Increased vertical padding
-                          minimumSize: const Size(
-                            0,
-                            40,
-                          ), // Increased minimum height for buttons
+                          padding: const EdgeInsets.symmetric(vertical: 10),
+                          minimumSize: const Size(0, 40),
                         ),
                       ),
                     ),
@@ -294,24 +269,16 @@ class _AvailableCarsState extends State<AvailableCars> {
                             ),
                           );
                         },
-                        icon: const Icon(
-                          Icons.edit,
-                          size: 18,
-                        ), // Slightly larger icon
+                        icon: const Icon(Icons.edit, size: 18),
                         label: const Text(
                           "Edit",
                           style: TextStyle(fontSize: 13),
-                        ), // Slightly larger text
+                        ),
                         style: OutlinedButton.styleFrom(
                           foregroundColor: Colors.deepPurple,
                           side: const BorderSide(color: Colors.deepPurple),
-                          padding: const EdgeInsets.symmetric(
-                            vertical: 10,
-                          ), // Increased vertical padding
-                          minimumSize: const Size(
-                            0,
-                            40,
-                          ), // Increased minimum height for buttons
+                          padding: const EdgeInsets.symmetric(vertical: 10),
+                          minimumSize: const Size(0, 40),
                         ),
                       ),
                     ),
@@ -326,37 +293,22 @@ class _AvailableCarsState extends State<AvailableCars> {
   }
 
   Widget _buildCarImage(Car car) {
-    if (car.imagePath.isNotEmpty) {
-      final file = File(car.imagePath);
-      if (file.existsSync()) {
-        return Image.file(
-          file,
-          fit: BoxFit.cover,
-          width: double.infinity,
-          height: double.infinity,
-          errorBuilder: (context, error, stackTrace) => _buildPlaceholder(),
-        );
-      } else {
-        return Image.asset(
-          car.imagePath,
-          fit: BoxFit.cover,
-          width: double.infinity,
-          height: double.infinity,
-          errorBuilder: (context, error, stackTrace) => _buildPlaceholder(),
-        );
-      }
+    if (car.imagePath != null &&
+        car.imagePath!.isNotEmpty &&
+        File(car.imagePath!).existsSync()) {
+      return Image.file(
+        File(car.imagePath!),
+        fit: BoxFit.cover,
+        errorBuilder: (context, error, stackTrace) {
+          return _buildPlaceholder();
+        },
+      );
     } else {
       return _buildPlaceholder();
     }
   }
 
   Widget _buildPlaceholder() {
-    return Container(
-      color: Colors.grey[200],
-      width: double.infinity,
-      height: double.infinity,
-      alignment: Alignment.center,
-      child: const Icon(Icons.car_rental, size: 40, color: Colors.grey),
-    );
+    return Image.asset('assets/images/sample.png', fit: BoxFit.cover);
   }
 }
