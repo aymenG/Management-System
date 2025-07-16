@@ -1,6 +1,6 @@
 // lib/models/car_status.dart
 
-enum CarStatus { available, rented, maintenance }
+enum CarStatus { available, rented, maintenance, archived }
 
 extension CarStatusExtension on CarStatus {
   String get displayName {

@@ -8,8 +8,13 @@ import 'package:management_system/controllers/database_helper.dart';
 
 class RentCarDialog extends StatefulWidget {
   final Car car;
+  final VoidCallback onRentalConfirmed; // Add this callback
 
-  const RentCarDialog({super.key, required this.car});
+  const RentCarDialog({
+    super.key,
+    required this.car,
+    required this.onRentalConfirmed,
+  }); // Update constructor
 
   @override
   State<RentCarDialog> createState() => _RentCarDialogState();
@@ -116,6 +121,8 @@ class _RentCarDialogState extends State<RentCarDialog> {
               backgroundColor: Colors.green,
             ),
           );
+          // Call the callback to notify the parent widget
+          widget.onRentalConfirmed(); // Call the callback here
           Navigator.of(context).pop();
         }
       } catch (e) {
