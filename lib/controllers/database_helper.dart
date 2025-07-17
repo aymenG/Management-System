@@ -240,7 +240,7 @@ CREATE TABLE rentals (
       c.plate_number
     FROM rentals r
     LEFT JOIN cars c ON r.car_id = c.id
-    ORDER BY r.rent_date ASC
+    ORDER BY r.rent_date DESC
   ''');
     return result;
   }

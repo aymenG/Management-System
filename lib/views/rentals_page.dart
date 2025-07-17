@@ -113,9 +113,9 @@ class _RentalsPageState extends State<RentalsPage> {
       builder: (BuildContext dialogContext) {
         return AlertDialog(
           title: const Text('Confirm Deletion'),
-          content: SingleChildScrollView(
+          content: const SingleChildScrollView(
             child: ListBody(
-              children: const <Widget>[
+              children: <Widget>[
                 Text('Are you sure you want to delete this rental?'),
                 Text('This action cannot be undone.'),
               ],
@@ -222,7 +222,6 @@ class _RentalsPageState extends State<RentalsPage> {
     );
   }
 
-  // --- Widget for Desktop/Wide Screen Table View ---
   Widget _buildDesktopTableView() {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
@@ -240,129 +239,98 @@ class _RentalsPageState extends State<RentalsPage> {
       ),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(12),
-        child: SingleChildScrollView(
-          scrollDirection: Axis.vertical,
-          child: SingleChildScrollView(
-            scrollDirection:
-                Axis.horizontal, // Allow horizontal scrolling for table columns
-            child: DataTable(
-              columnSpacing: 20,
-              dataRowMinHeight: 56,
-              dataRowMaxHeight: 56,
-              headingRowHeight: 60,
-              headingRowColor: MaterialStateProperty.all(
-                Colors.deepPurple.withOpacity(0.1),
-              ),
-              dividerThickness: 1.5,
-              columns: const [
-                DataColumn(label: _TableHeader("ID")),
-                DataColumn(label: _TableHeader("Customer")),
-                DataColumn(label: _TableHeader("Car Brand")),
-                DataColumn(label: _TableHeader("Car Model")),
-                DataColumn(label: _TableHeader("Plate Number")),
-                DataColumn(label: _TableHeader("Rent Date")),
-                DataColumn(label: _TableHeader("Return Date")),
-                // --- Currency symbol moved to column label here ---
-                DataColumn(label: _TableHeader("Total Price (DZD)")),
-                // --- End of currency symbol move ---
-                DataColumn(label: _TableHeader("Status")),
-                DataColumn(label: _TableHeader("Actions")),
-              ],
-              rows: rentalsWithCarDetails.map((rental) {
-                final bool isOverdue =
-                    rental['return_date'] != null &&
-                    DateTime.parse(
-                      rental['return_date'],
-                    ).isBefore(DateTime.now());
-                final bool isDueSoon =
-                    rental['return_date'] != null &&
-                    !isOverdue &&
-                    DateTime.parse(
-                      rental['return_date'],
-                    ).isBefore(DateTime.now().add(const Duration(days: 3)));
+        // Use LayoutBuilder to determine available width
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            // Calculate minimum width needed for the table content
+            // This is an estimation, you might need to fine-tune these values
+            // based on the average length of your data.
+            // Sum of approximate minimum widths for each column:
+            // ID: 40, Customer: 120, Brand: 100, Model: 100, Plate: 100,
+            // Rent Date: 120, Return Date: 120, Price: 100, Actions: 100
+            const double minTableWidth = 900; // Adjusted based on column counts
 
-                final int rentalId = rental['id'] as int? ?? -1;
-
-                return DataRow(
-                  cells: [
-                    DataCell(Text(rental['id']?.toString() ?? "-")),
-                    DataCell(Text(rental['customer_name']?.toString() ?? "-")),
-                    DataCell(Text(rental['brand']?.toString() ?? "-")),
-                    DataCell(Text(rental['model']?.toString() ?? "-")),
-                    DataCell(Text(rental['plate_number']?.toString() ?? "-")),
-                    DataCell(Text(_formatDate(rental['rent_date']))),
-                    DataCell(Text(_formatDate(rental['return_date']))),
-                    // --- Price displayed without symbol here ---
-                    DataCell(Text(_formatPrice(rental['total_price']))),
-                    // --- End of price display without symbol ---
-                    DataCell(
-                      isOverdue
-                          ? const Chip(
-                              label: Text(
-                                "OVERDUE",
-                                style: TextStyle(
-                                  fontSize: 10,
-                                  color: Colors.white,
-                                ),
-                              ),
-                              backgroundColor: Colors.red,
-                              materialTapTargetSize:
-                                  MaterialTapTargetSize.shrinkWrap,
-                              visualDensity: VisualDensity.compact,
-                            )
-                          : isDueSoon
-                          ? const Chip(
-                              label: Text(
-                                "DUE SOON",
-                                style: TextStyle(
-                                  fontSize: 10,
-                                  color: Colors.white,
-                                ),
-                              ),
-                              backgroundColor: Colors.orange,
-                              materialTapTargetSize:
-                                  MaterialTapTargetSize.shrinkWrap,
-                              visualDensity: VisualDensity.compact,
-                            )
-                          : const Text(
-                              "Active",
-                              style: TextStyle(color: Colors.green),
-                            ),
-                    ),
-                    DataCell(
-                      Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          IconButton(
-                            icon: const Icon(
-                              Icons.edit,
-                              color: Colors.deepPurple,
-                              size: 20,
-                            ),
-                            tooltip: "Edit Rental",
-                            onPressed: rentalId != -1
-                                ? () => _onEditRental(rentalId)
-                                : null,
-                          ),
-                          IconButton(
-                            icon: const Icon(
-                              Icons.delete_outline,
-                              color: Colors.red,
-                              size: 20,
-                            ),
-                            tooltip: "Delete Rental",
-                            onPressed: rentalId != -1
-                                ? () => _onDeleteRental(rentalId)
-                                : null,
-                          ),
-                        ],
-                      ),
-                    ),
+            return SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: ConstrainedBox(
+                constraints: BoxConstraints(
+                  minWidth: constraints.maxWidth > minTableWidth
+                      ? constraints.maxWidth
+                      : minTableWidth,
+                ),
+                child: DataTable(
+                  columnSpacing: 20,
+                  dataRowMinHeight: 56,
+                  dataRowMaxHeight: 56,
+                  headingRowHeight: 60,
+                  headingRowColor: MaterialStateProperty.all(
+                    Colors.deepPurple.withOpacity(0.1),
+                  ),
+                  dividerThickness: 1.5,
+                  columns: const [
+                    DataColumn(label: _TableHeader("ID")),
+                    DataColumn(label: _TableHeader("Customer")),
+                    DataColumn(label: _TableHeader("Car Brand")),
+                    DataColumn(label: _TableHeader("Car Model")),
+                    DataColumn(label: _TableHeader("Plate Number")),
+                    DataColumn(label: _TableHeader("Rent Date")),
+                    DataColumn(label: _TableHeader("Return Date")),
+                    DataColumn(label: _TableHeader("Total Price (DZD)")),
+                    DataColumn(label: _TableHeader("Actions")),
                   ],
-                );
-              }).toList(),
-            ),
-          ),
+                  rows: rentalsWithCarDetails.map((rental) {
+                    final int rentalId = rental['id'] as int? ?? -1;
+
+                    return DataRow(
+                      cells: [
+                        DataCell(Text(rental['id']?.toString() ?? "-")),
+                        DataCell(
+                          Text(rental['customer_name']?.toString() ?? "-"),
+                        ),
+                        DataCell(Text(rental['brand']?.toString() ?? "-")),
+                        DataCell(Text(rental['model']?.toString() ?? "-")),
+                        DataCell(
+                          Text(rental['plate_number']?.toString() ?? "-"),
+                        ),
+                        DataCell(Text(_formatDate(rental['rent_date']))),
+                        DataCell(Text(_formatDate(rental['return_date']))),
+                        DataCell(Text(_formatPrice(rental['total_price']))),
+                        DataCell(
+                          Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              IconButton(
+                                icon: const Icon(
+                                  Icons.edit,
+                                  color: Colors.deepPurple,
+                                  size: 20,
+                                ),
+                                tooltip: "Edit Rental",
+                                onPressed: rentalId != -1
+                                    ? () => _onEditRental(rentalId)
+                                    : null,
+                              ),
+                              IconButton(
+                                icon: const Icon(
+                                  Icons.delete_outline,
+                                  color: Colors.red,
+                                  size: 20,
+                                ),
+                                tooltip: "Delete Rental",
+                                onPressed: rentalId != -1
+                                    ? () => _onDeleteRental(rentalId)
+                                    : null,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    );
+                  }).toList(),
+                ),
+              ),
+            );
+          },
         ),
       ),
     );
@@ -380,7 +348,7 @@ class _TableHeader extends StatelessWidget {
       text,
       style: const TextStyle(
         fontWeight: FontWeight.bold,
-        fontSize: 14,
+        fontSize: 14, // Keep font size consistent
         color: Colors.deepPurple,
       ),
     );
