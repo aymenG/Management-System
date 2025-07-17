@@ -158,15 +158,18 @@ CREATE TABLE rentals (
       'hashed_password': hashPassword('1234'), // Example hash function
       'role': 'admin',
     });
-
-    await db.insert('users', {
-      'username': 'manager',
-      'hashed_password': hashPassword('manager123'), // Example hash function
-      'role': 'manager',
-    });
   }
 
-  // in DatabaseHelper
+  Future<Map<String, dynamic>?> getAdmin() async {
+    final db = await database;
+    final result = await db.query(
+      'users',
+      where: 'role = ?',
+      whereArgs: ['admin'],
+      limit: 1,
+    );
+    return result.isNotEmpty ? result.first : null;
+  }
 
   Future<int> insertCar(Car car) async {
     final db = await database;
@@ -337,5 +340,23 @@ CREATE TABLE rentals (
     LIMIT $limit
   ''');
     return result;
+  }
+
+  Future<bool> verifyPassword(String inputPassword) async {
+    final db = await database;
+    final result = await db.query(
+      'users',
+      where: 'role = ?',
+      whereArgs: ['admin'], // You want to check the admin's password
+      limit: 1,
+    );
+
+    if (result.isEmpty) return false;
+
+    final storedHashedPassword = result.first['hashed_password'] as String;
+
+    // Hash the input and compare
+    final hashedInput = hashPassword(inputPassword);
+    return hashedInput == storedHashedPassword;
   }
 }
