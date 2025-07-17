@@ -1,3 +1,4 @@
+import 'package:intl/intl.dart';
 import 'package:management_system/models/car.dart';
 import 'package:management_system/models/rental.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
@@ -95,7 +96,7 @@ CREATE TABLE rentals (
   // Helper to get the database path
   Future<String> _getDatabasePath() async {
     final documentsDirectory = await getApplicationDocumentsDirectory();
-    final path = join(documentsDirectory.path, 'your_app_database.db');
+    final path = join(documentsDirectory.path, 'CRS_db.db');
     return path;
   }
 
@@ -236,7 +237,7 @@ CREATE TABLE rentals (
       c.plate_number
     FROM rentals r
     LEFT JOIN cars c ON r.car_id = c.id
-    ORDER BY r.rent_date DESC
+    ORDER BY r.rent_date ASC
   ''');
     return result;
   }
@@ -261,5 +262,80 @@ CREATE TABLE rentals (
       where: 'id = ?',
       whereArgs: [rental.id], // Assuming your Rental model has an 'id' field
     );
+  }
+
+  // In lib/helpers/database_helper.dart
+
+  Future<double> getIncome({required bool isMonthly}) async {
+    final db = await database;
+    final now = DateTime.now();
+
+    String whereClause;
+    List<String> whereArgs;
+
+    if (isMonthly) {
+      whereClause =
+          'strftime("%Y-%m", rent_date) = ?'; // Also change rentDate to rent_date for consistency
+      whereArgs = [DateFormat('yyyy-MM').format(now)];
+    } else {
+      whereClause =
+          'date(rent_date) = ?'; // Also change rentDate to rent_date for consistency
+      whereArgs = [DateFormat('yyyy-MM-dd').format(now)];
+    }
+
+    final result = await db.rawQuery('''
+      SELECT SUM(total_price) as total  
+      FROM rentals
+      WHERE $whereClause
+    ''', whereArgs);
+
+    return result.first['total'] != null
+        ? (result.first['total'] as num).toDouble()
+        : 0.0;
+  }
+
+  // In lib/helpers/database_helper.dart
+
+  Future<int> getRentalCount({required bool isMonthly}) async {
+    final db = await database;
+    final now = DateTime.now();
+
+    String whereClause;
+    List<String> whereArgs;
+
+    if (isMonthly) {
+      whereClause =
+          'strftime("%Y-%m", rent_date) = ?'; // FIX: Changed rentDate to rent_date
+      whereArgs = [DateFormat('yyyy-MM').format(now)];
+    } else {
+      whereClause = 'date(rent_date) = ?'; // FIX: Changed rentDate to rent_date
+      whereArgs = [DateFormat('yyyy-MM-dd').format(now)];
+    }
+
+    final result = await db.rawQuery('''
+      SELECT COUNT(*) as count
+      FROM rentals
+      WHERE $whereClause
+    ''', whereArgs);
+
+    return result.first['count'] as int;
+  }
+
+  // In lib/helpers/database_helper.dart
+
+  Future<List<Map<String, dynamic>>> getTopRentedCars({int limit = 5}) async {
+    final db = await database;
+    final result = await db.rawQuery('''
+    SELECT 
+      c.id,
+      c.brand || ' ' || c.model AS fullName,  -- Concatenate brand and model
+      COUNT(r.id) AS rentalCount
+    FROM rentals r
+    JOIN cars c ON c.id = r.car_id
+    GROUP BY c.id, c.brand, c.model
+    ORDER BY rentalCount DESC
+    LIMIT $limit
+  ''');
+    return result;
   }
 }

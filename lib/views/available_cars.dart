@@ -8,7 +8,13 @@ import 'package:management_system/views/rent_car_dialog.dart';
 import 'dart:io';
 
 class AvailableCars extends StatefulWidget {
-  const AvailableCars({super.key});
+  // Add a callback property
+  final VoidCallback? onCarStatusChanged;
+
+  const AvailableCars({
+    super.key,
+    this.onCarStatusChanged,
+  }); // Update constructor
 
   @override
   State<AvailableCars> createState() => _AvailableCarsState();
@@ -52,6 +58,7 @@ class _AvailableCarsState extends State<AvailableCars> {
     car.status = CarStatus.archived;
     await _dbHelper.updateCar(car);
     _loadCars(); // Reload all cars to reflect the archived status
+    widget.onCarStatusChanged?.call(); // Notify dashboard
   }
 
   // MODIFIED: Directly update the car status in the list and then rebuild
@@ -61,14 +68,22 @@ class _AvailableCarsState extends State<AvailableCars> {
       final index = cars.indexWhere((c) => c.id == car.id);
       if (index != -1) {
         setState(() {
-          cars[index].status =
-              status; // Update the status of the car object in the list
+          cars[index].status = status;
         });
-        await _dbHelper.updateCar(car); // Update in the database
+        await _dbHelper.updateCar(car);
+        print(
+          'AvailableCars: Car status updated for ${car.fullName} to ${status.name}. Calling onCarStatusChanged.',
+        );
+        widget.onCarStatusChanged
+            ?.call(); // This should trigger dashboard reload
       } else {
-        // If the car wasn't found (e.g., list was just reloaded),
-        // fallback to a full reload to ensure consistency.
+        // ...
+        print(
+          'AvailableCars: Car not found in list, reloading cars. Calling onCarStatusChanged.',
+        );
         _loadCars();
+        widget.onCarStatusChanged
+            ?.call(); // This should trigger dashboard reload
       }
     } catch (e) {
       if (mounted) {
@@ -80,6 +95,7 @@ class _AvailableCarsState extends State<AvailableCars> {
         );
       }
       _loadCars(); // Reload in case of error to ensure state consistency
+      widget.onCarStatusChanged?.call(); // Notify dashboard
     }
   }
 
@@ -105,6 +121,8 @@ class _AvailableCarsState extends State<AvailableCars> {
                       onSave: (car) async {
                         await _dbHelper.insertCar(car);
                         _loadCars();
+                        widget.onCarStatusChanged
+                            ?.call(); // Notify dashboard when a new car is added
                       },
                     ),
                   ),
@@ -266,6 +284,8 @@ class _AvailableCarsState extends State<AvailableCars> {
                                       car: car,
                                       onRentalConfirmed: () {
                                         _setCarStatus(car, CarStatus.rented);
+                                        widget.onCarStatusChanged
+                                            ?.call(); // Notify dashboard
                                       },
                                     ),
                                   ),
@@ -308,6 +328,8 @@ class _AvailableCarsState extends State<AvailableCars> {
                                 onSave: (updatedCar) async {
                                   await _dbHelper.updateCar(updatedCar);
                                   _loadCars();
+                                  widget.onCarStatusChanged
+                                      ?.call(); // Notify dashboard
                                 },
                               ),
                             ),
@@ -386,6 +408,10 @@ class _AvailableCarsState extends State<AvailableCars> {
     );
     if (result == true) {
       _setCarStatus(car, CarStatus.available);
+      print(
+        'AvailableCars: Confirmed return for ${car.fullName}. _setCarStatus handles dashboard update.',
+      );
+      // widget.onCarStatusChanged?.call(); // _setCarStatus already calls it
     }
   }
 

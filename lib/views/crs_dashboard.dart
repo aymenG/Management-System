@@ -1,9 +1,11 @@
+// lib/views/dashboard.dart (or CRSDashboard.dart)
+import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:management_system/controllers/database_helper.dart';
 import 'package:management_system/views/LoginForm.dart';
 import 'package:management_system/views/available_cars.dart';
 import 'package:management_system/views/rentals_page.dart';
 import 'package:management_system/views/settings.dart';
-import 'package:fl_chart/fl_chart.dart';
-import 'package:flutter/material.dart';
 
 class CRSDashboard extends StatefulWidget {
   const CRSDashboard({super.key});
@@ -14,6 +16,43 @@ class CRSDashboard extends StatefulWidget {
 
 class _CRSDashboardState extends State<CRSDashboard> {
   int selectedIndex = 0;
+
+  double dailyIncome = 0.0;
+  double monthlyIncome = 0.0;
+  int dailyRentals = 0;
+  int monthlyRentals = 0;
+
+  List<Map<String, dynamic>> topRentedCars = [];
+
+  final DatabaseHelper _dbHelper = DatabaseHelper();
+
+  @override
+  void initState() {
+    super.initState();
+    _loadDashboardData();
+  }
+
+  // This method will be called when car status changes in AvailableCars
+  // lib/views/dashboard.dart
+
+  Future<void> _loadDashboardData() async {
+    print('CRSDashboard: _loadDashboardData called.');
+    final dailyInc = await _dbHelper.getIncome(isMonthly: false);
+    final monthlyInc = await _dbHelper.getIncome(isMonthly: true);
+    final dailyRent = await _dbHelper.getRentalCount(isMonthly: false);
+    final monthlyRent = await _dbHelper.getRentalCount(isMonthly: true);
+    final topCars = await _dbHelper.getTopRentedCars();
+
+    if (mounted) {
+      setState(() {
+        dailyIncome = dailyInc;
+        monthlyIncome = monthlyInc;
+        dailyRentals = dailyRent;
+        monthlyRentals = monthlyRent;
+        topRentedCars = topCars;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -68,17 +107,20 @@ class _CRSDashboardState extends State<CRSDashboard> {
       selectedTileColor: Colors.deepPurpleAccent,
       onTap: () {
         if (index == -1) {
-          Navigator.pop(
+          Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(
-              builder: (context) =>
-                  LoginFormWidget(), // Navigate back to the LoginForm
+              builder: (context) => Scaffold(body: LoginFormWidget()),
             ),
+            (route) => false,
           );
-          print("Sign Out");
         } else {
           setState(() {
             selectedIndex = index;
+            if (index == 0) {
+              // Reload dashboard data when returning to home/dashboard
+              _loadDashboardData();
+            }
           });
         }
       },
@@ -90,11 +132,10 @@ class _CRSDashboardState extends State<CRSDashboard> {
       case 0:
         return _buildDashboardContent();
       case 1:
-        return const Center(child: AvailableCars());
-
+        // Pass the callback to AvailableCars
+        return AvailableCars(onCarStatusChanged: _loadDashboardData);
       case 2:
-        return const Center(child: RentalsPage());
-
+        return const RentalsPage(); // Assuming RentalsPage doesn't need to update dashboard immediately for now
       case 3:
         return const SettingsPage();
       default:
@@ -103,182 +144,154 @@ class _CRSDashboardState extends State<CRSDashboard> {
   }
 
   Widget _buildDashboardContent() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        _buildTopCards(),
-        const SizedBox(height: 20),
-        Expanded(
-          child: Row(
+    final formatter = NumberFormat("#,##0.00", "en_US");
+    final intFormatter = NumberFormat.decimalPattern();
+
+    return SingleChildScrollView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            "Dashboard Overview",
+            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+          ),
+          const SizedBox(height: 20),
+          Wrap(
+            spacing: 16,
+            runSpacing: 16,
             children: [
-              // Expanded(child: _buildIncomeChart()),
-              const SizedBox(width: 20),
-              //Expanded(child: _buildCustomerChart()),
+              _buildDashboardCard(
+                Icons.monetization_on,
+                'Daily Income',
+                "${formatter.format(dailyIncome)} DZD",
+              ),
+              _buildDashboardCard(
+                Icons.monetization_on_outlined,
+                'Monthly Income',
+                "${formatter.format(monthlyIncome)} DZD",
+              ),
+              _buildDashboardCard(
+                Icons.car_rental,
+                'Daily Rentals',
+                intFormatter.format(dailyRentals),
+              ),
+              _buildDashboardCard(
+                Icons.car_rental_outlined,
+                'Monthly Rentals',
+                intFormatter.format(monthlyRentals),
+              ),
             ],
           ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildTopCards() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: [
-        _buildDashboardCard(Icons.directions_car, 'Available Cars', '1'),
-        _buildDashboardCard(Icons.attach_money, 'Total Income', '\$11,590.0'),
-        _buildDashboardCard(Icons.group, 'Total Customers', '9'),
-      ],
+          const SizedBox(height: 30),
+          _buildTopRentedCarsSection(),
+        ],
+      ),
     );
   }
 
   Widget _buildDashboardCard(IconData icon, String title, String value) {
-    return Card(
-      elevation: 4,
-      child: Container(
-        width: 200,
-        height: 100,
-        padding: const EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(8),
-        ),
-        child: Row(
-          children: [
-            Icon(icon, size: 40, color: Colors.deepPurple),
-            const SizedBox(width: 16),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  value,
-                  style: const TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                Text(
-                  title,
-                  style: const TextStyle(fontSize: 14, color: Colors.grey),
-                ),
-              ],
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildIncomeChart() {
-    return Card(
-      elevation: 3,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
-              'Income (Last 6 Months)',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 20),
-            SizedBox(
-              height: 500,
-              child: BarChart(
-                BarChartData(
-                  borderData: FlBorderData(show: false),
-                  titlesData: FlTitlesData(
-                    leftTitles: AxisTitles(
-                      sideTitles: SideTitles(showTitles: true),
-                    ),
-                    bottomTitles: AxisTitles(
-                      sideTitles: SideTitles(
-                        showTitles: true,
-                        getTitlesWidget: (value, meta) {
-                          final months = [
-                            'Jan',
-                            'Feb',
-                            'Mar',
-                            'Apr',
-                            'May',
-                            'Jun',
-                          ];
-                          return Text(months[value.toInt()]);
-                        },
+    return ConstrainedBox(
+      constraints: const BoxConstraints(minWidth: 160, maxWidth: 250),
+      child: Card(
+        elevation: 4,
+        child: Padding(
+          padding: const EdgeInsets.all(12),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Icon(icon, size: 40, color: Colors.deepPurple),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      value,
+                      style: const TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
                       ),
+                      overflow: TextOverflow.ellipsis,
                     ),
-                    rightTitles: AxisTitles(
-                      sideTitles: SideTitles(showTitles: false),
+                    const SizedBox(height: 4),
+                    Text(
+                      title,
+                      style: const TextStyle(fontSize: 14, color: Colors.grey),
+                      overflow: TextOverflow.ellipsis,
                     ),
-                    topTitles: AxisTitles(
-                      sideTitles: SideTitles(showTitles: false),
-                    ),
-                  ),
-                  barGroups: [
-                    for (int i = 0; i < 6; i++)
-                      BarChartGroupData(
-                        x: i,
-                        barRods: [
-                          BarChartRodData(
-                            toY: [8, 10, 14, 6, 11, 13][i].toDouble(),
-                            color: Colors.deepPurple,
-                            width: 16,
-                            borderRadius: BorderRadius.circular(4),
-                          ),
-                        ],
-                      ),
                   ],
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
   }
 
-  Widget _buildCustomerChart() {
+  Widget _buildTopRentedCarsSection() {
     return Card(
       elevation: 3,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
       child: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Text(
-              'Customer Type Distribution',
+              'Top Rented Cars',
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 16),
-            SizedBox(
-              height: 500,
-              child: PieChart(
-                PieChartData(
-                  sectionsSpace: 4,
-                  centerSpaceRadius: 40,
-                  sections: [
-                    PieChartSectionData(
-                      value: 40,
-                      color: Colors.deepPurple,
-                      title: 'Regular',
-                    ),
-                    PieChartSectionData(
-                      value: 30,
-                      color: Colors.purpleAccent,
-                      title: 'New',
-                    ),
-                    PieChartSectionData(
-                      value: 30,
-                      color: Colors.deepOrange,
-                      title: 'VIP',
-                    ),
-                  ],
-                ),
-              ),
-            ),
+            topRentedCars.isEmpty
+                ? const Text('No rentals yet.')
+                : ListView.separated(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: topRentedCars.length,
+                    separatorBuilder: (_, __) => const Divider(),
+                    itemBuilder: (context, index) {
+                      final car = topRentedCars[index];
+                      return ListTile(
+                        contentPadding: const EdgeInsets.symmetric(
+                          horizontal: 8,
+                          vertical: 4,
+                        ),
+                        leading: CircleAvatar(
+                          radius: 20,
+                          backgroundColor: Colors.deepPurple.withOpacity(0.8),
+                          child: Text(
+                            "${index + 1}",
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                        title: Text(
+                          car['fullName'] ?? 'Unknown Car',
+                          style: const TextStyle(fontWeight: FontWeight.w600),
+                        ),
+                        trailing: Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 12,
+                            vertical: 6,
+                          ),
+                          decoration: BoxDecoration(
+                            color: Colors.deepPurple.withOpacity(0.1),
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: Text(
+                            "${car['rentalCount']} rentals",
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.deepPurple,
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                  ),
           ],
         ),
       ),

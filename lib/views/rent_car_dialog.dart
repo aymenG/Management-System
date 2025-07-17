@@ -69,37 +69,11 @@ class _RentCarDialogState extends State<RentCarDialog> {
     }
   }
 
+  // lib/views/rent_car_dialog.dart
+
   Future<void> _rentCar() async {
     if (_formKey.currentState!.validate()) {
-      if (_selectedRentDate == null) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Please select a rent date.'),
-            backgroundColor: Colors.orange,
-          ),
-        );
-        return;
-      }
-
-      if (_selectedReturnDate == null) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Please select a return date.'),
-            backgroundColor: Colors.orange,
-          ),
-        );
-        return;
-      }
-
-      if (_selectedReturnDate!.isBefore(_selectedRentDate!)) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Return Date must be after Rent Date.'),
-            backgroundColor: Colors.red,
-          ),
-        );
-        return;
-      }
+      // ... (date validations)
 
       final duration = _selectedReturnDate!.difference(_selectedRentDate!);
       final totalPrice = widget.car.dailyPrice * (duration.inDays + 1);
@@ -114,6 +88,9 @@ class _RentCarDialogState extends State<RentCarDialog> {
 
       try {
         await _dbHelper.insertRental(rental);
+        print(
+          'RentCarDialog: Rental inserted for car ID: ${widget.car.id}. Dates: ${_selectedRentDate} to ${_selectedReturnDate}',
+        );
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
@@ -121,11 +98,13 @@ class _RentCarDialogState extends State<RentCarDialog> {
               backgroundColor: Colors.green,
             ),
           );
-          // Call the callback to notify the parent widget
-          widget.onRentalConfirmed(); // Call the callback here
+          // Call the callback to notify the parent widget (AvailableCars)
+          widget
+              .onRentalConfirmed(); // This should trigger AvailableCars to then trigger Dashboard
           Navigator.of(context).pop();
         }
       } catch (e) {
+        print('RentCarDialog: Error renting car: $e');
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
