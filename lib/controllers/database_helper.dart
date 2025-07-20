@@ -216,7 +216,7 @@ class DatabaseHelper {
       FROM rentals r
       LEFT JOIN cars c ON r.car_id = c.id
       WHERE r.status != 'archived'
-      ORDER BY r.rent_date DESC
+      ORDER BY r.id DESC
     ''');
   }
 
@@ -332,6 +332,26 @@ class DatabaseHelper {
       ORDER BY rentalCount DESC
       LIMIT $limit
     ''');
+  }
+
+  Future<List<Map<String, dynamic>>> getRentalsInDateRange(
+    DateTime from,
+    DateTime to,
+  ) async {
+    final db = await database;
+    final fromStr = from.toIso8601String().substring(0, 10); // 'YYYY-MM-DD'
+    final toStr = to.toIso8601String().substring(0, 10);
+    return await db.rawQuery(
+      '''
+    SELECT rentals.*, cars.brand, cars.model, cars.plate_number
+    FROM rentals
+    INNER JOIN cars ON rentals.car_id = cars.id
+    WHERE rentals.rent_date BETWEEN ? AND ?
+    AND rentals.is_archived = 0
+    ORDER BY rentals.rent_date DESC
+  ''',
+      [fromStr, toStr],
+    );
   }
 
   // --- DEBUG ---

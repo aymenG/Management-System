@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:management_system/controllers/database_helper.dart'; // Ensure this path is correct
 import 'package:intl/intl.dart'; // For date formatting
+import 'package:management_system/controllers/fileExport.dart';
 import 'package:management_system/views/edit_rental_dialog.dart';
 
 class RentalsPage extends StatefulWidget {
@@ -176,6 +177,72 @@ class _RentalsPageState extends State<RentalsPage> {
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
           ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: Align(
+              alignment: Alignment.centerRight,
+              child: ElevatedButton.icon(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.deepPurple,
+                  foregroundColor: Colors.white,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 12,
+                  ),
+                ),
+                icon: const Icon(Icons.file_download),
+                label: const Text("Export Rentals to Excel"),
+                onPressed: rentalsWithCarDetails.isEmpty
+                    ? null
+                    : () async {
+                        final DateTimeRange? pickedRange =
+                            await showDateRangePicker(
+                              context: context,
+                              firstDate: DateTime(2020),
+                              lastDate: DateTime.now(),
+                            );
+
+                        if (pickedRange != null) {
+                          final filtered = rentalsWithCarDetails.where((
+                            rental,
+                          ) {
+                            final rentDate = DateTime.tryParse(
+                              rental['rent_date'] ?? '',
+                            );
+                            return rentDate != null &&
+                                rentDate.isAfter(
+                                  pickedRange.start.subtract(
+                                    const Duration(days: 1),
+                                  ),
+                                ) &&
+                                rentDate.isBefore(
+                                  pickedRange.end.add(const Duration(days: 1)),
+                                );
+                          }).toList();
+
+                          if (filtered.isEmpty) {
+                            if (context.mounted) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text(
+                                    'No rentals found in selected range',
+                                  ),
+                                ),
+                              );
+                            }
+                          } else {
+                            await exportRentalsToExcel(
+                              context: context,
+                              rentals: filtered,
+                            );
+                          }
+                        }
+                      },
+              ),
+            ),
+          ),
+          const SizedBox(height: 10),
+
           Expanded(
             child: isLoading
                 ? const Center(

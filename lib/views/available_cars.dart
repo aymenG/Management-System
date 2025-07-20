@@ -58,7 +58,7 @@ class _AvailableCarsState extends State<AvailableCars> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
-            content: Text('Car archived successfully!'),
+            content: Text('Car deleted successfully!'),
             backgroundColor: Colors.orange,
           ),
         );
@@ -363,10 +363,10 @@ class _AvailableCarsState extends State<AvailableCars> {
           right: 6,
           child: IconButton(
             icon: const Icon(
-              Icons.archive_outlined,
-              color: Colors.blueGrey,
+              Icons.delete,
+              color: Colors.redAccent,
             ), // Changed to archive icon
-            tooltip: "Archive Car",
+            tooltip: "Delete Car",
             onPressed: () => _confirmArchive(context, car),
           ),
         ),
