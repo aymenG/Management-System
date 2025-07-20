@@ -7,6 +7,7 @@ class Rental {
   final String rentDate; // Stored as 'YYYY-MM-DD' string
   final String returnDate; // Stored as 'YYYY-MM-DD' string, can be null
   final double totalPrice; // <--- This is now NON-NULLABLE
+  RentalStatus status;
 
   Rental({
     this.id, // 'id' is optional for new rentals
@@ -14,6 +15,7 @@ class Rental {
     required this.carId,
     required this.rentDate,
     required this.returnDate,
+    this.status = RentalStatus.active,
     required this.totalPrice, // <--- This is now REQUIRED in constructor
   });
 
@@ -44,3 +46,5 @@ class Rental {
     );
   }
 }
+
+enum RentalStatus { active, archived }

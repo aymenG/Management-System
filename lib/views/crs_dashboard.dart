@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:management_system/controllers/database_helper.dart';
 import 'package:management_system/views/LoginForm.dart';
+import 'package:management_system/views/archive_page.dart';
 import 'package:management_system/views/available_cars.dart';
 import 'package:management_system/views/rentals_page.dart';
 import 'package:management_system/views/settings.dart';
@@ -90,7 +91,8 @@ class _CRSDashboardState extends State<CRSDashboard> {
           _buildSidebarItem(Icons.home, 'Home', 0),
           _buildSidebarItem(Icons.directions_car, 'Available Cars', 1),
           _buildSidebarItem(Icons.list_alt, 'Rentals', 2),
-          _buildSidebarItem(Icons.settings, 'Settings', 3),
+          _buildSidebarItem(Icons.archive, 'Archive', 3),
+          _buildSidebarItem(Icons.settings, 'Settings', 4),
           const Spacer(),
           _buildSidebarItem(Icons.logout, 'Sign Out', -1),
         ],
@@ -137,6 +139,8 @@ class _CRSDashboardState extends State<CRSDashboard> {
       case 2:
         return const RentalsPage(); // Assuming RentalsPage doesn't need to update dashboard immediately for now
       case 3:
+        return const ArchivePage();
+      case 4:
         return const SettingsPage();
       default:
         return const Center(child: Text("Page Not Found"));

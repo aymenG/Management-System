@@ -8,13 +8,9 @@ import 'package:management_system/views/rent_car_dialog.dart';
 import 'dart:io';
 
 class AvailableCars extends StatefulWidget {
-  // Add a callback property
   final VoidCallback? onCarStatusChanged;
 
-  const AvailableCars({
-    super.key,
-    this.onCarStatusChanged,
-  }); // Update constructor
+  const AvailableCars({super.key, this.onCarStatusChanged});
 
   @override
   State<AvailableCars> createState() => _AvailableCarsState();
@@ -32,8 +28,10 @@ class _AvailableCarsState extends State<AvailableCars> {
   }
 
   Future<void> _loadCars() async {
+    setState(() => isLoading = true);
     try {
-      setState(() => isLoading = true);
+      // Load all cars and then filter out 'archived' ones locally
+      // This allows 'rented' and 'maintenance' to still show here
       final loadedCars = await _dbHelper.getAllCars();
       setState(() {
         cars = loadedCars
@@ -55,36 +53,44 @@ class _AvailableCarsState extends State<AvailableCars> {
   }
 
   Future<void> _archiveCar(Car car) async {
-    car.status = CarStatus.archived;
-    await _dbHelper.updateCar(car);
-    _loadCars(); // Reload all cars to reflect the archived status
-    widget.onCarStatusChanged?.call(); // Notify dashboard
+    try {
+      await _dbHelper.archiveCar(car.id!); // Call DB helper's archive method
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Car archived successfully!'),
+            backgroundColor: Colors.orange,
+          ),
+        );
+      }
+      _loadCars(); // Reload cars to remove the archived one from this list
+      widget.onCarStatusChanged?.call(); // Notify dashboard
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error archiving car: $e'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    }
   }
 
-  // MODIFIED: Directly update the car status in the list and then rebuild
   Future<void> _setCarStatus(Car car, CarStatus status) async {
     try {
-      // Find the car in the current list and update its status
-      final index = cars.indexWhere((c) => c.id == car.id);
-      if (index != -1) {
-        setState(() {
-          cars[index].status = status;
-        });
-        await _dbHelper.updateCar(car);
-        print(
-          'AvailableCars: Car status updated for ${car.fullName} to ${status.name}. Calling onCarStatusChanged.',
+      car.status = status; // Update local car object
+      await _dbHelper.updateCar(car); // Update in database
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Car status updated to ${status.displayName}!'),
+            backgroundColor: Colors.green,
+          ),
         );
-        widget.onCarStatusChanged
-            ?.call(); // This should trigger dashboard reload
-      } else {
-        // ...
-        print(
-          'AvailableCars: Car not found in list, reloading cars. Calling onCarStatusChanged.',
-        );
-        _loadCars();
-        widget.onCarStatusChanged
-            ?.call(); // This should trigger dashboard reload
       }
+      _loadCars(); // Reload cars to reflect new status (e.g., rented car disappears)
+      widget.onCarStatusChanged?.call(); // Notify dashboard
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -94,8 +100,6 @@ class _AvailableCarsState extends State<AvailableCars> {
           ),
         );
       }
-      _loadCars(); // Reload in case of error to ensure state consistency
-      widget.onCarStatusChanged?.call(); // Notify dashboard
     }
   }
 
@@ -121,8 +125,7 @@ class _AvailableCarsState extends State<AvailableCars> {
                       onSave: (car) async {
                         await _dbHelper.insertCar(car);
                         _loadCars();
-                        widget.onCarStatusChanged
-                            ?.call(); // Notify dashboard when a new car is added
+                        widget.onCarStatusChanged?.call();
                       },
                     ),
                   ),
@@ -258,15 +261,19 @@ class _AvailableCarsState extends State<AvailableCars> {
                       decoration: BoxDecoration(
                         color: car.status == CarStatus.available
                             ? Colors.green.withOpacity(0.1)
-                            : Colors.orange.withOpacity(0.1),
+                            : car.status == CarStatus.rented
+                            ? Colors.orange.withOpacity(0.1)
+                            : Colors.blue.withOpacity(0.1), // For maintenance
                         borderRadius: BorderRadius.circular(4),
                       ),
                       child: Text(
-                        car.status.name.toUpperCase(),
+                        car.status.displayName.toUpperCase(),
                         style: TextStyle(
                           color: car.status == CarStatus.available
                               ? Colors.green
-                              : Colors.orange,
+                              : car.status == CarStatus.rented
+                              ? Colors.orange
+                              : Colors.blue,
                           fontSize: 10,
                           fontWeight: FontWeight.bold,
                         ),
@@ -284,8 +291,7 @@ class _AvailableCarsState extends State<AvailableCars> {
                                       car: car,
                                       onRentalConfirmed: () {
                                         _setCarStatus(car, CarStatus.rented);
-                                        widget.onCarStatusChanged
-                                            ?.call(); // Notify dashboard
+                                        widget.onCarStatusChanged?.call();
                                       },
                                     ),
                                   ),
@@ -328,8 +334,7 @@ class _AvailableCarsState extends State<AvailableCars> {
                                 onSave: (updatedCar) async {
                                   await _dbHelper.updateCar(updatedCar);
                                   _loadCars();
-                                  widget.onCarStatusChanged
-                                      ?.call(); // Notify dashboard
+                                  widget.onCarStatusChanged?.call();
                                 },
                               ),
                             ),
@@ -357,7 +362,11 @@ class _AvailableCarsState extends State<AvailableCars> {
           top: 6,
           right: 6,
           child: IconButton(
-            icon: const Icon(Icons.delete_forever, color: Colors.red),
+            icon: const Icon(
+              Icons.archive_outlined,
+              color: Colors.blueGrey,
+            ), // Changed to archive icon
+            tooltip: "Archive Car",
             onPressed: () => _confirmArchive(context, car),
           ),
         ),
@@ -370,7 +379,9 @@ class _AvailableCarsState extends State<AvailableCars> {
       context: context,
       builder: (context) => AlertDialog(
         title: const Text("Archive Car"),
-        content: const Text("Are you sure you want to archive this car?"),
+        content: const Text(
+          "Are you sure you want to archive this car? It will be moved to the archive page.",
+        ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
@@ -379,6 +390,7 @@ class _AvailableCarsState extends State<AvailableCars> {
           ElevatedButton(
             onPressed: () => Navigator.pop(context, true),
             child: const Text("Confirm"),
+            style: ElevatedButton.styleFrom(backgroundColor: Colors.orange),
           ),
         ],
       ),
@@ -408,10 +420,6 @@ class _AvailableCarsState extends State<AvailableCars> {
     );
     if (result == true) {
       _setCarStatus(car, CarStatus.available);
-      print(
-        'AvailableCars: Confirmed return for ${car.fullName}. _setCarStatus handles dashboard update.',
-      );
-      // widget.onCarStatusChanged?.call(); // _setCarStatus already calls it
     }
   }
 

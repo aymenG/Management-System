@@ -7,163 +7,111 @@ import 'package:path_provider/path_provider.dart';
 import '../controllers/my_scripts.dart';
 
 class DatabaseHelper {
-  static Database? _database; // Make it nullable for initialization
-  static const String tableName = 'users'; // Define table name as a constant
+  static Database? _database;
+  static const String tableName = 'users';
+
   Future<Database> get database async {
     if (_database != null) return _database!;
-
-    // Set the database factory for desktop
     databaseFactory = databaseFactoryFfi;
-
     _database = await openDatabase(
-      await _getDatabasePath(), // Use a helper for the path
+      await _getDatabasePath(),
       version: 1,
-      onCreate: (db, version) async {
-        // Users table (already exists)
-        await db.execute('''
-    CREATE TABLE users (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      username TEXT UNIQUE,
-      hashed_password TEXT,
-      role TEXT DEFAULT 'user'
-    )
-  ''');
-        await insertInitialUsers(db);
-
-        // Cars table
-        await db.execute('''
-CREATE TABLE cars (
-  id INTEGER PRIMARY KEY AUTOINCREMENT,
-  brand TEXT NOT NULL,
-  model TEXT NOT NULL,
-  year INTEGER NOT NULL,
-  plate_number TEXT UNIQUE NOT NULL,
-  daily_price REAL,
-  image_path TEXT,
-  status TEXT DEFAULT 'available'
-);
-
-
-  ''');
-
-        // Customers table
-        await db.execute('''
-    CREATE TABLE customers (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      full_name TEXT NOT NULL,
-      phone TEXT,
-      email TEXT
-    )
-  ''');
-
-        // Rentals table
-        await db.execute('''
-CREATE TABLE rentals (
-  id INTEGER PRIMARY KEY AUTOINCREMENT,
-  customer_name TEXT NOT NULL,
-  car_id INTEGER NOT NULL,
-  rent_date TEXT NOT NULL,
-  return_date TEXT,
-  total_price REAL,
-  FOREIGN KEY (car_id) REFERENCES cars(id) ON DELETE CASCADE
-)
-
-  ''');
-
-        // Payments table (optional)
-        await db.execute('''
-    CREATE TABLE payments (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      rental_id INTEGER NOT NULL,
-      amount_paid REAL,
-      payment_date TEXT,
-      FOREIGN KEY (rental_id) REFERENCES rentals(id)
-    )
-  ''');
-      },
-
-      onUpgrade: (db, oldVersion, newVersion) async {
-        // Handle database upgrades here if your schema changes
-        // For example, if you add new columns in a future version:
-        // if (oldVersion < 2) {
-        //   await db.execute("ALTER TABLE $tableName ADD COLUMN new_column TEXT;");
-        // }
-      },
+      onCreate: _onCreate,
+      onUpgrade: _onUpgrade,
     );
     return _database!;
   }
 
-  // Helper to get the database path
   Future<String> _getDatabasePath() async {
-    final documentsDirectory = await getApplicationDocumentsDirectory();
-    final path = join(documentsDirectory.path, 'CRS_db.db');
-    return path;
+    final dir = await getApplicationDocumentsDirectory();
+    return join(dir.path, 'CRS_db.db');
   }
 
-  // --- New method to insert a user ---
+  Future<void> _onCreate(Database db, int version) async {
+    await db.execute('''
+      CREATE TABLE users (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        username TEXT UNIQUE,
+        hashed_password TEXT,
+        role TEXT DEFAULT 'user'
+      )
+    ''');
+    await insertInitialUsers(db);
+
+    await db.execute('''
+      CREATE TABLE cars (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        brand TEXT NOT NULL,
+        model TEXT NOT NULL,
+        year INTEGER NOT NULL,
+        plate_number TEXT UNIQUE NOT NULL,
+        daily_price REAL,
+        image_path TEXT,
+        status TEXT DEFAULT 'available'
+      )
+    ''');
+
+    await db.execute('''
+      CREATE TABLE customers (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        full_name TEXT NOT NULL,
+        phone TEXT,
+        email TEXT
+      )
+    ''');
+
+    await db.execute('''
+      CREATE TABLE rentals (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        customer_name TEXT NOT NULL,
+        car_id INTEGER NOT NULL,
+        rent_date TEXT NOT NULL,
+        return_date TEXT,
+        total_price REAL,
+        status TEXT DEFAULT 'active',
+        FOREIGN KEY (car_id) REFERENCES cars(id) ON DELETE CASCADE
+      )
+    ''');
+
+    await db.execute('''
+      CREATE TABLE payments (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        rental_id INTEGER NOT NULL,
+        amount_paid REAL,
+        payment_date TEXT,
+        FOREIGN KEY (rental_id) REFERENCES rentals(id)
+      )
+    ''');
+  }
+
+  Future<void> _onUpgrade(Database db, int oldVersion, int newVersion) async {
+    // Migration logic can go here
+  }
+
+  // --- USERS ---
   Future<int> insertUser(String username, String hashedPassword) async {
-    final db = await database; // Get the database instance
-    return await db.insert(
-      tableName,
-      {'username': username, 'hashed_password': hashedPassword},
-      conflictAlgorithm:
-          ConflictAlgorithm.replace, // Replace if username exists
-    );
+    final db = await database;
+    return await db.insert(tableName, {
+      'username': username,
+      'hashed_password': hashedPassword,
+    }, conflictAlgorithm: ConflictAlgorithm.replace);
   }
 
-  // --- Optional: Method to query a user by username for login verification ---
   Future<Map<String, dynamic>?> getUserByUsername(String username) async {
     final db = await database;
-    final List<Map<String, dynamic>> results = await db.query(
+    final result = await db.query(
       tableName,
       where: 'username = ?',
       whereArgs: [username],
-      limit: 1, // Only expect one user per username
+      limit: 1,
     );
-    if (results.isNotEmpty) {
-      return results.first;
-    }
-    return null; // User not found
-  }
-
-  Future<void> printDatabaseDetails() async {
-    final db = await database;
-
-    print("📄 Database path: ${db.path}");
-
-    int version = await db.getVersion();
-    print("🔢 Database version: $version");
-
-    // List all tables
-    final tables = await db.rawQuery(
-      "SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%';",
-    );
-
-    print("\n📂 Tables in the database:");
-    for (var table in tables) {
-      String tableName = table['name'] as String;
-      print("➡️ Table: $tableName");
-
-      // Show table columns
-      final columns = await db.rawQuery("PRAGMA table_info($tableName);");
-      for (var column in columns) {
-        print("   - ${column['name']} (${column['type']})");
-      }
-    }
-  }
-
-  Future<void> insertInitialUsers(Database db) async {
-    await db.insert('users', {
-      'username': 'admin',
-      'hashed_password': hashPassword('1234'), // Example hash function
-      'role': 'admin',
-    });
+    return result.isNotEmpty ? result.first : null;
   }
 
   Future<Map<String, dynamic>?> getAdmin() async {
     final db = await database;
     final result = await db.query(
-      'users',
+      tableName,
       where: 'role = ?',
       whereArgs: ['admin'],
       limit: 1,
@@ -171,14 +119,53 @@ CREATE TABLE rentals (
     return result.isNotEmpty ? result.first : null;
   }
 
+  Future<bool> verifyPassword(String inputPassword) async {
+    final db = await database;
+    final result = await db.query(
+      'users',
+      where: 'role = ?',
+      whereArgs: ['admin'],
+      limit: 1,
+    );
+
+    if (result.isEmpty) return false;
+
+    final stored = result.first['hashed_password'] as String;
+    final hashed = hashPassword(inputPassword);
+    return hashed == stored;
+  }
+
+  Future<void> insertInitialUsers(Database db) async {
+    await db.insert('users', {
+      'username': 'admin',
+      'hashed_password': hashPassword('1234'),
+      'role': 'admin',
+    });
+  }
+
+  // --- CARS ---
   Future<int> insertCar(Car car) async {
     final db = await database;
-    print('Inserting car: ${car.toMap()}');
     return await db.insert(
       'cars',
       car.toMap(),
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
+  }
+
+  Future<void> archiveCar(int id) async {
+    final db = await database;
+    await db.update(
+      'cars',
+      {'status': 'archived'},
+      where: 'id = ?',
+      whereArgs: [id],
+    );
+  }
+
+  Future<void> deleteCar(int id) async {
+    final db = await database;
+    await db.delete('cars', where: 'id = ?', whereArgs: [id]);
   }
 
   Future<List<Car>> getAllCars() async {
@@ -189,16 +176,13 @@ CREATE TABLE rentals (
 
   Future<Car?> getCarById(int id) async {
     final db = await database;
-    final res = await db.query(
+    final result = await db.query(
       'cars',
       where: 'id = ?',
       whereArgs: [id],
       limit: 1,
     );
-    if (res.isNotEmpty) {
-      return Car.fromMap(res.first);
-    }
-    return null;
+    return result.isNotEmpty ? Car.fromMap(result.first) : null;
   }
 
   Future<int> updateCar(Car car) async {
@@ -211,13 +195,11 @@ CREATE TABLE rentals (
     );
   }
 
-  Future<int> deleteCar(int id) async {
-    final db = await database;
-    return await db.delete('cars', where: 'id = ?', whereArgs: [id]);
-  }
-
+  // --- RENTALS ---
   Future<int> insertRental(Rental rental) async {
     final db = await database;
+    final car = await getCarById(rental.carId);
+    if (car == null) throw Exception('Car not found.');
     return await db.insert(
       'rentals',
       rental.toMap(),
@@ -227,34 +209,15 @@ CREATE TABLE rentals (
 
   Future<List<Map<String, dynamic>>> getRentalsWithCarDetails() async {
     final db = await database;
-    final result = await db.rawQuery('''
-    SELECT 
-      r.id,
-      r.customer_name,
-      r.car_id,
-      r.rent_date,
-      r.return_date,
-      r.total_price,
-      c.brand,
-      c.model,
-      c.plate_number
-    FROM rentals r
-    LEFT JOIN cars c ON r.car_id = c.id
-    ORDER BY r.rent_date DESC
-  ''');
-    return result;
-  }
-
-  Future<int> deleteRental(int id) async {
-    final db = await database;
-    print("Attempting to delete rental with ID: $id"); // Debug print
-    final result = await db.delete(
-      'rentals', // Your rental table name as defined in your onCreate
-      where: 'id = ?', // This targets the 'id' column of the rentals table
-      whereArgs: [id],
-    );
-    print("Deleted $result rows for rental ID: $id"); // Debug print
-    return result;
+    return await db.rawQuery('''
+      SELECT 
+        r.id, r.customer_name, r.car_id, r.rent_date, r.return_date, r.total_price,
+        c.brand, c.model, c.plate_number
+      FROM rentals r
+      LEFT JOIN cars c ON r.car_id = c.id
+      WHERE r.status != 'archived'
+      ORDER BY r.rent_date DESC
+    ''');
   }
 
   Future<int> updateRental(Rental rental) async {
@@ -263,100 +226,137 @@ CREATE TABLE rentals (
       'rentals',
       rental.toMap(),
       where: 'id = ?',
-      whereArgs: [rental.id], // Assuming your Rental model has an 'id' field
+      whereArgs: [rental.id],
     );
   }
 
-  // In lib/helpers/database_helper.dart
+  Future<void> archiveRental(int id) async {
+    final db = await database;
+    await db.update(
+      'rentals',
+      {'status': 'archived'},
+      where: 'id = ?',
+      whereArgs: [id],
+    );
+  }
 
+  // --- ARCHIVED DATA ---
+  Future<List<Map<String, dynamic>>> getArchivedCars() async {
+    final db = await database;
+    return await db.query('cars', where: 'status = ?', whereArgs: ['archived']);
+  }
+
+  Future<List<Map<String, dynamic>>> getArchivedRentals() async {
+    final db = await database;
+    return await db.rawQuery('''
+      SELECT 
+        r.*, c.brand, c.model, c.plate_number
+      FROM rentals r
+      LEFT JOIN cars c ON r.car_id = c.id
+      WHERE r.status = 'archived'
+      ORDER BY r.rent_date DESC
+    ''');
+  }
+
+  Future<void> restoreCar(int id) async {
+    final db = await database;
+    await db.update(
+      'cars',
+      {'status': 'available'}, // or 'active' if you're using that elsewhere
+      where: 'id = ?',
+      whereArgs: [id],
+    );
+  }
+
+  Future<void> restoreRental(int id) async {
+    final db = await database;
+    await db.update(
+      'rentals',
+      {'status': 'active'},
+      where: 'id = ?',
+      whereArgs: [id],
+    );
+  }
+
+  // --- REPORTS ---
   Future<double> getIncome({required bool isMonthly}) async {
     final db = await database;
     final now = DateTime.now();
+    final format = isMonthly ? 'yyyy-MM' : 'yyyy-MM-dd';
+    final clause = isMonthly
+        ? 'strftime("%Y-%m", rent_date)'
+        : 'date(rent_date)';
+    final dateArg = DateFormat(format).format(now);
 
-    String whereClause;
-    List<String> whereArgs;
-
-    if (isMonthly) {
-      whereClause =
-          'strftime("%Y-%m", rent_date) = ?'; // Also change rentDate to rent_date for consistency
-      whereArgs = [DateFormat('yyyy-MM').format(now)];
-    } else {
-      whereClause =
-          'date(rent_date) = ?'; // Also change rentDate to rent_date for consistency
-      whereArgs = [DateFormat('yyyy-MM-dd').format(now)];
-    }
-
-    final result = await db.rawQuery('''
-      SELECT SUM(total_price) as total  
-      FROM rentals
-      WHERE $whereClause
-    ''', whereArgs);
+    final result = await db.rawQuery(
+      '''
+      SELECT SUM(total_price) as total FROM rentals WHERE $clause = ?
+    ''',
+      [dateArg],
+    );
 
     return result.first['total'] != null
         ? (result.first['total'] as num).toDouble()
         : 0.0;
   }
 
-  // In lib/helpers/database_helper.dart
-
   Future<int> getRentalCount({required bool isMonthly}) async {
     final db = await database;
     final now = DateTime.now();
+    final format = isMonthly ? 'yyyy-MM' : 'yyyy-MM-dd';
+    final clause = isMonthly
+        ? 'strftime("%Y-%m", rent_date)'
+        : 'date(rent_date)';
+    final dateArg = DateFormat(format).format(now);
 
-    String whereClause;
-    List<String> whereArgs;
-
-    if (isMonthly) {
-      whereClause =
-          'strftime("%Y-%m", rent_date) = ?'; // FIX: Changed rentDate to rent_date
-      whereArgs = [DateFormat('yyyy-MM').format(now)];
-    } else {
-      whereClause = 'date(rent_date) = ?'; // FIX: Changed rentDate to rent_date
-      whereArgs = [DateFormat('yyyy-MM-dd').format(now)];
-    }
-
-    final result = await db.rawQuery('''
-      SELECT COUNT(*) as count
-      FROM rentals
-      WHERE $whereClause
-    ''', whereArgs);
+    final result = await db.rawQuery(
+      '''
+      SELECT COUNT(*) as count FROM rentals WHERE $clause = ?
+    ''',
+      [dateArg],
+    );
 
     return result.first['count'] as int;
   }
 
-  // In lib/helpers/database_helper.dart
-
   Future<List<Map<String, dynamic>>> getTopRentedCars({int limit = 5}) async {
     final db = await database;
-    final result = await db.rawQuery('''
-    SELECT 
-      c.id,
-      c.brand || ' ' || c.model AS fullName,  -- Concatenate brand and model
-      COUNT(r.id) AS rentalCount
-    FROM rentals r
-    JOIN cars c ON c.id = r.car_id
-    GROUP BY c.id, c.brand, c.model
-    ORDER BY rentalCount DESC
-    LIMIT $limit
-  ''');
-    return result;
+    return await db.rawQuery('''
+      SELECT 
+        c.id,
+        c.brand || ' ' || c.model AS fullName,
+        COUNT(r.id) AS rentalCount
+      FROM rentals r
+      JOIN cars c ON c.id = r.car_id
+      GROUP BY c.id
+      ORDER BY rentalCount DESC
+      LIMIT $limit
+    ''');
   }
 
-  Future<bool> verifyPassword(String inputPassword) async {
+  // --- DEBUG ---
+  Future<void> printDatabaseDetails() async {
     final db = await database;
-    final result = await db.query(
-      'users',
-      where: 'role = ?',
-      whereArgs: ['admin'], // You want to check the admin's password
-      limit: 1,
+    print("📄 DB Path: ${db.path}");
+    print("🔢 Version: ${await db.getVersion()}");
+
+    final tables = await db.rawQuery(
+      "SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%';",
     );
 
-    if (result.isEmpty) return false;
+    for (var t in tables) {
+      final name = t['name'];
+      final columns = await db.rawQuery("PRAGMA table_info($name);");
+      print("📂 $name");
+      for (var c in columns) {
+        print("   - ${c['name']} (${c['type']})");
+      }
+    }
+  }
 
-    final storedHashedPassword = result.first['hashed_password'] as String;
-
-    // Hash the input and compare
-    final hashedInput = hashPassword(inputPassword);
-    return hashedInput == storedHashedPassword;
+  Future<void> close() async {
+    final db = await database;
+    await db.close();
+    _database = null;
   }
 }

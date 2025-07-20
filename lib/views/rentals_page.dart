@@ -134,7 +134,7 @@ class _RentalsPageState extends State<RentalsPage> {
               onPressed: () async {
                 Navigator.of(dialogContext).pop(); // Dismiss dialog
                 try {
-                  await _dbHelper.deleteRental(rentalId);
+                  await _dbHelper.archiveRental(rentalId);
                   if (mounted) {
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(
