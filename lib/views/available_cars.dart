@@ -1,11 +1,12 @@
-// lib/views/available_cars.dart
 import 'package:flutter/material.dart';
 import 'package:management_system/controllers/database_helper.dart';
 import 'package:management_system/models/car.dart';
-import 'package:management_system/models/car_status.dart';
+import 'package:management_system/models/car_status.dart'; // Make sure this enum has a displayName getter
 import 'package:management_system/views/car_form_dialog.dart';
 import 'package:management_system/views/rent_car_dialog.dart';
 import 'dart:io';
+import 'package:management_system/l10n/app_localizations.dart'; // Import AppLocalizations
+import 'package:intl/intl.dart'; // For number formatting
 
 class AvailableCars extends StatefulWidget {
   final VoidCallback? onCarStatusChanged;
@@ -42,9 +43,11 @@ class _AvailableCarsState extends State<AvailableCars> {
     } catch (e) {
       setState(() => isLoading = false);
       if (mounted) {
+        // Use localized string for error message
+        final localizer = AppLocalizations.of(context)!;
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Error loading cars: $e'),
+            content: Text('${localizer.errorLoadingCars}: $e'),
             backgroundColor: Colors.red,
           ),
         );
@@ -56,9 +59,11 @@ class _AvailableCarsState extends State<AvailableCars> {
     try {
       await _dbHelper.archiveCar(car.id!); // Call DB helper's archive method
       if (mounted) {
+        // Use localized string for success message
+        final localizer = AppLocalizations.of(context)!;
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Car deleted successfully!'),
+          SnackBar(
+            content: Text(localizer.carDeletedSuccess),
             backgroundColor: Colors.orange,
           ),
         );
@@ -67,9 +72,11 @@ class _AvailableCarsState extends State<AvailableCars> {
       widget.onCarStatusChanged?.call(); // Notify dashboard
     } catch (e) {
       if (mounted) {
+        // Use localized string for error message
+        final localizer = AppLocalizations.of(context)!;
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Error archiving car: $e'),
+            content: Text('${localizer.errorArchivingCar}: $e'),
             backgroundColor: Colors.red,
           ),
         );
@@ -82,9 +89,13 @@ class _AvailableCarsState extends State<AvailableCars> {
       car.status = status; // Update local car object
       await _dbHelper.updateCar(car); // Update in database
       if (mounted) {
+        // Use localized string for success message
+        final localizer = AppLocalizations.of(context)!;
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Car status updated to ${status.displayName}!'),
+            content: Text(
+              localizer.carStatusUpdated(status.localizedDisplayName(context)),
+            ),
             backgroundColor: Colors.green,
           ),
         );
@@ -93,9 +104,11 @@ class _AvailableCarsState extends State<AvailableCars> {
       widget.onCarStatusChanged?.call(); // Notify dashboard
     } catch (e) {
       if (mounted) {
+        // Use localized string for error message
+        final localizer = AppLocalizations.of(context)!;
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Error updating car status: $e'),
+            content: Text('${localizer.errorUpdatingCarStatus}: $e'),
             backgroundColor: Colors.red,
           ),
         );
@@ -105,6 +118,8 @@ class _AvailableCarsState extends State<AvailableCars> {
 
   @override
   Widget build(BuildContext context) {
+    final localizer = AppLocalizations.of(context)!; // Get localizer instance
+
     return Container(
       color: Colors.grey[100],
       child: Column(
@@ -114,9 +129,12 @@ class _AvailableCarsState extends State<AvailableCars> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Text(
-                  'Available Cars',
-                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                Text(
+                  localizer.availableCarsTitle, // Localized
+                  style: const TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
                 ElevatedButton.icon(
                   onPressed: () => showDialog(
@@ -130,7 +148,7 @@ class _AvailableCarsState extends State<AvailableCars> {
                     ),
                   ),
                   icon: const Icon(Icons.add),
-                  label: const Text('Add Car'),
+                  label: Text(localizer.addCarButton), // Localized
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.deepPurple,
                     foregroundColor: Colors.white,
@@ -154,7 +172,7 @@ class _AvailableCarsState extends State<AvailableCars> {
                         ),
                         const SizedBox(height: 16),
                         Text(
-                          'No cars available',
+                          localizer.noCarsAvailable, // Localized
                           style: TextStyle(
                             fontSize: 18,
                             color: Colors.grey[600],
@@ -162,7 +180,7 @@ class _AvailableCarsState extends State<AvailableCars> {
                         ),
                         const SizedBox(height: 8),
                         Text(
-                          'Add your first car to get started',
+                          localizer.addFirstCarHint, // Localized
                           style: TextStyle(
                             fontSize: 14,
                             color: Colors.grey[500],
@@ -208,6 +226,12 @@ class _AvailableCarsState extends State<AvailableCars> {
   }
 
   Widget buildCarCard(BuildContext context, Car car) {
+    final localizer = AppLocalizations.of(context)!; // Get localizer instance
+    final currencyFormatter = NumberFormat(
+      "#,##0.00",
+      Localizations.localeOf(context).languageCode,
+    );
+
     return Stack(
       children: [
         Card(
@@ -237,15 +261,20 @@ class _AvailableCarsState extends State<AvailableCars> {
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      "Plate: ${car.plateNumber}",
+                      localizer.plateNumber(
+                        car.plateNumber,
+                      ), // Localized with placeholder
                       style: const TextStyle(color: Colors.grey, fontSize: 12),
                     ),
                     Text(
-                      "Year: ${car.year}",
+                      localizer.carYear(car.year), // Localized with placeholder
                       style: const TextStyle(color: Colors.grey, fontSize: 12),
                     ),
                     Text(
-                      "DZD ${car.dailyPrice.toStringAsFixed(2)}/day",
+                      localizer.dailyPrice(
+                        currencyFormatter.format(car.dailyPrice),
+                        localizer.currencySymbol,
+                      ), // Localized with price and currency
                       style: const TextStyle(
                         color: Colors.deepPurple,
                         fontWeight: FontWeight.bold,
@@ -267,7 +296,9 @@ class _AvailableCarsState extends State<AvailableCars> {
                         borderRadius: BorderRadius.circular(4),
                       ),
                       child: Text(
-                        car.status.displayName.toUpperCase(),
+                        car.status
+                            .localizedDisplayName(context)
+                            .toUpperCase(), // Localized car status
                         style: TextStyle(
                           color: car.status == CarStatus.available
                               ? Colors.green
@@ -296,9 +327,9 @@ class _AvailableCarsState extends State<AvailableCars> {
                                     ),
                                   ),
                                   icon: const Icon(Icons.car_rental, size: 18),
-                                  label: const Text(
-                                    "Rent",
-                                    style: TextStyle(fontSize: 13),
+                                  label: Text(
+                                    localizer.rentButton, // Localized
+                                    style: const TextStyle(fontSize: 13),
                                   ),
                                   style: ElevatedButton.styleFrom(
                                     backgroundColor: Colors.deepPurple,
@@ -311,9 +342,9 @@ class _AvailableCarsState extends State<AvailableCars> {
                               : ElevatedButton.icon(
                                   onPressed: () => _confirmReturn(car),
                                   icon: const Icon(Icons.undo, size: 18),
-                                  label: const Text(
-                                    "Return",
-                                    style: TextStyle(fontSize: 13),
+                                  label: Text(
+                                    localizer.returnButton, // Localized
+                                    style: const TextStyle(fontSize: 13),
                                   ),
                                   style: ElevatedButton.styleFrom(
                                     backgroundColor: Colors.orange,
@@ -339,9 +370,9 @@ class _AvailableCarsState extends State<AvailableCars> {
                               ),
                             ),
                             icon: const Icon(Icons.edit, size: 18),
-                            label: const Text(
-                              "Edit",
-                              style: TextStyle(fontSize: 13),
+                            label: Text(
+                              localizer.editButton, // Localized
+                              style: const TextStyle(fontSize: 13),
                             ),
                             style: OutlinedButton.styleFrom(
                               foregroundColor: Colors.deepPurple,
@@ -362,11 +393,8 @@ class _AvailableCarsState extends State<AvailableCars> {
           top: 6,
           right: 6,
           child: IconButton(
-            icon: const Icon(
-              Icons.delete,
-              color: Colors.redAccent,
-            ), // Changed to archive icon
-            tooltip: "Delete Car",
+            icon: const Icon(Icons.delete, color: Colors.redAccent),
+            tooltip: localizer.deleteCarTooltip, // Localized tooltip
             onPressed: () => _confirmArchive(context, car),
           ),
         ),
@@ -375,21 +403,22 @@ class _AvailableCarsState extends State<AvailableCars> {
   }
 
   Future<void> _confirmArchive(BuildContext context, Car car) async {
+    final localizer = AppLocalizations.of(context)!; // Get localizer
     final result = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text("Archive Car"),
-        content: const Text(
-          "Are you sure you want to archive this car? It will be moved to the archive page.",
+        title: Text(localizer.archiveCarTitle), // Localized
+        content: Text(
+          localizer.archiveCarConfirmation, // Localized
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
-            child: const Text("Cancel"),
+            child: Text(localizer.cancelButton), // Localized
           ),
           ElevatedButton(
             onPressed: () => Navigator.pop(context, true),
-            child: const Text("Confirm"),
+            child: Text(localizer.confirmButton), // Localized
             style: ElevatedButton.styleFrom(backgroundColor: Colors.orange),
           ),
         ],
@@ -401,19 +430,20 @@ class _AvailableCarsState extends State<AvailableCars> {
   }
 
   Future<void> _confirmReturn(Car car) async {
+    final localizer = AppLocalizations.of(context)!; // Get localizer
     final result = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text("Return Car"),
-        content: const Text("Are you sure you want to return this car?"),
+        title: Text(localizer.returnCarTitle), // Localized
+        content: Text(localizer.returnCarConfirmation), // Localized
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
-            child: const Text("Cancel"),
+            child: Text(localizer.cancelButton), // Localized
           ),
           ElevatedButton(
             onPressed: () => Navigator.pop(context, true),
-            child: const Text("Confirm"),
+            child: Text(localizer.confirmButton), // Localized
           ),
         ],
       ),
@@ -424,6 +454,7 @@ class _AvailableCarsState extends State<AvailableCars> {
   }
 
   Widget _buildCarImage(Car car) {
+    // You might want to localize 'sample.png' if you have different images per locale
     if (car.imagePath != null &&
         car.imagePath!.isNotEmpty &&
         File(car.imagePath!).existsSync()) {
@@ -439,5 +470,25 @@ class _AvailableCarsState extends State<AvailableCars> {
 
   Widget _buildPlaceholder() {
     return Image.asset('assets/images/sample.png', fit: BoxFit.cover);
+  }
+}
+
+// --- IMPORTANT: Update your CarStatus enum with this extension ---
+// This is typically located in lib/models/car_status.dart or similar.
+// Ensure you add this extension to get localized display names for statuses.
+extension CarStatusExtension on CarStatus {
+  String localizedDisplayName(BuildContext context) {
+    final localizer = AppLocalizations.of(context)!;
+    switch (this) {
+      case CarStatus.available:
+        return localizer.carStatusAvailable;
+      case CarStatus.rented:
+        return localizer.carStatusRented;
+      case CarStatus.maintenance:
+        return localizer.carStatusMaintenance;
+      case CarStatus.archived:
+        // Archived cars are filtered out, but good to have for completeness
+        return localizer.carStatusArchived;
+    }
   }
 }

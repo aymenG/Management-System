@@ -1,12 +1,13 @@
-// lib/views/dashboard.dart (or CRSDashboard.dart)
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:management_system/controllers/database_helper.dart';
+import 'package:management_system/main.dart'; // Import main.dart to access MainApp.setLocale
 import 'package:management_system/views/LoginForm.dart';
 import 'package:management_system/views/archive_page.dart';
 import 'package:management_system/views/available_cars.dart';
 import 'package:management_system/views/rentals_page.dart';
 import 'package:management_system/views/settings.dart';
+import 'package:management_system/l10n/app_localizations.dart';
 
 class CRSDashboard extends StatefulWidget {
   const CRSDashboard({super.key});
@@ -22,7 +23,6 @@ class _CRSDashboardState extends State<CRSDashboard> {
   double monthlyIncome = 0.0;
   int dailyRentals = 0;
   int monthlyRentals = 0;
-
   List<Map<String, dynamic>> topRentedCars = [];
 
   final DatabaseHelper _dbHelper = DatabaseHelper();
@@ -33,11 +33,7 @@ class _CRSDashboardState extends State<CRSDashboard> {
     _loadDashboardData();
   }
 
-  // This method will be called when car status changes in AvailableCars
-  // lib/views/dashboard.dart
-
   Future<void> _loadDashboardData() async {
-    print('CRSDashboard: _loadDashboardData called.');
     final dailyInc = await _dbHelper.getIncome(isMonthly: false);
     final monthlyInc = await _dbHelper.getIncome(isMonthly: true);
     final dailyRent = await _dbHelper.getRentalCount(isMonthly: false);
@@ -55,17 +51,24 @@ class _CRSDashboardState extends State<CRSDashboard> {
     }
   }
 
+  // Helper to get the current locale for the dropdown's 'value'
+  // Ensures the dropdown reflects the currently active language.
+  Locale _getCurrentLocale(BuildContext context) {
+    return Localizations.localeOf(context);
+  }
+
   @override
   Widget build(BuildContext context) {
+    final localizer = AppLocalizations.of(context)!;
     return Scaffold(
       backgroundColor: Colors.grey[100],
       body: Row(
         children: [
-          _buildSidebar(),
+          _buildSidebar(localizer),
           Expanded(
             child: Padding(
               padding: const EdgeInsets.all(16.0),
-              child: _buildContent(selectedIndex),
+              child: _buildContent(selectedIndex, localizer),
             ),
           ),
         ],
@@ -73,28 +76,67 @@ class _CRSDashboardState extends State<CRSDashboard> {
     );
   }
 
-  Widget _buildSidebar() {
+  Widget _buildSidebar(AppLocalizations localizer) {
     return Container(
       width: 200,
       color: Colors.deepPurple,
-      padding: const EdgeInsets.symmetric(vertical: 30),
+      padding: const EdgeInsets.symmetric(vertical: 20),
       child: Column(
         children: [
+          // Language selection dropdown (now functional with Stateful MainApp)
+          DropdownButtonHideUnderline(
+            child: DropdownButton<Locale>(
+              value: _getCurrentLocale(context), // Use the current app locale
+              dropdownColor: Colors.deepPurple,
+              iconEnabledColor: Colors.white,
+              style: const TextStyle(color: Colors.white),
+              items: AppLocalizations.supportedLocales.map((locale) {
+                String languageName;
+                switch (locale.languageCode) {
+                  case 'en':
+                    languageName = 'English';
+                    break;
+                  case 'fr':
+                    languageName = 'Français';
+                    break;
+                  case 'ar':
+                    languageName = 'العربية';
+                    break;
+                  default:
+                    languageName = 'Unknown';
+                }
+                return DropdownMenuItem(
+                  value: locale,
+                  child: Text(
+                    languageName,
+                    style: const TextStyle(color: Colors.white),
+                  ),
+                );
+              }).toList(),
+              onChanged: (Locale? locale) {
+                if (locale != null) {
+                  // Call the static method on MainApp to change the locale
+                  MainApp.setLocale(context, locale);
+                }
+              },
+            ),
+          ),
+          const SizedBox(height: 10),
           const Icon(Icons.person, size: 50, color: Colors.white),
           const SizedBox(height: 10),
-          const Text(
-            'Welcome',
+          Text(
+            localizer.welcome,
             textAlign: TextAlign.center,
-            style: TextStyle(color: Colors.white, fontSize: 18),
+            style: const TextStyle(color: Colors.white, fontSize: 18),
           ),
           const SizedBox(height: 30),
-          _buildSidebarItem(Icons.home, 'Home', 0),
-          _buildSidebarItem(Icons.directions_car, 'Available Cars', 1),
-          _buildSidebarItem(Icons.list_alt, 'Rentals', 2),
-          _buildSidebarItem(Icons.archive, 'Archive', 3),
-          _buildSidebarItem(Icons.settings, 'Settings', 4),
+          _buildSidebarItem(Icons.home, localizer.home, 0),
+          _buildSidebarItem(Icons.directions_car, localizer.availableCars, 1),
+          _buildSidebarItem(Icons.list_alt, localizer.rentals, 2),
+          _buildSidebarItem(Icons.archive, localizer.archive, 3),
+          _buildSidebarItem(Icons.settings, localizer.settings, 4),
           const Spacer(),
-          _buildSidebarItem(Icons.logout, 'Sign Out', -1),
+          _buildSidebarItem(Icons.logout, localizer.signOut, -1),
         ],
       ),
     );
@@ -107,57 +149,87 @@ class _CRSDashboardState extends State<CRSDashboard> {
       hoverColor: Colors.deepPurpleAccent,
       selected: selectedIndex == index,
       selectedTileColor: Colors.deepPurpleAccent,
-      onTap: () {
+      onTap: () async {
         if (index == -1) {
-          Navigator.pushAndRemoveUntil(
-            context,
-            MaterialPageRoute(
-              builder: (context) => Scaffold(body: LoginFormWidget()),
-            ),
-            (route) => false,
+          // Logout confirmation dialog
+          final shouldLogout = await showDialog<bool>(
+            context: context,
+            builder: (context) {
+              // Ensure AppLocalizations.of(context) is called within the builder's context
+              final dialogLocalizer = AppLocalizations.of(context)!;
+              return AlertDialog(
+                title: Text(dialogLocalizer.confirmExit),
+                content: Text(
+                  dialogLocalizer.areYouSureToClose,
+                ), // Re-using areYouSureToClose for generic exit
+                actions: [
+                  TextButton(
+                    onPressed: () => Navigator.of(context).pop(false),
+                    child: Text(dialogLocalizer.cancelButton),
+                  ),
+                  TextButton(
+                    onPressed: () => Navigator.of(context).pop(true),
+                    child: Text(
+                      dialogLocalizer.signOut,
+                    ), // Use signOut for the confirm button in logout
+                  ),
+                ],
+              );
+            },
           );
+
+          if (shouldLogout == true) {
+            Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const Scaffold(body: LoginFormWidget()),
+              ),
+              (route) => false,
+            );
+          }
         } else {
           setState(() {
             selectedIndex = index;
-            if (index == 0) {
-              // Reload dashboard data when returning to home/dashboard
-              _loadDashboardData();
-            }
+            if (index == 0)
+              _loadDashboardData(); // Reload data when returning to dashboard
           });
         }
       },
     );
   }
 
-  Widget _buildContent(int index) {
+  Widget _buildContent(int index, AppLocalizations localizer) {
     switch (index) {
       case 0:
-        return _buildDashboardContent();
+        return _buildDashboardContent(localizer);
       case 1:
-        // Pass the callback to AvailableCars
         return AvailableCars(onCarStatusChanged: _loadDashboardData);
       case 2:
-        return const RentalsPage(); // Assuming RentalsPage doesn't need to update dashboard immediately for now
+        return const RentalsPage();
       case 3:
         return const ArchivePage();
       case 4:
         return const SettingsPage();
       default:
-        return const Center(child: Text("Page Not Found"));
+        return Center(
+          child: Text(localizer.pageNotFound),
+        ); // Localized "Page Not Found"
     }
   }
 
-  Widget _buildDashboardContent() {
-    final formatter = NumberFormat("#,##0.00", "en_US");
-    final intFormatter = NumberFormat.decimalPattern();
+  Widget _buildDashboardContent(AppLocalizations localizer) {
+    // NumberFormatters should adapt to the current locale
+    final currentLocaleCode = Localizations.localeOf(context).languageCode;
+    final formatter = NumberFormat("#,##0.00", currentLocaleCode);
+    final intFormatter = NumberFormat.decimalPattern(currentLocaleCode);
 
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            "Dashboard Overview",
-            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+          Text(
+            localizer.dashboardTitle,
+            style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 20),
           Wrap(
@@ -166,28 +238,28 @@ class _CRSDashboardState extends State<CRSDashboard> {
             children: [
               _buildDashboardCard(
                 Icons.monetization_on,
-                'Daily Income',
-                "${formatter.format(dailyIncome)} DZD",
+                localizer.dailyIncome,
+                "${formatter.format(dailyIncome)} ${localizer.currencySymbol}",
               ),
               _buildDashboardCard(
                 Icons.monetization_on_outlined,
-                'Monthly Income',
-                "${formatter.format(monthlyIncome)} DZD",
+                localizer.monthlyIncome,
+                "${formatter.format(monthlyIncome)} ${localizer.currencySymbol}",
               ),
               _buildDashboardCard(
                 Icons.car_rental,
-                'Daily Rentals',
+                localizer.dailyRentals,
                 intFormatter.format(dailyRentals),
               ),
               _buildDashboardCard(
                 Icons.car_rental_outlined,
-                'Monthly Rentals',
+                localizer.monthlyRentals,
                 intFormatter.format(monthlyRentals),
               ),
             ],
           ),
           const SizedBox(height: 30),
-          _buildTopRentedCarsSection(),
+          _buildTopRentedCarsSection(localizer),
         ],
       ),
     );
@@ -233,7 +305,7 @@ class _CRSDashboardState extends State<CRSDashboard> {
     );
   }
 
-  Widget _buildTopRentedCarsSection() {
+  Widget _buildTopRentedCarsSection(AppLocalizations localizer) {
     return Card(
       elevation: 3,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
@@ -242,13 +314,13 @@ class _CRSDashboardState extends State<CRSDashboard> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
-              'Top Rented Cars',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            Text(
+              localizer.topRentedCars,
+              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 16),
             topRentedCars.isEmpty
-                ? const Text('No rentals yet.')
+                ? Text(localizer.noRentalsYet)
                 : ListView.separated(
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
@@ -256,6 +328,8 @@ class _CRSDashboardState extends State<CRSDashboard> {
                     separatorBuilder: (_, __) => const Divider(),
                     itemBuilder: (context, index) {
                       final car = topRentedCars[index];
+                      final carFullName =
+                          car['fullName'] ?? localizer.unknownCar;
                       return ListTile(
                         contentPadding: const EdgeInsets.symmetric(
                           horizontal: 8,
@@ -273,7 +347,7 @@ class _CRSDashboardState extends State<CRSDashboard> {
                           ),
                         ),
                         title: Text(
-                          car['fullName'] ?? 'Unknown Car',
+                          carFullName,
                           style: const TextStyle(fontWeight: FontWeight.w600),
                         ),
                         trailing: Container(
@@ -286,7 +360,9 @@ class _CRSDashboardState extends State<CRSDashboard> {
                             borderRadius: BorderRadius.circular(12),
                           ),
                           child: Text(
-                            "${car['rentalCount']} rentals",
+                            localizer.numberOfRentals(
+                              car['rentalCount'] as int,
+                            ),
                             style: const TextStyle(
                               fontWeight: FontWeight.bold,
                               color: Colors.deepPurple,
