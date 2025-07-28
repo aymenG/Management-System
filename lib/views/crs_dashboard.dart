@@ -131,7 +131,11 @@ class _CRSDashboardState extends State<CRSDashboard> {
           ),
           const SizedBox(height: 30),
           _buildSidebarItem(Icons.home, localizer.home, 0),
-          _buildSidebarItem(Icons.directions_car, localizer.availableCars, 1),
+          _buildSidebarItem(
+            Icons.directions_car,
+            localizer.availableCarsTitle,
+            1,
+          ),
           _buildSidebarItem(Icons.list_alt, localizer.rentals, 2),
           _buildSidebarItem(Icons.archive, localizer.archive, 3),
           _buildSidebarItem(Icons.settings, localizer.settings, 4),

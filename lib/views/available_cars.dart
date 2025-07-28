@@ -180,7 +180,7 @@ class _AvailableCarsState extends State<AvailableCars> {
                         ),
                         const SizedBox(height: 8),
                         Text(
-                          localizer.addFirstCarHint, // Localized
+                          localizer.addFirstCarPrompt, // Localized
                           style: TextStyle(
                             fontSize: 14,
                             color: Colors.grey[500],
@@ -407,7 +407,7 @@ class _AvailableCarsState extends State<AvailableCars> {
     final result = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text(localizer.archiveCarTitle), // Localized
+        title: Text(localizer.archivedCars), // Localized
         content: Text(
           localizer.archiveCarConfirmation, // Localized
         ),
@@ -485,7 +485,7 @@ extension CarStatusExtension on CarStatus {
       case CarStatus.rented:
         return localizer.carStatusRented;
       case CarStatus.maintenance:
-        return localizer.carStatusMaintenance;
+        return localizer.carStatusUnderMaintenance;
       case CarStatus.archived:
         // Archived cars are filtered out, but good to have for completeness
         return localizer.carStatusArchived;

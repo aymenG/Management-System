@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:management_system/controllers/database_helper.dart'; // Ensure this path is correct
-import 'package:intl/intl.dart'; // For date formatting
+import 'package:management_system/controllers/database_helper.dart';
+import 'package:intl/intl.dart';
 import 'package:management_system/controllers/fileExport.dart';
 import 'package:management_system/views/edit_rental_dialog.dart';
+import 'package:management_system/l10n/app_localizations.dart'; // Import AppLocalizations
 
 class RentalsPage extends StatefulWidget {
   const RentalsPage({super.key});
@@ -33,9 +34,10 @@ class _RentalsPageState extends State<RentalsPage> {
     } catch (e) {
       setState(() => isLoading = false);
       if (mounted) {
+        final localizer = AppLocalizations.of(context)!;
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Error loading rentals: $e'),
+            content: Text('${localizer.errorLoadingRentals}: $e'),
             backgroundColor: Colors.red,
           ),
         );
@@ -44,40 +46,45 @@ class _RentalsPageState extends State<RentalsPage> {
   }
 
   // Helper method to format dates
-  String _formatDate(String? dateString) {
+  String _formatDate(String? dateString, BuildContext context) {
     if (dateString == null || dateString.isEmpty) return "-";
     try {
       final dateTime = DateTime.parse(dateString);
-      return DateFormat('MMM dd, yyyy').format(dateTime); // e.g., Jul 13, 2025
+      // Use the current locale for date formatting
+      return DateFormat.yMMMd(
+        Localizations.localeOf(context).toString(),
+      ).format(dateTime);
     } catch (e) {
       return "-"; // Handle parsing errors gracefully
     }
   }
 
-  // Helper method to format price - NOW RETURNS ONLY THE NUMBER
-  String _formatPrice(dynamic price) {
+  // Helper method to format price
+  String _formatPrice(dynamic price, BuildContext context) {
     if (price == null) return "-";
     try {
       final doublePrice = double.parse(price.toString());
-      // Format as currency, but then remove the symbol
+      // Get the current locale from context
+      final locale = Localizations.localeOf(context).toString();
+      // Use NumberFormat to format the number
       return NumberFormat.currency(
-            locale: 'en_DZ', // Algeria locale for currency
-            symbol: '', // Set symbol to empty string
-            decimalDigits: 2,
-          ) // Ensure 2 decimal places
-          .format(doublePrice);
+        locale: locale,
+        symbol: '',
+        decimalDigits: 2,
+      ).format(doublePrice);
     } catch (e) {
       return "-";
     }
   }
 
-  // Action for Edit button - now calls the external dialog
+  // Action for Edit button
   void _onEditRental(int? rentalId) async {
     if (rentalId != null) {
+      final localizer = AppLocalizations.of(context)!;
       // Find the full rental map from the list
       final rentalToEdit = rentalsWithCarDetails.firstWhere(
         (rental) => rental['id'] == rentalId,
-        orElse: () => {}, // Return empty map if not found (shouldn't happen)
+        orElse: () => {},
       );
 
       if (rentalToEdit.isNotEmpty) {
@@ -89,67 +96,78 @@ class _RentalsPageState extends State<RentalsPage> {
         );
         if (updated == true) {
           _loadRentals(); // Refresh the list if update occurred
+          if (mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(localizer.rentalUpdatedSuccess),
+                backgroundColor: Colors.green,
+              ),
+            );
+          }
         }
       } else {
-        print("Error: Rental with ID $rentalId not found for editing.");
+        print(localizer.errorRentalNotFound(rentalId));
       }
     } else {
-      print("Error: Attempted to edit a rental with a null ID.");
+      final localizer = AppLocalizations.of(context)!;
+      print(localizer.errorEditNullRentalId);
     }
   }
 
-  // Action for Delete button - calls the confirmation dialog
+  // Action for Delete button
   void _onDeleteRental(int? rentalId) {
     if (rentalId != null) {
       _showDeleteConfirmationDialog(rentalId);
     } else {
-      print("Error: Attempted to delete a rental with a null ID.");
+      final localizer = AppLocalizations.of(context)!;
+      print(localizer.errorDeleteNullRentalId);
     }
   }
 
   Future<void> _showDeleteConfirmationDialog(int rentalId) async {
+    final localizer = AppLocalizations.of(context)!;
     return showDialog<void>(
       context: context,
-      barrierDismissible: false, // User must tap button!
+      barrierDismissible: false,
       builder: (BuildContext dialogContext) {
         return AlertDialog(
-          title: const Text('Confirm Deletion'),
-          content: const SingleChildScrollView(
+          title: Text(localizer.confirmDeletionTitle),
+          content: SingleChildScrollView(
             child: ListBody(
               children: <Widget>[
-                Text('Are you sure you want to delete this rental?'),
-                Text('This action cannot be undone.'),
+                Text(localizer.deleteRentalConfirmation),
+                Text(localizer.actionCannotBeUndone),
               ],
             ),
           ),
           actions: <Widget>[
             TextButton(
-              child: const Text('Cancel'),
+              child: Text(localizer.cancelButton),
               onPressed: () {
-                Navigator.of(dialogContext).pop(); // Dismiss dialog
+                Navigator.of(dialogContext).pop();
               },
             ),
             TextButton(
               style: TextButton.styleFrom(foregroundColor: Colors.red),
-              child: const Text('Delete'),
+              child: Text(localizer.deleteButton),
               onPressed: () async {
-                Navigator.of(dialogContext).pop(); // Dismiss dialog
+                Navigator.of(dialogContext).pop();
                 try {
                   await _dbHelper.archiveRental(rentalId);
                   if (mounted) {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text('Rental deleted successfully!'),
+                      SnackBar(
+                        content: Text(localizer.rentalDeletedSuccess),
                         backgroundColor: Colors.green,
                       ),
                     );
                   }
-                  _loadRentals(); // Reload data after deletion
+                  _loadRentals(); // Reload data after deletion/archiving
                 } catch (e) {
                   if (mounted) {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
-                        content: Text('Error deleting rental: $e'),
+                        content: Text('${localizer.errorDeletingRental}: $e'),
                         backgroundColor: Colors.red,
                       ),
                     );
@@ -165,16 +183,18 @@ class _RentalsPageState extends State<RentalsPage> {
 
   @override
   Widget build(BuildContext context) {
+    final localizer = AppLocalizations.of(context)!;
+
     return Scaffold(
       backgroundColor: Colors.grey[100],
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          const Padding(
-            padding: EdgeInsets.all(16.0),
+          Padding(
+            padding: const EdgeInsets.all(16.0),
             child: Text(
-              "Active & Past Rentals",
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              localizer.rentalsPageTitle,
+              style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
           ),
           Padding(
@@ -191,7 +211,7 @@ class _RentalsPageState extends State<RentalsPage> {
                   ),
                 ),
                 icon: const Icon(Icons.file_download),
-                label: const Text("Export Rentals to Excel"),
+                label: Text(localizer.exportRentalsButton),
                 onPressed: rentalsWithCarDetails.isEmpty
                     ? null
                     : () async {
@@ -199,7 +219,12 @@ class _RentalsPageState extends State<RentalsPage> {
                             await showDateRangePicker(
                               context: context,
                               firstDate: DateTime(2020),
-                              lastDate: DateTime.now(),
+                              lastDate: DateTime.now().add(
+                                const Duration(days: 30),
+                              ),
+                              helpText: localizer.pickDateRangeTitle,
+                              cancelText: localizer.cancelButton,
+                              confirmText: localizer.confirmButton,
                             );
 
                         if (pickedRange != null) {
@@ -223,10 +248,8 @@ class _RentalsPageState extends State<RentalsPage> {
                           if (filtered.isEmpty) {
                             if (context.mounted) {
                               ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  content: Text(
-                                    'No rentals found in selected range',
-                                  ),
+                                SnackBar(
+                                  content: Text(localizer.noRentalsInDateRange),
                                 ),
                               );
                             }
@@ -235,6 +258,14 @@ class _RentalsPageState extends State<RentalsPage> {
                               context: context,
                               rentals: filtered,
                             );
+                            if (context.mounted) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text(localizer.exportSuccess),
+                                  backgroundColor: Colors.green,
+                                ),
+                              );
+                            }
                           }
                         }
                       },
@@ -242,7 +273,6 @@ class _RentalsPageState extends State<RentalsPage> {
             ),
           ),
           const SizedBox(height: 10),
-
           Expanded(
             child: isLoading
                 ? const Center(
@@ -260,7 +290,7 @@ class _RentalsPageState extends State<RentalsPage> {
                         ),
                         const SizedBox(height: 16),
                         Text(
-                          "No rentals found yet!",
+                          localizer.noRentalsFound,
                           style: TextStyle(
                             fontSize: 20,
                             color: Colors.grey[600],
@@ -268,7 +298,7 @@ class _RentalsPageState extends State<RentalsPage> {
                         ),
                         const SizedBox(height: 8),
                         Text(
-                          "Start by adding a new car rental.",
+                          localizer.addRentalHint,
                           style: TextStyle(
                             fontSize: 16,
                             color: Colors.grey[500],
@@ -280,8 +310,7 @@ class _RentalsPageState extends State<RentalsPage> {
                 : RefreshIndicator(
                     onRefresh: _loadRentals,
                     color: Colors.deepPurple,
-                    child:
-                        _buildDesktopTableView(), // Your original table widget
+                    child: _buildDesktopTableView(),
                   ),
           ),
         ],
@@ -290,6 +319,7 @@ class _RentalsPageState extends State<RentalsPage> {
   }
 
   Widget _buildDesktopTableView() {
+    final localizer = AppLocalizations.of(context)!;
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
       decoration: BoxDecoration(
@@ -306,16 +336,9 @@ class _RentalsPageState extends State<RentalsPage> {
       ),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(12),
-        // Use LayoutBuilder to determine available width
         child: LayoutBuilder(
           builder: (context, constraints) {
-            // Calculate minimum width needed for the table content
-            // This is an estimation, you might need to fine-tune these values
-            // based on the average length of your data.
-            // Sum of approximate minimum widths for each column:
-            // ID: 40, Customer: 120, Brand: 100, Model: 100, Plate: 100,
-            // Rent Date: 120, Return Date: 120, Price: 100, Actions: 100
-            const double minTableWidth = 900; // Adjusted based on column counts
+            const double minTableWidth = 900;
 
             return SingleChildScrollView(
               scrollDirection: Axis.horizontal,
@@ -334,16 +357,22 @@ class _RentalsPageState extends State<RentalsPage> {
                     Colors.deepPurple.withOpacity(0.1),
                   ),
                   dividerThickness: 1.5,
-                  columns: const [
-                    DataColumn(label: _TableHeader("ID")),
-                    DataColumn(label: _TableHeader("Customer")),
-                    DataColumn(label: _TableHeader("Car Brand")),
-                    DataColumn(label: _TableHeader("Car Model")),
-                    DataColumn(label: _TableHeader("Plate Number")),
-                    DataColumn(label: _TableHeader("Rent Date")),
-                    DataColumn(label: _TableHeader("Return Date")),
-                    DataColumn(label: _TableHeader("Total Price (DZD)")),
-                    DataColumn(label: _TableHeader("Actions")),
+                  columns: [
+                    DataColumn(label: _TableHeader(localizer.rentalIdHeader)),
+                    DataColumn(label: _TableHeader(localizer.customerHeader)),
+                    DataColumn(label: _TableHeader(localizer.carBrandHeader)),
+                    DataColumn(label: _TableHeader(localizer.carModelHeader)),
+                    DataColumn(
+                      label: _TableHeader(localizer.plateNumberHeader),
+                    ),
+                    DataColumn(label: _TableHeader(localizer.rentDateHeader)),
+                    DataColumn(label: _TableHeader(localizer.returnDateHeader)),
+                    DataColumn(
+                      label: _TableHeader(
+                        localizer.totalPriceHeader(localizer.currencySymbol),
+                      ),
+                    ),
+                    DataColumn(label: _TableHeader(localizer.actionsHeader)),
                   ],
                   rows: rentalsWithCarDetails.map((rental) {
                     final int rentalId = rental['id'] as int? ?? -1;
@@ -359,9 +388,17 @@ class _RentalsPageState extends State<RentalsPage> {
                         DataCell(
                           Text(rental['plate_number']?.toString() ?? "-"),
                         ),
-                        DataCell(Text(_formatDate(rental['rent_date']))),
-                        DataCell(Text(_formatDate(rental['return_date']))),
-                        DataCell(Text(_formatPrice(rental['total_price']))),
+                        DataCell(
+                          Text(_formatDate(rental['rent_date'], context)),
+                        ),
+                        DataCell(
+                          Text(_formatDate(rental['return_date'], context)),
+                        ),
+                        DataCell(
+                          Text(
+                            "${_formatPrice(rental['total_price'], context)} ${localizer.currencySymbol}",
+                          ),
+                        ),
                         DataCell(
                           Row(
                             mainAxisSize: MainAxisSize.min,
@@ -372,7 +409,7 @@ class _RentalsPageState extends State<RentalsPage> {
                                   color: Colors.deepPurple,
                                   size: 20,
                                 ),
-                                tooltip: "Edit Rental",
+                                tooltip: localizer.editRentalTooltip,
                                 onPressed: rentalId != -1
                                     ? () => _onEditRental(rentalId)
                                     : null,
@@ -383,7 +420,7 @@ class _RentalsPageState extends State<RentalsPage> {
                                   color: Colors.red,
                                   size: 20,
                                 ),
-                                tooltip: "Delete Rental",
+                                tooltip: localizer.deleteRentalTooltip,
                                 onPressed: rentalId != -1
                                     ? () => _onDeleteRental(rentalId)
                                     : null,
@@ -404,7 +441,7 @@ class _RentalsPageState extends State<RentalsPage> {
   }
 }
 
-// --- NEW WIDGET FOR TABLE HEADER TEXT STYLE ---
+// Widget for table header text style
 class _TableHeader extends StatelessWidget {
   final String text;
   const _TableHeader(this.text);
@@ -415,7 +452,7 @@ class _TableHeader extends StatelessWidget {
       text,
       style: const TextStyle(
         fontWeight: FontWeight.bold,
-        fontSize: 14, // Keep font size consistent
+        fontSize: 14,
         color: Colors.deepPurple,
       ),
     );

@@ -9,95 +9,7 @@ class AppLocalizationsEn extends AppLocalizations {
   AppLocalizationsEn([String locale = 'en']) : super(locale);
 
   @override
-  String get errorLoadingCars => 'Error loading cars:';
-
-  @override
-  String get carDeletedSuccess => 'Car deleted successfully!';
-
-  @override
-  String get errorArchivingCar => 'Error archiving car:';
-
-  @override
-  String carStatusUpdated(String status) {
-    return 'Car status updated to $status!';
-  }
-
-  @override
-  String get errorUpdatingCarStatus => 'Error updating car status:';
-
-  @override
-  String get availableCarsTitle => 'Available Cars';
-
-  @override
-  String get addCarButton => 'Add Car';
-
-  @override
-  String get noCarsAvailable => 'No cars available';
-
-  @override
-  String get addFirstCarHint => 'Add your first car to get started';
-
-  @override
-  String plateNumber(String number) {
-    return 'Plate: $number';
-  }
-
-  @override
-  String carYear(int year) {
-    return 'Year: $year';
-  }
-
-  @override
-  String dailyPrice(String price, String currencySymbol) {
-    return '$price $currencySymbol/day';
-  }
-
-  @override
-  String get rentButton => 'Rent';
-
-  @override
-  String get returnButton => 'Return';
-
-  @override
-  String get editButton => 'Edit';
-
-  @override
-  String get deleteCarTooltip => 'Delete Car';
-
-  @override
-  String get archiveCarTitle => 'Archive Car';
-
-  @override
-  String get archiveCarConfirmation =>
-      'Are you sure you want to archive this car? It will be moved to the archive page.';
-
-  @override
-  String get confirmButton => 'Confirm';
-
-  @override
-  String get returnCarTitle => 'Return Car';
-
-  @override
-  String get returnCarConfirmation =>
-      'Are you sure you want to return this car?';
-
-  @override
-  String get carStatusAvailable => 'Available';
-
-  @override
-  String get carStatusRented => 'Rented';
-
-  @override
-  String get carStatusMaintenance => 'Maintenance';
-
-  @override
-  String get carStatusArchived => 'Archived';
-
-  @override
-  String get appTitle => 'Car Management System';
-
-  @override
-  String get closeButton => 'Close';
+  String get appTitle => 'Car Rental Management System';
 
   @override
   String get welcome => 'Welcome';
@@ -106,7 +18,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get home => 'Home';
 
   @override
-  String get availableCars => 'Available Cars';
+  String get carManagement => 'Car Management';
 
   @override
   String get rentals => 'Rentals';
@@ -121,6 +33,18 @@ class AppLocalizationsEn extends AppLocalizations {
   String get signOut => 'Sign Out';
 
   @override
+  String get closeButton => 'Close';
+
+  @override
+  String get cancelButton => 'Cancel';
+
+  @override
+  String get confirmButton => 'Confirm';
+
+  @override
+  String get deleteButton => 'Delete';
+
+  @override
   String get confirmExit => 'Confirm Exit';
 
   @override
@@ -129,6 +53,13 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get pageNotFound => 'Page Not Found';
+
+  @override
+  String get actionCannotBeUndone =>
+      'This action cannot be undone and will move the rental to archives.';
+
+  @override
+  String get currencySymbol => 'DZD';
 
   @override
   String get dashboardTitle => 'Dashboard Overview';
@@ -144,9 +75,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get monthlyRentals => 'Monthly Rentals';
-
-  @override
-  String get currencySymbol => 'DZD';
 
   @override
   String get topRentedCars => 'Top 5 Rented Cars';
@@ -175,13 +103,28 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get availableCarsTitle => 'Available Cars';
+
+  @override
+  String get addCarButton => 'Add Car';
+
+  @override
+  String get addCarTooltip => 'Add New Car';
+
+  @override
+  String get noCarsAvailable => 'No cars available';
+
+  @override
   String get addFirstCarPrompt => 'Add your first car to get started';
 
   @override
-  String get cancelButton => 'Cancel';
+  String get totalCars => 'Total Cars';
 
   @override
-  String get carArchivedSuccess => 'Car archived successfully!';
+  String get rentedCars => 'Rented Cars';
+
+  @override
+  String get archivedCars => 'Archived Cars';
 
   @override
   String get columnId => 'ID';
@@ -208,35 +151,213 @@ class AppLocalizationsEn extends AppLocalizations {
   String get columnActions => 'Actions';
 
   @override
+  String plateNumber(String number) {
+    return 'Plate: $number';
+  }
+
+  @override
+  String carYear(int year) {
+    return 'Year: $year';
+  }
+
+  @override
+  String dailyPrice(String price, String currencySymbol) {
+    return '$price $currencySymbol/day';
+  }
+
+  @override
+  String get rentButton => 'Rent';
+
+  @override
+  String get returnButton => 'Return';
+
+  @override
+  String get editButton => 'Edit';
+
+  @override
+  String get editCarTooltip => 'Edit Car';
+
+  @override
+  String get archiveCarTooltip => 'Archive Car';
+
+  @override
+  String get restoreCarTooltip => 'Restore Car';
+
+  @override
+  String get deleteCarTooltip => 'Delete Car Permanently';
+
+  @override
+  String get carStatusAvailable => 'Available';
+
+  @override
+  String get carStatusRented => 'Rented';
+
+  @override
+  String get carStatusUnderMaintenance => 'Under Maintenance';
+
+  @override
+  String get carStatusArchived => 'Archived';
+
+  @override
+  String get confirmArchiveTitle => 'Confirm Archiving';
+
+  @override
+  String get archiveCarConfirmation =>
+      'Are you sure you want to archive this car? It will be moved to the archive page.';
+
+  @override
+  String get carArchivedSuccess => 'Car archived successfully!';
+
+  @override
+  String get errorArchivingCar => 'Error archiving car';
+
+  @override
+  String get returnCarTitle => 'Return Car';
+
+  @override
+  String get returnCarConfirmation =>
+      'Are you sure you want to return this car?';
+
+  @override
+  String carStatusUpdated(String status) {
+    return 'Car status updated to $status!';
+  }
+
+  @override
+  String get errorUpdatingCarStatus => 'Error updating car status';
+
+  @override
+  String get confirmDeleteTitle => 'Confirm Permanent Deletion';
+
+  @override
+  String get deleteCarConfirmation =>
+      'Are you sure you want to permanently delete this car?';
+
+  @override
+  String get carDeletedSuccess => 'Car deleted permanently!';
+
+  @override
+  String get errorDeletingCar => 'Error deleting car';
+
+  @override
+  String get errorLoadingCars => 'Error loading cars';
+
+  @override
+  String get addCarPageTitle => 'Add New Car';
+
+  @override
+  String get carBrandLabel => 'Car Brand';
+
+  @override
+  String get carModelLabel => 'Car Model';
+
+  @override
+  String get manufacturingYearLabel => 'Manufacturing Year';
+
+  @override
+  String get plateNumberLabel => 'Plate Number';
+
+  @override
+  String get dailyRentalRateLabel => 'Daily Rental Rate';
+
+  @override
+  String get carStatusLabel => 'Car Status';
+
+  @override
+  String get saveButton => 'Save';
+
+  @override
+  String get errorAddCar => 'Error adding car';
+
+  @override
+  String get carAddedSuccess => 'Car added successfully!';
+
+  @override
+  String get carStatusPrompt => 'Select Car Status';
+
+  @override
+  String get carUpdateSuccess => 'Car updated successfully!';
+
+  @override
+  String get errorUpdateCar => 'Error updating car';
+
+  @override
+  String get editCarPageTitle => 'Edit Car Details';
+
+  @override
   String get rentalsPageTitle => 'Active & Past Rentals';
+
+  @override
+  String get exportRentalsButton => 'Export Rentals to Excel';
+
+  @override
+  String get pickDateRangeTitle => 'Pick Date Range';
+
+  @override
+  String get noRentalsInDateRange => 'No rentals found in selected range';
+
+  @override
+  String get exportSuccess => 'Rentals exported successfully!';
 
   @override
   String get noRentalsFound => 'No rentals found yet!';
 
   @override
-  String get startAddingRentalPrompt => 'Start by adding a new car rental.';
+  String get addRentalHint => 'Start by adding a new car rental.';
 
   @override
-  String get editRentalButton => 'Edit Rental';
+  String get rentalIdHeader => 'ID';
 
   @override
-  String get archiveRentalButton => 'Archive Rental';
+  String get customerHeader => 'Customer';
 
   @override
-  String get confirmArchivingRentalTitle => 'Confirm Archiving';
+  String get carBrandHeader => 'Car Brand';
 
   @override
-  String get archiveRentalConfirmation =>
-      'Are you sure you want to archive this rental? Archived rentals can be restored later.';
+  String get carModelHeader => 'Car Model';
 
   @override
-  String get rentalArchivedSuccess => 'Rental archived successfully!';
+  String get plateNumberHeader => 'Plate Number';
 
   @override
-  String get errorArchivingRental => 'Error archiving rental:';
+  String get rentDateHeader => 'Rent Date';
 
   @override
-  String get errorLoadingRentals => 'Error loading rentals:';
+  String get returnDateHeader => 'Return Date';
+
+  @override
+  String totalPriceHeader(Object currencySymbol) {
+    return 'Total Price ($currencySymbol)';
+  }
+
+  @override
+  String get actionsHeader => 'Actions';
+
+  @override
+  String get editRentalTooltip => 'Edit Rental';
+
+  @override
+  String get deleteRentalTooltip => 'Delete Rental';
+
+  @override
+  String get errorLoadingRentals => 'Error loading rentals';
+
+  @override
+  String get rentalUpdatedSuccess => 'Rental updated successfully!';
+
+  @override
+  String errorRentalNotFound(int id) {
+    return 'Error: Rental with ID $id not found for editing.';
+  }
+
+  @override
+  String get errorEditNullRentalId =>
+      'Error: Attempted to edit a rental with a null ID.';
+
+  @override
+  String get errorDeleteNullRentalId =>
+      'Error: Attempted to delete a rental with a null ID.';
 
   @override
   String get confirmDeletionTitle => 'Confirm Deletion';
@@ -246,34 +367,86 @@ class AppLocalizationsEn extends AppLocalizations {
       'Are you sure you want to delete this rental?';
 
   @override
-  String get actionCannotBeUndone => 'This action cannot be undone.';
-
-  @override
-  String get deleteButton => 'Delete';
-
-  @override
   String get rentalDeletedSuccess => 'Rental deleted successfully!';
 
   @override
-  String get errorDeletingRental => 'Error deleting rental:';
+  String get errorDeletingRental => 'Error deleting rental';
 
   @override
-  String get columnCustomer => 'Customer';
+  String get addRentalButton => 'Add New Rental';
 
   @override
-  String get columnCarBrand => 'Car Brand';
+  String get confirmBookingTitle => 'Confirm Rental Booking';
 
   @override
-  String get columnCarModel => 'Car Model';
+  String get confirmBookingMessage =>
+      'Are you sure you want to book this rental?';
 
   @override
-  String get columnRentDate => 'Rent Date';
+  String get customerNameLabel => 'Customer Name';
 
   @override
-  String get columnReturnDate => 'Return Date';
+  String get customerPhoneLabel => 'Customer Phone';
 
   @override
-  String get columnTotalPrice => 'Total Price (DZD)';
+  String get rentDateLabel => 'Rent Date';
+
+  @override
+  String get returnDateLabel => 'Return Date';
+
+  @override
+  String get totalPriceLabel => 'Total Price';
+
+  @override
+  String get errorBookingRental => 'Error booking rental';
+
+  @override
+  String get rentalBookedSuccess => 'Rental booked successfully!';
+
+  @override
+  String get selectCustomerMessage => 'Select Customer';
+
+  @override
+  String get noCustomerSelected => 'No customer selected';
+
+  @override
+  String get pickCustomerTitle => 'Pick a Customer';
+
+  @override
+  String get customerSearchHint => 'Search customers...';
+
+  @override
+  String get addNewCustomerButton => 'Add New Customer';
+
+  @override
+  String get addCustomerDialogTitle => 'Add New Customer';
+
+  @override
+  String get customerNameHint => 'Enter customer name';
+
+  @override
+  String get customerPhoneHint => 'Enter customer phone';
+
+  @override
+  String get customerAddressHint => 'Enter customer address (optional)';
+
+  @override
+  String get errorAddCustomer => 'Error adding customer';
+
+  @override
+  String get customerAddedSuccess => 'Customer added successfully!';
+
+  @override
+  String get selectCarMessage => 'Select Car';
+
+  @override
+  String get carSearchHint => 'Search cars...';
+
+  @override
+  String get selectCarTitle => 'Select a Car';
+
+  @override
+  String get noCarSelected => 'No car selected';
 
   @override
   String get archivePageTitle => 'Archived Items';
@@ -291,13 +464,14 @@ class AppLocalizationsEn extends AppLocalizations {
   String get noArchivedRentalsFound => 'No archived rentals found!';
 
   @override
+  String get archivedRentalsAppearHere =>
+      'Rentals you archive will appear here.';
+
+  @override
   String get restoreCarButton => 'Restore Car';
 
   @override
   String get deletePermanentlyButton => 'Delete Permanently';
-
-  @override
-  String get confirmPermanentDeletionTitle => 'Confirm Permanent Deletion';
 
   @override
   String get permanentDeleteCarConfirmation =>
@@ -307,13 +481,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get carRestoredSuccess => 'Car restored successfully!';
 
   @override
-  String get errorRestoringCar => 'Error restoring car:';
+  String get errorRestoringCar => 'Error restoring car';
 
   @override
   String get carPermanentlyDeleted => 'Car permanently deleted!';
 
   @override
-  String get errorDeletingCarPermanently => 'Error deleting car permanently:';
+  String get errorDeletingCarPermanently => 'Error deleting car permanently';
 
   @override
   String get restoreRentalButton => 'Restore Rental';
@@ -326,16 +500,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get rentalRestoredSuccess => 'Rental restored successfully!';
 
   @override
-  String get errorRestoringRental => 'Error restoring rental:';
+  String get errorRestoringRental => 'Error restoring rental';
 
   @override
   String get rentalPermanentlyDeleted => 'Rental permanently deleted!';
 
   @override
   String get errorDeletingRentalPermanently =>
-      'Error deleting rental permanently:';
-
-  @override
-  String get archivedRentalsAppearHere =>
-      'Rentals you archive will appear here.';
+      'Error deleting rental permanently';
 }

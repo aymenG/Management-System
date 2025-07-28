@@ -100,167 +100,11 @@ abstract class AppLocalizations {
     Locale('fr'),
   ];
 
-  /// No description provided for @errorLoadingCars.
-  ///
-  /// In en, this message translates to:
-  /// **'Error loading cars:'**
-  String get errorLoadingCars;
-
-  /// No description provided for @carDeletedSuccess.
-  ///
-  /// In en, this message translates to:
-  /// **'Car deleted successfully!'**
-  String get carDeletedSuccess;
-
-  /// No description provided for @errorArchivingCar.
-  ///
-  /// In en, this message translates to:
-  /// **'Error archiving car:'**
-  String get errorArchivingCar;
-
-  /// No description provided for @carStatusUpdated.
-  ///
-  /// In en, this message translates to:
-  /// **'Car status updated to {status}!'**
-  String carStatusUpdated(String status);
-
-  /// No description provided for @errorUpdatingCarStatus.
-  ///
-  /// In en, this message translates to:
-  /// **'Error updating car status:'**
-  String get errorUpdatingCarStatus;
-
-  /// No description provided for @availableCarsTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Available Cars'**
-  String get availableCarsTitle;
-
-  /// No description provided for @addCarButton.
-  ///
-  /// In en, this message translates to:
-  /// **'Add Car'**
-  String get addCarButton;
-
-  /// No description provided for @noCarsAvailable.
-  ///
-  /// In en, this message translates to:
-  /// **'No cars available'**
-  String get noCarsAvailable;
-
-  /// No description provided for @addFirstCarHint.
-  ///
-  /// In en, this message translates to:
-  /// **'Add your first car to get started'**
-  String get addFirstCarHint;
-
-  /// No description provided for @plateNumber.
-  ///
-  /// In en, this message translates to:
-  /// **'Plate: {number}'**
-  String plateNumber(String number);
-
-  /// No description provided for @carYear.
-  ///
-  /// In en, this message translates to:
-  /// **'Year: {year}'**
-  String carYear(int year);
-
-  /// No description provided for @dailyPrice.
-  ///
-  /// In en, this message translates to:
-  /// **'{price} {currencySymbol}/day'**
-  String dailyPrice(String price, String currencySymbol);
-
-  /// No description provided for @rentButton.
-  ///
-  /// In en, this message translates to:
-  /// **'Rent'**
-  String get rentButton;
-
-  /// No description provided for @returnButton.
-  ///
-  /// In en, this message translates to:
-  /// **'Return'**
-  String get returnButton;
-
-  /// No description provided for @editButton.
-  ///
-  /// In en, this message translates to:
-  /// **'Edit'**
-  String get editButton;
-
-  /// No description provided for @deleteCarTooltip.
-  ///
-  /// In en, this message translates to:
-  /// **'Delete Car'**
-  String get deleteCarTooltip;
-
-  /// No description provided for @archiveCarTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Archive Car'**
-  String get archiveCarTitle;
-
-  /// No description provided for @archiveCarConfirmation.
-  ///
-  /// In en, this message translates to:
-  /// **'Are you sure you want to archive this car? It will be moved to the archive page.'**
-  String get archiveCarConfirmation;
-
-  /// No description provided for @confirmButton.
-  ///
-  /// In en, this message translates to:
-  /// **'Confirm'**
-  String get confirmButton;
-
-  /// No description provided for @returnCarTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Return Car'**
-  String get returnCarTitle;
-
-  /// No description provided for @returnCarConfirmation.
-  ///
-  /// In en, this message translates to:
-  /// **'Are you sure you want to return this car?'**
-  String get returnCarConfirmation;
-
-  /// No description provided for @carStatusAvailable.
-  ///
-  /// In en, this message translates to:
-  /// **'Available'**
-  String get carStatusAvailable;
-
-  /// No description provided for @carStatusRented.
-  ///
-  /// In en, this message translates to:
-  /// **'Rented'**
-  String get carStatusRented;
-
-  /// No description provided for @carStatusMaintenance.
-  ///
-  /// In en, this message translates to:
-  /// **'Maintenance'**
-  String get carStatusMaintenance;
-
-  /// No description provided for @carStatusArchived.
-  ///
-  /// In en, this message translates to:
-  /// **'Archived'**
-  String get carStatusArchived;
-
   /// No description provided for @appTitle.
   ///
   /// In en, this message translates to:
-  /// **'Car Management System'**
+  /// **'Car Rental Management System'**
   String get appTitle;
-
-  /// No description provided for @closeButton.
-  ///
-  /// In en, this message translates to:
-  /// **'Close'**
-  String get closeButton;
 
   /// No description provided for @welcome.
   ///
@@ -274,11 +118,11 @@ abstract class AppLocalizations {
   /// **'Home'**
   String get home;
 
-  /// No description provided for @availableCars.
+  /// No description provided for @carManagement.
   ///
   /// In en, this message translates to:
-  /// **'Available Cars'**
-  String get availableCars;
+  /// **'Car Management'**
+  String get carManagement;
 
   /// No description provided for @rentals.
   ///
@@ -304,6 +148,30 @@ abstract class AppLocalizations {
   /// **'Sign Out'**
   String get signOut;
 
+  /// No description provided for @closeButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Close'**
+  String get closeButton;
+
+  /// No description provided for @cancelButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get cancelButton;
+
+  /// No description provided for @confirmButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm'**
+  String get confirmButton;
+
+  /// No description provided for @deleteButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete'**
+  String get deleteButton;
+
   /// No description provided for @confirmExit.
   ///
   /// In en, this message translates to:
@@ -321,6 +189,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Page Not Found'**
   String get pageNotFound;
+
+  /// No description provided for @actionCannotBeUndone.
+  ///
+  /// In en, this message translates to:
+  /// **'This action cannot be undone and will move the rental to archives.'**
+  String get actionCannotBeUndone;
+
+  /// No description provided for @currencySymbol.
+  ///
+  /// In en, this message translates to:
+  /// **'DZD'**
+  String get currencySymbol;
 
   /// No description provided for @dashboardTitle.
   ///
@@ -352,12 +232,6 @@ abstract class AppLocalizations {
   /// **'Monthly Rentals'**
   String get monthlyRentals;
 
-  /// No description provided for @currencySymbol.
-  ///
-  /// In en, this message translates to:
-  /// **'DZD'**
-  String get currencySymbol;
-
   /// No description provided for @topRentedCars.
   ///
   /// In en, this message translates to:
@@ -382,23 +256,53 @@ abstract class AppLocalizations {
   /// **'{count, plural, =0{No rentals} one{1 rental} other{{count} rentals}}'**
   String numberOfRentals(int count);
 
+  /// No description provided for @availableCarsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Available Cars'**
+  String get availableCarsTitle;
+
+  /// No description provided for @addCarButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Car'**
+  String get addCarButton;
+
+  /// No description provided for @addCarTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Add New Car'**
+  String get addCarTooltip;
+
+  /// No description provided for @noCarsAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'No cars available'**
+  String get noCarsAvailable;
+
   /// No description provided for @addFirstCarPrompt.
   ///
   /// In en, this message translates to:
   /// **'Add your first car to get started'**
   String get addFirstCarPrompt;
 
-  /// No description provided for @cancelButton.
+  /// No description provided for @totalCars.
   ///
   /// In en, this message translates to:
-  /// **'Cancel'**
-  String get cancelButton;
+  /// **'Total Cars'**
+  String get totalCars;
 
-  /// No description provided for @carArchivedSuccess.
+  /// No description provided for @rentedCars.
   ///
   /// In en, this message translates to:
-  /// **'Car archived successfully!'**
-  String get carArchivedSuccess;
+  /// **'Rented Cars'**
+  String get rentedCars;
+
+  /// No description provided for @archivedCars.
+  ///
+  /// In en, this message translates to:
+  /// **'Archived Cars'**
+  String get archivedCars;
 
   /// No description provided for @columnId.
   ///
@@ -448,11 +352,281 @@ abstract class AppLocalizations {
   /// **'Actions'**
   String get columnActions;
 
+  /// No description provided for @plateNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Plate: {number}'**
+  String plateNumber(String number);
+
+  /// No description provided for @carYear.
+  ///
+  /// In en, this message translates to:
+  /// **'Year: {year}'**
+  String carYear(int year);
+
+  /// No description provided for @dailyPrice.
+  ///
+  /// In en, this message translates to:
+  /// **'{price} {currencySymbol}/day'**
+  String dailyPrice(String price, String currencySymbol);
+
+  /// No description provided for @rentButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Rent'**
+  String get rentButton;
+
+  /// No description provided for @returnButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Return'**
+  String get returnButton;
+
+  /// No description provided for @editButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit'**
+  String get editButton;
+
+  /// No description provided for @editCarTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Car'**
+  String get editCarTooltip;
+
+  /// No description provided for @archiveCarTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Archive Car'**
+  String get archiveCarTooltip;
+
+  /// No description provided for @restoreCarTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Restore Car'**
+  String get restoreCarTooltip;
+
+  /// No description provided for @deleteCarTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete Car Permanently'**
+  String get deleteCarTooltip;
+
+  /// No description provided for @carStatusAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Available'**
+  String get carStatusAvailable;
+
+  /// No description provided for @carStatusRented.
+  ///
+  /// In en, this message translates to:
+  /// **'Rented'**
+  String get carStatusRented;
+
+  /// No description provided for @carStatusUnderMaintenance.
+  ///
+  /// In en, this message translates to:
+  /// **'Under Maintenance'**
+  String get carStatusUnderMaintenance;
+
+  /// No description provided for @carStatusArchived.
+  ///
+  /// In en, this message translates to:
+  /// **'Archived'**
+  String get carStatusArchived;
+
+  /// No description provided for @confirmArchiveTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm Archiving'**
+  String get confirmArchiveTitle;
+
+  /// No description provided for @archiveCarConfirmation.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to archive this car? It will be moved to the archive page.'**
+  String get archiveCarConfirmation;
+
+  /// No description provided for @carArchivedSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Car archived successfully!'**
+  String get carArchivedSuccess;
+
+  /// No description provided for @errorArchivingCar.
+  ///
+  /// In en, this message translates to:
+  /// **'Error archiving car'**
+  String get errorArchivingCar;
+
+  /// No description provided for @returnCarTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Return Car'**
+  String get returnCarTitle;
+
+  /// No description provided for @returnCarConfirmation.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to return this car?'**
+  String get returnCarConfirmation;
+
+  /// No description provided for @carStatusUpdated.
+  ///
+  /// In en, this message translates to:
+  /// **'Car status updated to {status}!'**
+  String carStatusUpdated(String status);
+
+  /// No description provided for @errorUpdatingCarStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'Error updating car status'**
+  String get errorUpdatingCarStatus;
+
+  /// No description provided for @confirmDeleteTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm Permanent Deletion'**
+  String get confirmDeleteTitle;
+
+  /// No description provided for @deleteCarConfirmation.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to permanently delete this car?'**
+  String get deleteCarConfirmation;
+
+  /// No description provided for @carDeletedSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Car deleted permanently!'**
+  String get carDeletedSuccess;
+
+  /// No description provided for @errorDeletingCar.
+  ///
+  /// In en, this message translates to:
+  /// **'Error deleting car'**
+  String get errorDeletingCar;
+
+  /// No description provided for @errorLoadingCars.
+  ///
+  /// In en, this message translates to:
+  /// **'Error loading cars'**
+  String get errorLoadingCars;
+
+  /// No description provided for @addCarPageTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Add New Car'**
+  String get addCarPageTitle;
+
+  /// No description provided for @carBrandLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Car Brand'**
+  String get carBrandLabel;
+
+  /// No description provided for @carModelLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Car Model'**
+  String get carModelLabel;
+
+  /// No description provided for @manufacturingYearLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Manufacturing Year'**
+  String get manufacturingYearLabel;
+
+  /// No description provided for @plateNumberLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Plate Number'**
+  String get plateNumberLabel;
+
+  /// No description provided for @dailyRentalRateLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Daily Rental Rate'**
+  String get dailyRentalRateLabel;
+
+  /// No description provided for @carStatusLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Car Status'**
+  String get carStatusLabel;
+
+  /// No description provided for @saveButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Save'**
+  String get saveButton;
+
+  /// No description provided for @errorAddCar.
+  ///
+  /// In en, this message translates to:
+  /// **'Error adding car'**
+  String get errorAddCar;
+
+  /// No description provided for @carAddedSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Car added successfully!'**
+  String get carAddedSuccess;
+
+  /// No description provided for @carStatusPrompt.
+  ///
+  /// In en, this message translates to:
+  /// **'Select Car Status'**
+  String get carStatusPrompt;
+
+  /// No description provided for @carUpdateSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Car updated successfully!'**
+  String get carUpdateSuccess;
+
+  /// No description provided for @errorUpdateCar.
+  ///
+  /// In en, this message translates to:
+  /// **'Error updating car'**
+  String get errorUpdateCar;
+
+  /// No description provided for @editCarPageTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Car Details'**
+  String get editCarPageTitle;
+
   /// No description provided for @rentalsPageTitle.
   ///
   /// In en, this message translates to:
   /// **'Active & Past Rentals'**
   String get rentalsPageTitle;
+
+  /// No description provided for @exportRentalsButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Export Rentals to Excel'**
+  String get exportRentalsButton;
+
+  /// No description provided for @pickDateRangeTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick Date Range'**
+  String get pickDateRangeTitle;
+
+  /// No description provided for @noRentalsInDateRange.
+  ///
+  /// In en, this message translates to:
+  /// **'No rentals found in selected range'**
+  String get noRentalsInDateRange;
+
+  /// No description provided for @exportSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Rentals exported successfully!'**
+  String get exportSuccess;
 
   /// No description provided for @noRentalsFound.
   ///
@@ -460,53 +634,107 @@ abstract class AppLocalizations {
   /// **'No rentals found yet!'**
   String get noRentalsFound;
 
-  /// No description provided for @startAddingRentalPrompt.
+  /// No description provided for @addRentalHint.
   ///
   /// In en, this message translates to:
   /// **'Start by adding a new car rental.'**
-  String get startAddingRentalPrompt;
+  String get addRentalHint;
 
-  /// No description provided for @editRentalButton.
+  /// No description provided for @rentalIdHeader.
+  ///
+  /// In en, this message translates to:
+  /// **'ID'**
+  String get rentalIdHeader;
+
+  /// No description provided for @customerHeader.
+  ///
+  /// In en, this message translates to:
+  /// **'Customer'**
+  String get customerHeader;
+
+  /// No description provided for @carBrandHeader.
+  ///
+  /// In en, this message translates to:
+  /// **'Car Brand'**
+  String get carBrandHeader;
+
+  /// No description provided for @carModelHeader.
+  ///
+  /// In en, this message translates to:
+  /// **'Car Model'**
+  String get carModelHeader;
+
+  /// No description provided for @plateNumberHeader.
+  ///
+  /// In en, this message translates to:
+  /// **'Plate Number'**
+  String get plateNumberHeader;
+
+  /// No description provided for @rentDateHeader.
+  ///
+  /// In en, this message translates to:
+  /// **'Rent Date'**
+  String get rentDateHeader;
+
+  /// No description provided for @returnDateHeader.
+  ///
+  /// In en, this message translates to:
+  /// **'Return Date'**
+  String get returnDateHeader;
+
+  /// No description provided for @totalPriceHeader.
+  ///
+  /// In en, this message translates to:
+  /// **'Total Price ({currencySymbol})'**
+  String totalPriceHeader(Object currencySymbol);
+
+  /// No description provided for @actionsHeader.
+  ///
+  /// In en, this message translates to:
+  /// **'Actions'**
+  String get actionsHeader;
+
+  /// No description provided for @editRentalTooltip.
   ///
   /// In en, this message translates to:
   /// **'Edit Rental'**
-  String get editRentalButton;
+  String get editRentalTooltip;
 
-  /// No description provided for @archiveRentalButton.
+  /// No description provided for @deleteRentalTooltip.
   ///
   /// In en, this message translates to:
-  /// **'Archive Rental'**
-  String get archiveRentalButton;
-
-  /// No description provided for @confirmArchivingRentalTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Confirm Archiving'**
-  String get confirmArchivingRentalTitle;
-
-  /// No description provided for @archiveRentalConfirmation.
-  ///
-  /// In en, this message translates to:
-  /// **'Are you sure you want to archive this rental? Archived rentals can be restored later.'**
-  String get archiveRentalConfirmation;
-
-  /// No description provided for @rentalArchivedSuccess.
-  ///
-  /// In en, this message translates to:
-  /// **'Rental archived successfully!'**
-  String get rentalArchivedSuccess;
-
-  /// No description provided for @errorArchivingRental.
-  ///
-  /// In en, this message translates to:
-  /// **'Error archiving rental:'**
-  String get errorArchivingRental;
+  /// **'Delete Rental'**
+  String get deleteRentalTooltip;
 
   /// No description provided for @errorLoadingRentals.
   ///
   /// In en, this message translates to:
-  /// **'Error loading rentals:'**
+  /// **'Error loading rentals'**
   String get errorLoadingRentals;
+
+  /// No description provided for @rentalUpdatedSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Rental updated successfully!'**
+  String get rentalUpdatedSuccess;
+
+  /// No description provided for @errorRentalNotFound.
+  ///
+  /// In en, this message translates to:
+  /// **'Error: Rental with ID {id} not found for editing.'**
+  String errorRentalNotFound(int id);
+
+  /// No description provided for @errorEditNullRentalId.
+  ///
+  /// In en, this message translates to:
+  /// **'Error: Attempted to edit a rental with a null ID.'**
+  String get errorEditNullRentalId;
+
+  /// No description provided for @errorDeleteNullRentalId.
+  ///
+  /// In en, this message translates to:
+  /// **'Error: Attempted to delete a rental with a null ID.'**
+  String get errorDeleteNullRentalId;
 
   /// No description provided for @confirmDeletionTitle.
   ///
@@ -520,18 +748,6 @@ abstract class AppLocalizations {
   /// **'Are you sure you want to delete this rental?'**
   String get deleteRentalConfirmation;
 
-  /// No description provided for @actionCannotBeUndone.
-  ///
-  /// In en, this message translates to:
-  /// **'This action cannot be undone.'**
-  String get actionCannotBeUndone;
-
-  /// No description provided for @deleteButton.
-  ///
-  /// In en, this message translates to:
-  /// **'Delete'**
-  String get deleteButton;
-
   /// No description provided for @rentalDeletedSuccess.
   ///
   /// In en, this message translates to:
@@ -541,44 +757,158 @@ abstract class AppLocalizations {
   /// No description provided for @errorDeletingRental.
   ///
   /// In en, this message translates to:
-  /// **'Error deleting rental:'**
+  /// **'Error deleting rental'**
   String get errorDeletingRental;
 
-  /// No description provided for @columnCustomer.
+  /// No description provided for @addRentalButton.
   ///
   /// In en, this message translates to:
-  /// **'Customer'**
-  String get columnCustomer;
+  /// **'Add New Rental'**
+  String get addRentalButton;
 
-  /// No description provided for @columnCarBrand.
+  /// No description provided for @confirmBookingTitle.
   ///
   /// In en, this message translates to:
-  /// **'Car Brand'**
-  String get columnCarBrand;
+  /// **'Confirm Rental Booking'**
+  String get confirmBookingTitle;
 
-  /// No description provided for @columnCarModel.
+  /// No description provided for @confirmBookingMessage.
   ///
   /// In en, this message translates to:
-  /// **'Car Model'**
-  String get columnCarModel;
+  /// **'Are you sure you want to book this rental?'**
+  String get confirmBookingMessage;
 
-  /// No description provided for @columnRentDate.
+  /// No description provided for @customerNameLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Customer Name'**
+  String get customerNameLabel;
+
+  /// No description provided for @customerPhoneLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Customer Phone'**
+  String get customerPhoneLabel;
+
+  /// No description provided for @rentDateLabel.
   ///
   /// In en, this message translates to:
   /// **'Rent Date'**
-  String get columnRentDate;
+  String get rentDateLabel;
 
-  /// No description provided for @columnReturnDate.
+  /// No description provided for @returnDateLabel.
   ///
   /// In en, this message translates to:
   /// **'Return Date'**
-  String get columnReturnDate;
+  String get returnDateLabel;
 
-  /// No description provided for @columnTotalPrice.
+  /// No description provided for @totalPriceLabel.
   ///
   /// In en, this message translates to:
-  /// **'Total Price (DZD)'**
-  String get columnTotalPrice;
+  /// **'Total Price'**
+  String get totalPriceLabel;
+
+  /// No description provided for @errorBookingRental.
+  ///
+  /// In en, this message translates to:
+  /// **'Error booking rental'**
+  String get errorBookingRental;
+
+  /// No description provided for @rentalBookedSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Rental booked successfully!'**
+  String get rentalBookedSuccess;
+
+  /// No description provided for @selectCustomerMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Select Customer'**
+  String get selectCustomerMessage;
+
+  /// No description provided for @noCustomerSelected.
+  ///
+  /// In en, this message translates to:
+  /// **'No customer selected'**
+  String get noCustomerSelected;
+
+  /// No description provided for @pickCustomerTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick a Customer'**
+  String get pickCustomerTitle;
+
+  /// No description provided for @customerSearchHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Search customers...'**
+  String get customerSearchHint;
+
+  /// No description provided for @addNewCustomerButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Add New Customer'**
+  String get addNewCustomerButton;
+
+  /// No description provided for @addCustomerDialogTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Add New Customer'**
+  String get addCustomerDialogTitle;
+
+  /// No description provided for @customerNameHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter customer name'**
+  String get customerNameHint;
+
+  /// No description provided for @customerPhoneHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter customer phone'**
+  String get customerPhoneHint;
+
+  /// No description provided for @customerAddressHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter customer address (optional)'**
+  String get customerAddressHint;
+
+  /// No description provided for @errorAddCustomer.
+  ///
+  /// In en, this message translates to:
+  /// **'Error adding customer'**
+  String get errorAddCustomer;
+
+  /// No description provided for @customerAddedSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Customer added successfully!'**
+  String get customerAddedSuccess;
+
+  /// No description provided for @selectCarMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Select Car'**
+  String get selectCarMessage;
+
+  /// No description provided for @carSearchHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Search cars...'**
+  String get carSearchHint;
+
+  /// No description provided for @selectCarTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Select a Car'**
+  String get selectCarTitle;
+
+  /// No description provided for @noCarSelected.
+  ///
+  /// In en, this message translates to:
+  /// **'No car selected'**
+  String get noCarSelected;
 
   /// No description provided for @archivePageTitle.
   ///
@@ -610,6 +940,12 @@ abstract class AppLocalizations {
   /// **'No archived rentals found!'**
   String get noArchivedRentalsFound;
 
+  /// No description provided for @archivedRentalsAppearHere.
+  ///
+  /// In en, this message translates to:
+  /// **'Rentals you archive will appear here.'**
+  String get archivedRentalsAppearHere;
+
   /// No description provided for @restoreCarButton.
   ///
   /// In en, this message translates to:
@@ -621,12 +957,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Delete Permanently'**
   String get deletePermanentlyButton;
-
-  /// No description provided for @confirmPermanentDeletionTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Confirm Permanent Deletion'**
-  String get confirmPermanentDeletionTitle;
 
   /// No description provided for @permanentDeleteCarConfirmation.
   ///
@@ -643,7 +973,7 @@ abstract class AppLocalizations {
   /// No description provided for @errorRestoringCar.
   ///
   /// In en, this message translates to:
-  /// **'Error restoring car:'**
+  /// **'Error restoring car'**
   String get errorRestoringCar;
 
   /// No description provided for @carPermanentlyDeleted.
@@ -655,7 +985,7 @@ abstract class AppLocalizations {
   /// No description provided for @errorDeletingCarPermanently.
   ///
   /// In en, this message translates to:
-  /// **'Error deleting car permanently:'**
+  /// **'Error deleting car permanently'**
   String get errorDeletingCarPermanently;
 
   /// No description provided for @restoreRentalButton.
@@ -679,7 +1009,7 @@ abstract class AppLocalizations {
   /// No description provided for @errorRestoringRental.
   ///
   /// In en, this message translates to:
-  /// **'Error restoring rental:'**
+  /// **'Error restoring rental'**
   String get errorRestoringRental;
 
   /// No description provided for @rentalPermanentlyDeleted.
@@ -691,14 +1021,8 @@ abstract class AppLocalizations {
   /// No description provided for @errorDeletingRentalPermanently.
   ///
   /// In en, this message translates to:
-  /// **'Error deleting rental permanently:'**
+  /// **'Error deleting rental permanently'**
   String get errorDeletingRentalPermanently;
-
-  /// No description provided for @archivedRentalsAppearHere.
-  ///
-  /// In en, this message translates to:
-  /// **'Rentals you archive will appear here.'**
-  String get archivedRentalsAppearHere;
 }
 
 class _AppLocalizationsDelegate
