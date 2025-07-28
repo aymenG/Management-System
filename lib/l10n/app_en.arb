@@ -196,5 +196,22 @@
     "rentalRestoredSuccess": "Rental restored successfully!",
     "errorRestoringRental": "Error restoring rental",
     "rentalPermanentlyDeleted": "Rental permanently deleted!",
-    "errorDeletingRentalPermanently": "Error deleting rental permanently"
+    "errorDeletingRentalPermanently": "Error deleting rental permanently",
+
+    "loginEnterCredentials": "Please enter both username and password.",
+    "loginUserNotFound": "User not found.",
+    "loginWelcome": "Welcome, {username}!",
+    "@loginWelcome": {
+        "placeholders": {
+            "username": {
+                "type": "String",
+                "example": "JohnDoe"
+            }
+        }
+    },
+    "loginIncorrectPassword": "Incorrect password.",
+    "loginTitle": "Login to your account",
+    "loginUsernameLabel": "Enter your username",
+    "loginPasswordLabel": "Enter your password",
+    "loginButton": "Login"
 }

@@ -508,4 +508,31 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get errorDeletingRentalPermanently =>
       'Error deleting rental permanently';
+
+  @override
+  String get loginEnterCredentials =>
+      'Please enter both username and password.';
+
+  @override
+  String get loginUserNotFound => 'User not found.';
+
+  @override
+  String loginWelcome(String username) {
+    return 'Welcome, $username!';
+  }
+
+  @override
+  String get loginIncorrectPassword => 'Incorrect password.';
+
+  @override
+  String get loginTitle => 'Login to your account';
+
+  @override
+  String get loginUsernameLabel => 'Enter your username';
+
+  @override
+  String get loginPasswordLabel => 'Enter your password';
+
+  @override
+  String get loginButton => 'Login';
 }

@@ -1023,6 +1023,54 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Error deleting rental permanently'**
   String get errorDeletingRentalPermanently;
+
+  /// No description provided for @loginEnterCredentials.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter both username and password.'**
+  String get loginEnterCredentials;
+
+  /// No description provided for @loginUserNotFound.
+  ///
+  /// In en, this message translates to:
+  /// **'User not found.'**
+  String get loginUserNotFound;
+
+  /// No description provided for @loginWelcome.
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome, {username}!'**
+  String loginWelcome(String username);
+
+  /// No description provided for @loginIncorrectPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Incorrect password.'**
+  String get loginIncorrectPassword;
+
+  /// No description provided for @loginTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Login to your account'**
+  String get loginTitle;
+
+  /// No description provided for @loginUsernameLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your username'**
+  String get loginUsernameLabel;
+
+  /// No description provided for @loginPasswordLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your password'**
+  String get loginPasswordLabel;
+
+  /// No description provided for @loginButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Login'**
+  String get loginButton;
 }
 
 class _AppLocalizationsDelegate

@@ -196,5 +196,22 @@
     "rentalRestoredSuccess": "تم استعادة الإيجار بنجاح!",
     "errorRestoringRental": "خطأ في استعادة الإيجار",
     "rentalPermanentlyDeleted": "تم حذف الإيجار نهائياً!",
-    "errorDeletingRentalPermanently": "خطأ في حذف الإيجار نهائياً"
+    "errorDeletingRentalPermanently": "خطأ في حذف الإيجار نهائياً",
+
+    "loginEnterCredentials": "الرجاء إدخال اسم المستخدم وكلمة المرور.",
+    "loginUserNotFound": "المستخدم غير موجود.",
+    "loginWelcome": "مرحباً بك، {username}!",
+    "@loginWelcome": {
+        "placeholders": {
+            "username": {
+                "type": "String",
+                "example": "جون"
+            }
+        }
+    },
+    "loginIncorrectPassword": "كلمة المرور خاطئة.",
+    "loginTitle": "تسجيل الدخول إلى حسابك",
+    "loginUsernameLabel": "أدخل اسم المستخدم الخاص بك",
+    "loginPasswordLabel": "أدخل كلمة المرور الخاصة بك",
+    "loginButton": "تسجيل الدخول"
 }

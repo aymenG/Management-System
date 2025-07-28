@@ -507,4 +507,30 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get errorDeletingRentalPermanently => 'خطأ في حذف الإيجار نهائياً';
+
+  @override
+  String get loginEnterCredentials => 'الرجاء إدخال اسم المستخدم وكلمة المرور.';
+
+  @override
+  String get loginUserNotFound => 'المستخدم غير موجود.';
+
+  @override
+  String loginWelcome(String username) {
+    return 'مرحباً بك، $username!';
+  }
+
+  @override
+  String get loginIncorrectPassword => 'كلمة المرور خاطئة.';
+
+  @override
+  String get loginTitle => 'تسجيل الدخول إلى حسابك';
+
+  @override
+  String get loginUsernameLabel => 'أدخل اسم المستخدم الخاص بك';
+
+  @override
+  String get loginPasswordLabel => 'أدخل كلمة المرور الخاصة بك';
+
+  @override
+  String get loginButton => 'تسجيل الدخول';
 }

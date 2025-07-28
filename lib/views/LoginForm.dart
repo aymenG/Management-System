@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import '../controllers/database_helper.dart';
 import '../controllers/my_scripts.dart';
+import 'package:management_system/l10n/app_localizations.dart'; // Import AppLocalizations
 
 class LoginFormWidget extends StatefulWidget {
   const LoginFormWidget({super.key});
@@ -17,12 +18,17 @@ class _LoginFormWidgetState extends State<LoginFormWidget> {
   final _dbHelper = DatabaseHelper();
 
   void _handleLogin() async {
+    // Get the localized strings
+    final AppLocalizations localizations = AppLocalizations.of(context)!;
+
     final username = _usernameController.text.trim();
     final rawPassword = _passwordController.text;
     if (username.isEmpty || rawPassword.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Please enter both username and password.'),
+        SnackBar(
+          content: Text(
+            localizations.loginEnterCredentials,
+          ), // Localized string
         ),
       );
       return;
@@ -33,35 +39,36 @@ class _LoginFormWidgetState extends State<LoginFormWidget> {
     final user = await _dbHelper.getUserByUsername(username);
 
     if (user == null) {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(const SnackBar(content: Text('User not found.')));
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(localizations.loginUserNotFound)),
+      ); // Localized string
 
       return;
     }
 
     if (user['hashed_password'] == hashedPassword) {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text('Welcome, $username!')));
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(localizations.loginWelcome(username))),
+      ); // Localized string with placeholder
       Navigator.push(
         context,
         MaterialPageRoute(builder: (_) => CRSDashboard()),
       );
       // Navigate to another screen or update the state
     } else {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(const SnackBar(content: Text('Incorrect password.')));
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(localizations.loginIncorrectPassword)),
+      ); // Localized string
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    // Get screen width to make decisions
+    // Get the localized strings
+    final AppLocalizations localizations = AppLocalizations.of(context)!;
+
     final screenWidth = MediaQuery.of(context).size.width;
-    // Define a breakpoint for when to switch from Row to Column layout
-    const double breakpoint = 600.0; // Example breakpoint (you can adjust this)
+    const double breakpoint = 600.0;
 
     return Container(
       padding: const EdgeInsets.all(16),
@@ -72,63 +79,52 @@ class _LoginFormWidgetState extends State<LoginFormWidget> {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                // Image on the left
                 Expanded(
-                  flex: 1, // Takes 1 part of available space
+                  flex: 1,
                   child: Center(
-                    // Center the SVG within its expanded space
                     child: SvgPicture.asset(
                       'assets/images/login.svg',
-                      height:
-                          MediaQuery.of(context).size.height *
-                          0.5, // Make SVG height responsive
-                      width:
-                          MediaQuery.of(context).size.width *
-                          0.3, // Make SVG width responsive
-                      fit: BoxFit
-                          .contain, // Ensures the SVG fits without clipping
+                      height: MediaQuery.of(context).size.height * 0.5,
+                      width: MediaQuery.of(context).size.width * 0.3,
+                      fit: BoxFit.contain,
                     ),
                   ),
                 ),
-                SizedBox(
-                  width: 50,
-                ), // Fixed gap (you might want this to be responsive too)
-                // Login Form on the right
+                const SizedBox(width: 50),
                 Expanded(
-                  flex: 1, // Takes 1 part of available space
+                  flex: 1,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    mainAxisSize: MainAxisSize.min, // Use min to wrap content
+                    mainAxisSize: MainAxisSize.min,
                     children: [
-                      const Text(
-                        'Login to your account',
-                        style: TextStyle(fontSize: 24),
+                      Text(
+                        localizations.loginTitle, // Localized string
+                        style: const TextStyle(fontSize: 24),
                       ),
                       const SizedBox(height: 30),
 
-                      // Username field
                       SizedBox(
-                        width:
-                            300, // You can keep a max width, or make this responsive too
+                        width: 300,
                         child: TextField(
                           controller: _usernameController,
-                          decoration: const InputDecoration(
-                            border: OutlineInputBorder(),
-                            labelText: 'Enter your username',
+                          decoration: InputDecoration(
+                            border: const OutlineInputBorder(),
+                            labelText: localizations
+                                .loginUsernameLabel, // Localized string
                           ),
                         ),
                       ),
 
                       const SizedBox(height: 20),
 
-                      // Password field
                       SizedBox(
-                        width: 300, // You can keep a max width
+                        width: 300,
                         child: TextField(
                           controller: _passwordController,
-                          decoration: const InputDecoration(
-                            border: OutlineInputBorder(),
-                            labelText: 'Enter your password',
+                          decoration: InputDecoration(
+                            border: const OutlineInputBorder(),
+                            labelText: localizations
+                                .loginPasswordLabel, // Localized string
                           ),
                           obscureText: true,
                           enableSuggestions: false,
@@ -139,7 +135,7 @@ class _LoginFormWidgetState extends State<LoginFormWidget> {
                       const SizedBox(height: 30),
 
                       SizedBox(
-                        width: 200, // Fixed width
+                        width: 200,
                         height: 60,
                         child: TextButton(
                           style: TextButton.styleFrom(
@@ -152,7 +148,9 @@ class _LoginFormWidgetState extends State<LoginFormWidget> {
                             ),
                           ),
                           onPressed: _handleLogin,
-                          child: const Text('Login'),
+                          child: Text(
+                            localizations.loginButton,
+                          ), // Localized string
                         ),
                       ),
                     ],
@@ -161,55 +159,47 @@ class _LoginFormWidgetState extends State<LoginFormWidget> {
               ],
             )
           : SingleChildScrollView(
-              // Mobile Layout (Image and form stacked vertically)
+              // Mobile Layout
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment:
-                    CrossAxisAlignment.center, // Center items horizontally
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  // Image at the top for mobile
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 20.0),
                     child: SvgPicture.asset(
                       'assets/images/login.svg',
-                      height:
-                          MediaQuery.of(context).size.height *
-                          0.3, // Smaller SVG for mobile
+                      height: MediaQuery.of(context).size.height * 0.3,
                       fit: BoxFit.contain,
                     ),
                   ),
-                  const Text(
-                    'Login to your account',
-                    style: TextStyle(fontSize: 24),
+                  Text(
+                    localizations.loginTitle, // Localized string
+                    style: const TextStyle(fontSize: 24),
                   ),
                   const SizedBox(height: 30),
 
-                  // Username field (full width on small screens)
                   Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 20.0,
-                    ), // Add horizontal padding
+                    padding: const EdgeInsets.symmetric(horizontal: 20.0),
                     child: TextField(
                       controller: _usernameController,
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                        labelText: 'Enter your username',
+                      decoration: InputDecoration(
+                        border: const OutlineInputBorder(),
+                        labelText: localizations
+                            .loginUsernameLabel, // Localized string
                       ),
                     ),
                   ),
 
                   const SizedBox(height: 20),
 
-                  // Password field (full width on small screens)
                   Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 20.0,
-                    ), // Add horizontal padding
+                    padding: const EdgeInsets.symmetric(horizontal: 20.0),
                     child: TextField(
                       controller: _passwordController,
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                        labelText: 'Enter your password',
+                      decoration: InputDecoration(
+                        border: const OutlineInputBorder(),
+                        labelText: localizations
+                            .loginPasswordLabel, // Localized string
                       ),
                       obscureText: true,
                       enableSuggestions: false,
@@ -220,8 +210,7 @@ class _LoginFormWidgetState extends State<LoginFormWidget> {
                   const SizedBox(height: 30),
 
                   SizedBox(
-                    width:
-                        200, // You can adjust this for mobile if needed, or make it flexible
+                    width: 200,
                     height: 60,
                     child: TextButton(
                       style: TextButton.styleFrom(
@@ -234,7 +223,9 @@ class _LoginFormWidgetState extends State<LoginFormWidget> {
                         ),
                       ),
                       onPressed: _handleLogin,
-                      child: const Text('Login'),
+                      child: Text(
+                        localizations.loginButton,
+                      ), // Localized string
                     ),
                   ),
                 ],

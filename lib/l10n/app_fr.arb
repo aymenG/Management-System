@@ -196,5 +196,22 @@
     "rentalRestoredSuccess": "Location restaurée avec succès !",
     "errorRestoringRental": "Erreur lors de la restauration de la location",
     "rentalPermanentlyDeleted": "Location supprimée définitivement !",
-    "errorDeletingRentalPermanently": "Erreur lors de la suppression définitive de la location"
+    "errorDeletingRentalPermanently": "Erreur lors de la suppression définitive de la location",
+
+    "loginEnterCredentials": "Veuillez entrer le nom d'utilisateur et le mot de passe.",
+    "loginUserNotFound": "Utilisateur introuvable.",
+    "loginWelcome": "Bienvenue, {username} !",
+    "@loginWelcome": {
+        "placeholders": {
+            "username": {
+                "type": "String",
+                "example": "JeanDupond"
+            }
+        }
+    },
+    "loginIncorrectPassword": "Mot de passe incorrect.",
+    "loginTitle": "Connectez-vous à votre compte",
+    "loginUsernameLabel": "Entrez votre nom d'utilisateur",
+    "loginPasswordLabel": "Entrez votre mot de passe",
+    "loginButton": "Connexion"
 }

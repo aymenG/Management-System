@@ -517,4 +517,31 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get errorDeletingRentalPermanently =>
       'Erreur lors de la suppression définitive de la location';
+
+  @override
+  String get loginEnterCredentials =>
+      'Veuillez entrer le nom d\'utilisateur et le mot de passe.';
+
+  @override
+  String get loginUserNotFound => 'Utilisateur introuvable.';
+
+  @override
+  String loginWelcome(String username) {
+    return 'Bienvenue, $username !';
+  }
+
+  @override
+  String get loginIncorrectPassword => 'Mot de passe incorrect.';
+
+  @override
+  String get loginTitle => 'Connectez-vous à votre compte';
+
+  @override
+  String get loginUsernameLabel => 'Entrez votre nom d\'utilisateur';
+
+  @override
+  String get loginPasswordLabel => 'Entrez votre mot de passe';
+
+  @override
+  String get loginButton => 'Connexion';
 }
