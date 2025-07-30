@@ -544,4 +544,43 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get loginButton => 'Connexion';
+
+  @override
+  String get archiveRestoreTitle => 'Restaurer';
+
+  @override
+  String get archiveConfirmRestore =>
+      'Êtes-vous sûr de vouloir restaurer cet élément ?';
+
+  @override
+  String get archiveCarsTab => 'Voitures';
+
+  @override
+  String get archiveRentalsTab => 'Locations';
+
+  @override
+  String get archiveNoArchivedCars => 'Aucune voiture archivée.';
+
+  @override
+  String get archiveRestoreCarTooltip => 'Restaurer la Voiture';
+
+  @override
+  String get archiveNoArchivedRentals => 'Aucune location archivée.';
+
+  @override
+  String get archiveUnknownCustomer => 'Client Inconnu';
+
+  @override
+  String archiveRentalDetails(
+    String brand,
+    String model,
+    String plateNumber,
+    String rentDate,
+    String returnDate,
+  ) {
+    return 'Voiture : $brand $model - Plaque : $plateNumber\nLocation : $rentDate → Retour : $returnDate';
+  }
+
+  @override
+  String get archiveRestoreRentalTooltip => 'Restaurer la Location';
 }

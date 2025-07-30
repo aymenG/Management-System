@@ -1071,6 +1071,72 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Login'**
   String get loginButton;
+
+  /// No description provided for @archiveRestoreTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Restore'**
+  String get archiveRestoreTitle;
+
+  /// No description provided for @archiveConfirmRestore.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to restore this item?'**
+  String get archiveConfirmRestore;
+
+  /// No description provided for @archiveCarsTab.
+  ///
+  /// In en, this message translates to:
+  /// **'Cars'**
+  String get archiveCarsTab;
+
+  /// No description provided for @archiveRentalsTab.
+  ///
+  /// In en, this message translates to:
+  /// **'Rentals'**
+  String get archiveRentalsTab;
+
+  /// No description provided for @archiveNoArchivedCars.
+  ///
+  /// In en, this message translates to:
+  /// **'No archived cars.'**
+  String get archiveNoArchivedCars;
+
+  /// No description provided for @archiveRestoreCarTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Restore Car'**
+  String get archiveRestoreCarTooltip;
+
+  /// No description provided for @archiveNoArchivedRentals.
+  ///
+  /// In en, this message translates to:
+  /// **'No archived rentals.'**
+  String get archiveNoArchivedRentals;
+
+  /// No description provided for @archiveUnknownCustomer.
+  ///
+  /// In en, this message translates to:
+  /// **'Unknown Customer'**
+  String get archiveUnknownCustomer;
+
+  /// No description provided for @archiveRentalDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Car: {brand} {model} - Plate: {plateNumber}\nRent: {rentDate} → Return: {returnDate}'**
+  String archiveRentalDetails(
+    String brand,
+    String model,
+    String plateNumber,
+    String rentDate,
+    String returnDate,
+  );
+
+  /// No description provided for @archiveRestoreRentalTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Restore Rental'**
+  String get archiveRestoreRentalTooltip;
 }
 
 class _AppLocalizationsDelegate

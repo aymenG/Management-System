@@ -197,7 +197,6 @@
     "errorRestoringRental": "Erreur lors de la restauration de la location",
     "rentalPermanentlyDeleted": "Location supprimée définitivement !",
     "errorDeletingRentalPermanently": "Erreur lors de la suppression définitive de la location",
-
     "loginEnterCredentials": "Veuillez entrer le nom d'utilisateur et le mot de passe.",
     "loginUserNotFound": "Utilisateur introuvable.",
     "loginWelcome": "Bienvenue, {username} !",
@@ -213,5 +212,24 @@
     "loginTitle": "Connectez-vous à votre compte",
     "loginUsernameLabel": "Entrez votre nom d'utilisateur",
     "loginPasswordLabel": "Entrez votre mot de passe",
-    "loginButton": "Connexion"
+    "loginButton": "Connexion",
+    "archiveRestoreTitle": "Restaurer",
+    "archiveConfirmRestore": "Êtes-vous sûr de vouloir restaurer cet élément ?",
+    "archiveCarsTab": "Voitures",
+    "archiveRentalsTab": "Locations",
+    "archiveNoArchivedCars": "Aucune voiture archivée.",
+    "archiveRestoreCarTooltip": "Restaurer la Voiture",
+    "archiveNoArchivedRentals": "Aucune location archivée.",
+    "archiveUnknownCustomer": "Client Inconnu",
+    "archiveRentalDetails": "Voiture : {brand} {model} - Plaque : {plateNumber}\nLocation : {rentDate} → Retour : {returnDate}",
+    "@archiveRentalDetails": {
+        "placeholders": {
+            "brand": { "type": "String" },
+            "model": { "type": "String" },
+            "plateNumber": { "type": "String" },
+            "rentDate": { "type": "String" },
+            "returnDate": { "type": "String" }
+        }
+    },
+    "archiveRestoreRentalTooltip": "Restaurer la Location"
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:management_system/controllers/database_helper.dart';
+import 'package:management_system/l10n/app_localizations.dart'; // Import AppLocalizations
 
 class ArchivePage extends StatefulWidget {
   const ArchivePage({super.key});
@@ -27,19 +28,25 @@ class _ArchivePageState extends State<ArchivePage>
     required BuildContext context,
     required VoidCallback onConfirm,
   }) async {
+    // This context is passed from the itemBuilder/onPressed, which should be valid.
+    final AppLocalizations localizations = AppLocalizations.of(context)!;
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: const Text("Restore"),
-        content: const Text("Are you sure you want to restore this item?"),
+        title: Text(localizations.archiveRestoreTitle), // Accesses localization
+        content: Text(
+          localizations.archiveConfirmRestore,
+        ), // Accesses localization
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(ctx, false),
-            child: const Text("Cancel"),
+            child: Text(localizations.cancelButton), // Accesses localization
           ),
           ElevatedButton(
             onPressed: () => Navigator.pop(ctx, true),
-            child: const Text("Restore"),
+            child: Text(
+              localizations.archiveRestoreTitle,
+            ), // Accesses localization
           ),
         ],
       ),
@@ -55,34 +62,47 @@ class _ArchivePageState extends State<ArchivePage>
 
   @override
   Widget build(BuildContext context) {
+    // This context is the direct context of the ArchivePage widget, which is valid.
+    final AppLocalizations localizations = AppLocalizations.of(context)!;
+
     return Column(
       children: [
         TabBar(
           controller: _tabController,
           labelColor: Theme.of(context).colorScheme.primary,
-          tabs: const [
-            Tab(text: 'Cars'),
-            Tab(text: 'Rentals'),
+          tabs: [
+            Tab(text: localizations.archiveCarsTab), // Accesses localization
+            Tab(text: localizations.archiveRentalsTab), // Accesses localization
           ],
         ),
         Expanded(
           child: TabBarView(
             controller: _tabController,
-            children: [_buildArchivedCars(), _buildArchivedRentals()],
+            children: [
+              _buildArchivedCars(localizations),
+              _buildArchivedRentals(localizations),
+            ],
           ),
         ),
       ],
     );
   }
 
-  Widget _buildArchivedCars() {
+  Widget _buildArchivedCars(AppLocalizations localizations) {
+    // localizations object is correctly passed here.
     return FutureBuilder<List<Map<String, dynamic>>>(
       future: dbHelper.getArchivedCars(),
       builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting)
+        if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(child: CircularProgressIndicator());
-        if (!snapshot.hasData || snapshot.data!.isEmpty)
-          return const Center(child: Text('No archived cars.'));
+        }
+        if (!snapshot.hasData || snapshot.data!.isEmpty) {
+          return Center(
+            child: Text(
+              localizations.archiveNoArchivedCars,
+            ), // Accesses localization
+          );
+        }
 
         final cars = snapshot.data!;
         return ListView.separated(
@@ -94,15 +114,28 @@ class _ArchivePageState extends State<ArchivePage>
             return ListTile(
               leading: const Icon(Icons.directions_car),
               title: Text('${car['brand']} ${car['model']}'),
-              subtitle: Text('Plate: ${car['plate_number']}'),
+              subtitle: Text(
+                localizations.plateNumber(
+                  car['plate_number'].toString(),
+                ), // Accesses localization
+              ),
               trailing: IconButton(
                 icon: const Icon(Icons.restore),
-                tooltip: 'Restore Car',
+                tooltip: localizations
+                    .archiveRestoreCarTooltip, // Accesses localization
                 onPressed: () {
                   _confirmRestore(
-                    context: context,
+                    context:
+                        context, // Passes context from itemBuilder, which is valid.
                     onConfirm: () async {
                       await dbHelper.restoreCar(car['id']);
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(
+                            localizations.carRestoredSuccess,
+                          ), // Accesses localization
+                        ),
+                      );
                       _refresh();
                     },
                   );
@@ -115,14 +148,21 @@ class _ArchivePageState extends State<ArchivePage>
     );
   }
 
-  Widget _buildArchivedRentals() {
+  Widget _buildArchivedRentals(AppLocalizations localizations) {
+    // localizations object is correctly passed here.
     return FutureBuilder<List<Map<String, dynamic>>>(
       future: dbHelper.getArchivedRentals(),
       builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting)
+        if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(child: CircularProgressIndicator());
-        if (!snapshot.hasData || snapshot.data!.isEmpty)
-          return const Center(child: Text('No archived rentals.'));
+        }
+        if (!snapshot.hasData || snapshot.data!.isEmpty) {
+          return Center(
+            child: Text(
+              localizations.archiveNoArchivedRentals,
+            ), // Accesses localization
+          );
+        }
 
         final rentals = snapshot.data!;
         return ListView.separated(
@@ -133,20 +173,39 @@ class _ArchivePageState extends State<ArchivePage>
             final rental = rentals[index];
             return ListTile(
               leading: const Icon(Icons.receipt_long),
-              title: Text(rental['customer_name'] ?? 'Unknown Customer'),
+              title: Text(
+                rental['customer_name'] ??
+                    localizations
+                        .archiveUnknownCustomer, // Accesses localization
+              ),
               subtitle: Text(
-                'Car: ${rental['brand']} ${rental['model']} - Plate: ${rental['plate_number']}\n'
-                'Rent: ${rental['rent_date']} → Return: ${rental['return_date']}',
+                localizations.archiveRentalDetails(
+                  // Accesses localization with parameters
+                  rental['brand'] ?? '',
+                  rental['model'] ?? '',
+                  rental['plate_number'] ?? '',
+                  rental['rent_date'] ?? '',
+                  rental['return_date'] ?? '',
+                ),
               ),
               isThreeLine: true,
               trailing: IconButton(
                 icon: const Icon(Icons.restore),
-                tooltip: 'Restore Rental',
+                tooltip: localizations
+                    .archiveRestoreRentalTooltip, // Accesses localization
                 onPressed: () {
                   _confirmRestore(
-                    context: context,
+                    context:
+                        context, // Passes context from itemBuilder, which is valid.
                     onConfirm: () async {
                       await dbHelper.restoreRental(rental['id']);
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(
+                            localizations.rentalRestoredSuccess,
+                          ), // Accesses localization
+                        ),
+                      );
                       _refresh();
                     },
                   );

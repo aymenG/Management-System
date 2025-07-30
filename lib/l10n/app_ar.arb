@@ -197,7 +197,6 @@
     "errorRestoringRental": "خطأ في استعادة الإيجار",
     "rentalPermanentlyDeleted": "تم حذف الإيجار نهائياً!",
     "errorDeletingRentalPermanently": "خطأ في حذف الإيجار نهائياً",
-
     "loginEnterCredentials": "الرجاء إدخال اسم المستخدم وكلمة المرور.",
     "loginUserNotFound": "المستخدم غير موجود.",
     "loginWelcome": "مرحباً بك، {username}!",
@@ -213,5 +212,24 @@
     "loginTitle": "تسجيل الدخول إلى حسابك",
     "loginUsernameLabel": "أدخل اسم المستخدم الخاص بك",
     "loginPasswordLabel": "أدخل كلمة المرور الخاصة بك",
-    "loginButton": "تسجيل الدخول"
+    "loginButton": "تسجيل الدخول",
+    "archiveRestoreTitle": "استعادة",
+    "archiveConfirmRestore": "هل أنت متأكد أنك تريد استعادة هذا العنصر؟",
+    "archiveCarsTab": "السيارات",
+    "archiveRentalsTab": "الإيجارات",
+    "archiveNoArchivedCars": "لا توجد سيارات مؤرشفة.",
+    "archiveRestoreCarTooltip": "استعادة السيارة",
+    "archiveNoArchivedRentals": "لا توجد إيجارات مؤرشفة.",
+    "archiveUnknownCustomer": "عميل غير معروف",
+    "archiveRentalDetails": "السيارة: {brand} {model} - اللوحة: {plateNumber}\nالإيجار: {rentDate} ← الإرجاع: {returnDate}",
+    "@archiveRentalDetails": {
+        "placeholders": {
+            "brand": { "type": "String" },
+            "model": { "type": "String" },
+            "plateNumber": { "type": "String" },
+            "rentDate": { "type": "String" },
+            "returnDate": { "type": "String" }
+        }
+    },
+    "archiveRestoreRentalTooltip": "استعادة الإيجار"
 }

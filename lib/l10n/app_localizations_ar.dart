@@ -533,4 +533,43 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get loginButton => 'تسجيل الدخول';
+
+  @override
+  String get archiveRestoreTitle => 'استعادة';
+
+  @override
+  String get archiveConfirmRestore =>
+      'هل أنت متأكد أنك تريد استعادة هذا العنصر؟';
+
+  @override
+  String get archiveCarsTab => 'السيارات';
+
+  @override
+  String get archiveRentalsTab => 'الإيجارات';
+
+  @override
+  String get archiveNoArchivedCars => 'لا توجد سيارات مؤرشفة.';
+
+  @override
+  String get archiveRestoreCarTooltip => 'استعادة السيارة';
+
+  @override
+  String get archiveNoArchivedRentals => 'لا توجد إيجارات مؤرشفة.';
+
+  @override
+  String get archiveUnknownCustomer => 'عميل غير معروف';
+
+  @override
+  String archiveRentalDetails(
+    String brand,
+    String model,
+    String plateNumber,
+    String rentDate,
+    String returnDate,
+  ) {
+    return 'السيارة: $brand $model - اللوحة: $plateNumber\nالإيجار: $rentDate ← الإرجاع: $returnDate';
+  }
+
+  @override
+  String get archiveRestoreRentalTooltip => 'استعادة الإيجار';
 }
