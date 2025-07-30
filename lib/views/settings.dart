@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:management_system/controllers/database_helper.dart';
-import 'package:management_system/views/custom_button.dart';
-import '../../controllers/my_scripts.dart';
+import 'package:management_system/views/custom_button.dart'; // Assuming CustomActionButton is here
+import 'package:management_system/l10n/app_localizations.dart'; // Import AppLocalizations
+import '../../controllers/my_scripts.dart'; // For hashPassword
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
@@ -44,18 +45,21 @@ class _SettingsPageState extends State<SettingsPage> {
   }
 
   Future<void> _handleUpdate() async {
+    final AppLocalizations localizations = AppLocalizations.of(
+      context,
+    )!; // Get localizations
     final username = _usernameController.text.trim();
     final currentPassword = _currentPasswordController.text;
     final newPassword = _newPasswordController.text;
 
     if (username.isEmpty || currentPassword.isEmpty) {
-      _showSnackBar('Please fill in the required fields.');
+      _showSnackBar(localizations.settingsFillRequiredFields); // Localized
       return;
     }
 
     final admin = await _dbHelper.getAdmin();
     if (admin == null) {
-      _showSnackBar('Admin not found.');
+      _showSnackBar(localizations.settingsAdminNotFound); // Localized
       return;
     }
 
@@ -64,7 +68,9 @@ class _SettingsPageState extends State<SettingsPage> {
     final storedHashedPassword = admin['hashed_password'];
 
     if (hashedInput != storedHashedPassword) {
-      _showSnackBar('Current password is incorrect.');
+      _showSnackBar(
+        localizations.settingsCurrentPasswordIncorrect,
+      ); // Localized
       return;
     }
 
@@ -82,7 +88,7 @@ class _SettingsPageState extends State<SettingsPage> {
       whereArgs: [admin['id']],
     );
 
-    _showSnackBar('Credentials updated successfully!');
+    _showSnackBar(localizations.settingsCredentialsUpdatedSuccess); // Localized
     _currentPasswordController.clear();
     _newPasswordController.clear();
     _loadAdminData(); // refresh displayed username
@@ -96,14 +102,18 @@ class _SettingsPageState extends State<SettingsPage> {
 
   @override
   Widget build(BuildContext context) {
+    final AppLocalizations localizations = AppLocalizations.of(
+      context,
+    )!; // Get localizations
+
     return SingleChildScrollView(
       padding: const EdgeInsets.all(16.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            'Settings',
-            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+          Text(
+            localizations.settingsPageTitle, // Localized
+            style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 20),
           SettingsCard(
@@ -123,15 +133,17 @@ class _SettingsPageState extends State<SettingsPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      _currentUsername ?? 'Admin',
+                      _currentUsername ??
+                          localizations
+                              .settingsAdminDefaultUsername, // Localized fallback
                       style: const TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    const Text(
-                      'Role: System Administrator',
-                      style: TextStyle(color: Colors.grey),
+                    Text(
+                      localizations.settingsAdminRole, // Localized
+                      style: const TextStyle(color: Colors.grey),
                     ),
                   ],
                 ),
@@ -143,34 +155,39 @@ class _SettingsPageState extends State<SettingsPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
-                  'Update Credentials',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                Text(
+                  localizations.settingsUpdateCredentialsTitle, // Localized
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
                 const SizedBox(height: 16),
                 TextField(
                   controller: _usernameController,
-                  decoration: const InputDecoration(
-                    labelText: 'Username',
-                    border: OutlineInputBorder(),
+                  decoration: InputDecoration(
+                    labelText: localizations.settingsUsernameLabel, // Localized
+                    border: const OutlineInputBorder(),
                   ),
                 ),
                 const SizedBox(height: 16),
                 TextField(
                   controller: _currentPasswordController,
                   obscureText: true,
-                  decoration: const InputDecoration(
-                    labelText: 'Current Password',
-                    border: OutlineInputBorder(),
+                  decoration: InputDecoration(
+                    labelText:
+                        localizations.settingsCurrentPasswordLabel, // Localized
+                    border: const OutlineInputBorder(),
                   ),
                 ),
                 const SizedBox(height: 16),
                 TextField(
                   controller: _newPasswordController,
                   obscureText: true,
-                  decoration: const InputDecoration(
-                    labelText: 'New Password (optional)',
-                    border: OutlineInputBorder(),
+                  decoration: InputDecoration(
+                    labelText:
+                        localizations.settingsNewPasswordLabel, // Localized
+                    border: const OutlineInputBorder(),
                   ),
                 ),
                 const SizedBox(height: 16),
@@ -178,7 +195,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   child: CustomActionButton(
                     onPressed: _handleUpdate,
                     icon: Icons.save,
-                    label: 'Save Changes',
+                    label: localizations.settingsSaveChangesButton, // Localized
                     color: Colors.deepPurple,
                   ),
                 ),

@@ -1137,6 +1137,78 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Restore Rental'**
   String get archiveRestoreRentalTooltip;
+
+  /// No description provided for @settingsPageTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Settings'**
+  String get settingsPageTitle;
+
+  /// No description provided for @settingsAdminDefaultUsername.
+  ///
+  /// In en, this message translates to:
+  /// **'Admin'**
+  String get settingsAdminDefaultUsername;
+
+  /// No description provided for @settingsAdminRole.
+  ///
+  /// In en, this message translates to:
+  /// **'Role: System Administrator'**
+  String get settingsAdminRole;
+
+  /// No description provided for @settingsUpdateCredentialsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Update Credentials'**
+  String get settingsUpdateCredentialsTitle;
+
+  /// No description provided for @settingsUsernameLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Username'**
+  String get settingsUsernameLabel;
+
+  /// No description provided for @settingsCurrentPasswordLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Current Password'**
+  String get settingsCurrentPasswordLabel;
+
+  /// No description provided for @settingsNewPasswordLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'New Password (optional)'**
+  String get settingsNewPasswordLabel;
+
+  /// No description provided for @settingsSaveChangesButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Save Changes'**
+  String get settingsSaveChangesButton;
+
+  /// No description provided for @settingsFillRequiredFields.
+  ///
+  /// In en, this message translates to:
+  /// **'Please fill in the required fields.'**
+  String get settingsFillRequiredFields;
+
+  /// No description provided for @settingsAdminNotFound.
+  ///
+  /// In en, this message translates to:
+  /// **'Admin not found.'**
+  String get settingsAdminNotFound;
+
+  /// No description provided for @settingsCurrentPasswordIncorrect.
+  ///
+  /// In en, this message translates to:
+  /// **'Current password is incorrect.'**
+  String get settingsCurrentPasswordIncorrect;
+
+  /// No description provided for @settingsCredentialsUpdatedSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Credentials updated successfully!'**
+  String get settingsCredentialsUpdatedSuccess;
 }
 
 class _AppLocalizationsDelegate

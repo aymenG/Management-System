@@ -231,5 +231,17 @@
             "returnDate": { "type": "String" }
         }
     },
-    "archiveRestoreRentalTooltip": "Restaurer la Location"
+    "archiveRestoreRentalTooltip": "Restaurer la Location",
+    "settingsPageTitle": "Paramètres",
+    "settingsAdminDefaultUsername": "Admin",
+    "settingsAdminRole": "Rôle : Administrateur Système",
+    "settingsUpdateCredentialsTitle": "Mettre à Jour les Informations d'Identification",
+    "settingsUsernameLabel": "Nom d'utilisateur",
+    "settingsCurrentPasswordLabel": "Mot de passe actuel",
+    "settingsNewPasswordLabel": "Nouveau mot de passe (facultatif)",
+    "settingsSaveChangesButton": "Enregistrer les modifications",
+    "settingsFillRequiredFields": "Veuillez remplir les champs obligatoires.",
+    "settingsAdminNotFound": "Administrateur introuvable.",
+    "settingsCurrentPasswordIncorrect": "Le mot de passe actuel est incorrect.",
+    "settingsCredentialsUpdatedSuccess": "Informations d'identification mises à jour avec succès !"
 }

@@ -231,5 +231,17 @@
             "returnDate": { "type": "String" }
         }
     },
-    "archiveRestoreRentalTooltip": "Restore Rental"
+    "archiveRestoreRentalTooltip": "Restore Rental",
+    "settingsPageTitle": "Settings",
+    "settingsAdminDefaultUsername": "Admin",
+    "settingsAdminRole": "Role: System Administrator",
+    "settingsUpdateCredentialsTitle": "Update Credentials",
+    "settingsUsernameLabel": "Username",
+    "settingsCurrentPasswordLabel": "Current Password",
+    "settingsNewPasswordLabel": "New Password (optional)",
+    "settingsSaveChangesButton": "Save Changes",
+    "settingsFillRequiredFields": "Please fill in the required fields.",
+    "settingsAdminNotFound": "Admin not found.",
+    "settingsCurrentPasswordIncorrect": "Current password is incorrect.",
+    "settingsCredentialsUpdatedSuccess": "Credentials updated successfully!"
 }

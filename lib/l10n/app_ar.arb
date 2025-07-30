@@ -231,5 +231,17 @@
             "returnDate": { "type": "String" }
         }
     },
-    "archiveRestoreRentalTooltip": "استعادة الإيجار"
+    "archiveRestoreRentalTooltip": "استعادة الإيجار",
+    "settingsPageTitle": "الإعدادات",
+    "settingsAdminDefaultUsername": "المسؤول",
+    "settingsAdminRole": "الدور: مدير النظام",
+    "settingsUpdateCredentialsTitle": "تحديث بيانات الاعتماد",
+    "settingsUsernameLabel": "اسم المستخدم",
+    "settingsCurrentPasswordLabel": "كلمة المرور الحالية",
+    "settingsNewPasswordLabel": "كلمة المرور الجديدة (اختياري)",
+    "settingsSaveChangesButton": "حفظ التغييرات",
+    "settingsFillRequiredFields": "الرجاء ملء الحقول المطلوبة.",
+    "settingsAdminNotFound": "لم يتم العثور على المسؤول.",
+    "settingsCurrentPasswordIncorrect": "كلمة المرور الحالية غير صحيحة.",
+    "settingsCredentialsUpdatedSuccess": "تم تحديث بيانات الاعتماد بنجاح!"
 }

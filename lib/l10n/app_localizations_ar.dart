@@ -572,4 +572,42 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get archiveRestoreRentalTooltip => 'استعادة الإيجار';
+
+  @override
+  String get settingsPageTitle => 'الإعدادات';
+
+  @override
+  String get settingsAdminDefaultUsername => 'المسؤول';
+
+  @override
+  String get settingsAdminRole => 'الدور: مدير النظام';
+
+  @override
+  String get settingsUpdateCredentialsTitle => 'تحديث بيانات الاعتماد';
+
+  @override
+  String get settingsUsernameLabel => 'اسم المستخدم';
+
+  @override
+  String get settingsCurrentPasswordLabel => 'كلمة المرور الحالية';
+
+  @override
+  String get settingsNewPasswordLabel => 'كلمة المرور الجديدة (اختياري)';
+
+  @override
+  String get settingsSaveChangesButton => 'حفظ التغييرات';
+
+  @override
+  String get settingsFillRequiredFields => 'الرجاء ملء الحقول المطلوبة.';
+
+  @override
+  String get settingsAdminNotFound => 'لم يتم العثور على المسؤول.';
+
+  @override
+  String get settingsCurrentPasswordIncorrect =>
+      'كلمة المرور الحالية غير صحيحة.';
+
+  @override
+  String get settingsCredentialsUpdatedSuccess =>
+      'تم تحديث بيانات الاعتماد بنجاح!';
 }

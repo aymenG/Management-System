@@ -583,4 +583,44 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get archiveRestoreRentalTooltip => 'Restaurer la Location';
+
+  @override
+  String get settingsPageTitle => 'Paramètres';
+
+  @override
+  String get settingsAdminDefaultUsername => 'Admin';
+
+  @override
+  String get settingsAdminRole => 'Rôle : Administrateur Système';
+
+  @override
+  String get settingsUpdateCredentialsTitle =>
+      'Mettre à Jour les Informations d\'Identification';
+
+  @override
+  String get settingsUsernameLabel => 'Nom d\'utilisateur';
+
+  @override
+  String get settingsCurrentPasswordLabel => 'Mot de passe actuel';
+
+  @override
+  String get settingsNewPasswordLabel => 'Nouveau mot de passe (facultatif)';
+
+  @override
+  String get settingsSaveChangesButton => 'Enregistrer les modifications';
+
+  @override
+  String get settingsFillRequiredFields =>
+      'Veuillez remplir les champs obligatoires.';
+
+  @override
+  String get settingsAdminNotFound => 'Administrateur introuvable.';
+
+  @override
+  String get settingsCurrentPasswordIncorrect =>
+      'Le mot de passe actuel est incorrect.';
+
+  @override
+  String get settingsCredentialsUpdatedSuccess =>
+      'Informations d\'identification mises à jour avec succès !';
 }

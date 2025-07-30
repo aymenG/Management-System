@@ -574,4 +574,43 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get archiveRestoreRentalTooltip => 'Restore Rental';
+
+  @override
+  String get settingsPageTitle => 'Settings';
+
+  @override
+  String get settingsAdminDefaultUsername => 'Admin';
+
+  @override
+  String get settingsAdminRole => 'Role: System Administrator';
+
+  @override
+  String get settingsUpdateCredentialsTitle => 'Update Credentials';
+
+  @override
+  String get settingsUsernameLabel => 'Username';
+
+  @override
+  String get settingsCurrentPasswordLabel => 'Current Password';
+
+  @override
+  String get settingsNewPasswordLabel => 'New Password (optional)';
+
+  @override
+  String get settingsSaveChangesButton => 'Save Changes';
+
+  @override
+  String get settingsFillRequiredFields =>
+      'Please fill in the required fields.';
+
+  @override
+  String get settingsAdminNotFound => 'Admin not found.';
+
+  @override
+  String get settingsCurrentPasswordIncorrect =>
+      'Current password is incorrect.';
+
+  @override
+  String get settingsCredentialsUpdatedSuccess =>
+      'Credentials updated successfully!';
 }
