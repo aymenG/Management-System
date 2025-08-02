@@ -243,5 +243,22 @@
     "settingsFillRequiredFields": "الرجاء ملء الحقول المطلوبة.",
     "settingsAdminNotFound": "لم يتم العثور على المسؤول.",
     "settingsCurrentPasswordIncorrect": "كلمة المرور الحالية غير صحيحة.",
-    "settingsCredentialsUpdatedSuccess": "تم تحديث بيانات الاعتماد بنجاح!"
+    "settingsCredentialsUpdatedSuccess": "تم تحديث بيانات الاعتماد بنجاح!",
+    "carFormEditDialogTitle": "تعديل السيارة",
+    "carFormAddDialogTitle": "إضافة سيارة",
+    "carFormBrandDropdownLabel": "الماركة",
+    "carFormSelectBrandValidationError": "الرجاء اختيار ماركة",
+    "carFormModelTextFieldLabel": "الموديل",
+    "carFormEnterModelValidationError": "أدخل الموديل",
+    "carFormYearTextFieldLabel": "السنة",
+    "carFormEnterYearValidationError": "أدخل السنة",
+    "carFormEnterValidYearValidationError": "أدخل سنة صحيحة (مثال: 2023)",
+    "carFormPlateNumberTextFieldLabel": "رقم اللوحة",
+    "carFormEnterPlateNumberValidationError": "أدخل رقم اللوحة",
+    "carFormEnterDailyPriceValidationError": "أدخل السعر",
+    "carFormEnterValidDailyPriceValidationError": "أدخل سعراً صحيحاً (أكبر من 0)",
+    "carFormStatusDropdownLabel": "الحالة",
+    "carFormPickImageButtonLabel": "اختيار صورة",
+    "carFormChangeImageButtonLabel": "تغيير الصورة"
+
 }

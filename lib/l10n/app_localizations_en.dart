@@ -613,4 +613,54 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get settingsCredentialsUpdatedSuccess =>
       'Credentials updated successfully!';
+
+  @override
+  String get carFormEditDialogTitle => 'Edit Car';
+
+  @override
+  String get carFormAddDialogTitle => 'Add Car';
+
+  @override
+  String get carFormBrandDropdownLabel => 'Brand';
+
+  @override
+  String get carFormSelectBrandValidationError => 'Please select a brand';
+
+  @override
+  String get carFormModelTextFieldLabel => 'Model';
+
+  @override
+  String get carFormEnterModelValidationError => 'Enter a model';
+
+  @override
+  String get carFormYearTextFieldLabel => 'Year';
+
+  @override
+  String get carFormEnterYearValidationError => 'Enter year';
+
+  @override
+  String get carFormEnterValidYearValidationError =>
+      'Enter valid year (e.g., 2023)';
+
+  @override
+  String get carFormPlateNumberTextFieldLabel => 'Plate Number';
+
+  @override
+  String get carFormEnterPlateNumberValidationError => 'Enter plate number';
+
+  @override
+  String get carFormEnterDailyPriceValidationError => 'Enter price';
+
+  @override
+  String get carFormEnterValidDailyPriceValidationError =>
+      'Enter valid price (greater than 0)';
+
+  @override
+  String get carFormStatusDropdownLabel => 'Status';
+
+  @override
+  String get carFormPickImageButtonLabel => 'Pick Image';
+
+  @override
+  String get carFormChangeImageButtonLabel => 'Change Image';
 }

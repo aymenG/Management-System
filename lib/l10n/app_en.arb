@@ -243,5 +243,21 @@
     "settingsFillRequiredFields": "Please fill in the required fields.",
     "settingsAdminNotFound": "Admin not found.",
     "settingsCurrentPasswordIncorrect": "Current password is incorrect.",
-    "settingsCredentialsUpdatedSuccess": "Credentials updated successfully!"
+    "settingsCredentialsUpdatedSuccess": "Credentials updated successfully!",
+    "carFormEditDialogTitle": "Edit Car",
+    "carFormAddDialogTitle": "Add Car",
+    "carFormBrandDropdownLabel": "Brand",
+    "carFormSelectBrandValidationError": "Please select a brand",
+    "carFormModelTextFieldLabel": "Model",
+    "carFormEnterModelValidationError": "Enter a model",
+    "carFormYearTextFieldLabel": "Year",
+    "carFormEnterYearValidationError": "Enter year",
+    "carFormEnterValidYearValidationError": "Enter valid year (e.g., 2023)",
+    "carFormPlateNumberTextFieldLabel": "Plate Number",
+    "carFormEnterPlateNumberValidationError": "Enter plate number",
+    "carFormEnterDailyPriceValidationError": "Enter price",
+    "carFormEnterValidDailyPriceValidationError": "Enter valid price (greater than 0)",
+    "carFormStatusDropdownLabel": "Status",
+    "carFormPickImageButtonLabel": "Pick Image",
+    "carFormChangeImageButtonLabel": "Change Image"
 }

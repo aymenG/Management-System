@@ -610,4 +610,54 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String get settingsCredentialsUpdatedSuccess =>
       'تم تحديث بيانات الاعتماد بنجاح!';
+
+  @override
+  String get carFormEditDialogTitle => 'تعديل السيارة';
+
+  @override
+  String get carFormAddDialogTitle => 'إضافة سيارة';
+
+  @override
+  String get carFormBrandDropdownLabel => 'الماركة';
+
+  @override
+  String get carFormSelectBrandValidationError => 'الرجاء اختيار ماركة';
+
+  @override
+  String get carFormModelTextFieldLabel => 'الموديل';
+
+  @override
+  String get carFormEnterModelValidationError => 'أدخل الموديل';
+
+  @override
+  String get carFormYearTextFieldLabel => 'السنة';
+
+  @override
+  String get carFormEnterYearValidationError => 'أدخل السنة';
+
+  @override
+  String get carFormEnterValidYearValidationError =>
+      'أدخل سنة صحيحة (مثال: 2023)';
+
+  @override
+  String get carFormPlateNumberTextFieldLabel => 'رقم اللوحة';
+
+  @override
+  String get carFormEnterPlateNumberValidationError => 'أدخل رقم اللوحة';
+
+  @override
+  String get carFormEnterDailyPriceValidationError => 'أدخل السعر';
+
+  @override
+  String get carFormEnterValidDailyPriceValidationError =>
+      'أدخل سعراً صحيحاً (أكبر من 0)';
+
+  @override
+  String get carFormStatusDropdownLabel => 'الحالة';
+
+  @override
+  String get carFormPickImageButtonLabel => 'اختيار صورة';
+
+  @override
+  String get carFormChangeImageButtonLabel => 'تغيير الصورة';
 }

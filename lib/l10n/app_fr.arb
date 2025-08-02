@@ -243,5 +243,22 @@
     "settingsFillRequiredFields": "Veuillez remplir les champs obligatoires.",
     "settingsAdminNotFound": "Administrateur introuvable.",
     "settingsCurrentPasswordIncorrect": "Le mot de passe actuel est incorrect.",
-    "settingsCredentialsUpdatedSuccess": "Informations d'identification mises à jour avec succès !"
-}
+    "settingsCredentialsUpdatedSuccess": "Informations d'identification mises à jour avec succès !",
+    "carFormEditDialogTitle": "Modifier la Voiture",
+    "carFormAddDialogTitle": "Ajouter une Voiture",
+    "carFormBrandDropdownLabel": "Marque",
+    "carFormSelectBrandValidationError": "Veuillez sélectionner une marque",
+    "carFormModelTextFieldLabel": "Modèle",
+    "carFormEnterModelValidationError": "Entrez un modèle",
+    "carFormYearTextFieldLabel": "Année",
+    "carFormEnterYearValidationError": "Entrez l'année",
+    "carFormEnterValidYearValidationError": "Entrez une année valide (ex: 2023)",
+    "carFormPlateNumberTextFieldLabel": "Numéro de Plaque",
+    "carFormEnterPlateNumberValidationError": "Entrez le numéro de plaque",
+    "carFormEnterDailyPriceValidationError": "Entrez le prix",
+    "carFormEnterValidDailyPriceValidationError": "Entrez un prix valide (supérieur à 0)",
+    "carFormStatusDropdownLabel": "Statut",
+    "carFormPickImageButtonLabel": "Choisir une Image",
+    "carFormChangeImageButtonLabel": "Changer l'Image"
+
+    }

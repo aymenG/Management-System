@@ -623,4 +623,56 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get settingsCredentialsUpdatedSuccess =>
       'Informations d\'identification mises à jour avec succès !';
+
+  @override
+  String get carFormEditDialogTitle => 'Modifier la Voiture';
+
+  @override
+  String get carFormAddDialogTitle => 'Ajouter une Voiture';
+
+  @override
+  String get carFormBrandDropdownLabel => 'Marque';
+
+  @override
+  String get carFormSelectBrandValidationError =>
+      'Veuillez sélectionner une marque';
+
+  @override
+  String get carFormModelTextFieldLabel => 'Modèle';
+
+  @override
+  String get carFormEnterModelValidationError => 'Entrez un modèle';
+
+  @override
+  String get carFormYearTextFieldLabel => 'Année';
+
+  @override
+  String get carFormEnterYearValidationError => 'Entrez l\'année';
+
+  @override
+  String get carFormEnterValidYearValidationError =>
+      'Entrez une année valide (ex: 2023)';
+
+  @override
+  String get carFormPlateNumberTextFieldLabel => 'Numéro de Plaque';
+
+  @override
+  String get carFormEnterPlateNumberValidationError =>
+      'Entrez le numéro de plaque';
+
+  @override
+  String get carFormEnterDailyPriceValidationError => 'Entrez le prix';
+
+  @override
+  String get carFormEnterValidDailyPriceValidationError =>
+      'Entrez un prix valide (supérieur à 0)';
+
+  @override
+  String get carFormStatusDropdownLabel => 'Statut';
+
+  @override
+  String get carFormPickImageButtonLabel => 'Choisir une Image';
+
+  @override
+  String get carFormChangeImageButtonLabel => 'Changer l\'Image';
 }

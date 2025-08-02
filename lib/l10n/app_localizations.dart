@@ -1209,6 +1209,102 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Credentials updated successfully!'**
   String get settingsCredentialsUpdatedSuccess;
+
+  /// No description provided for @carFormEditDialogTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Car'**
+  String get carFormEditDialogTitle;
+
+  /// No description provided for @carFormAddDialogTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Car'**
+  String get carFormAddDialogTitle;
+
+  /// No description provided for @carFormBrandDropdownLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Brand'**
+  String get carFormBrandDropdownLabel;
+
+  /// No description provided for @carFormSelectBrandValidationError.
+  ///
+  /// In en, this message translates to:
+  /// **'Please select a brand'**
+  String get carFormSelectBrandValidationError;
+
+  /// No description provided for @carFormModelTextFieldLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Model'**
+  String get carFormModelTextFieldLabel;
+
+  /// No description provided for @carFormEnterModelValidationError.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a model'**
+  String get carFormEnterModelValidationError;
+
+  /// No description provided for @carFormYearTextFieldLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Year'**
+  String get carFormYearTextFieldLabel;
+
+  /// No description provided for @carFormEnterYearValidationError.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter year'**
+  String get carFormEnterYearValidationError;
+
+  /// No description provided for @carFormEnterValidYearValidationError.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter valid year (e.g., 2023)'**
+  String get carFormEnterValidYearValidationError;
+
+  /// No description provided for @carFormPlateNumberTextFieldLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Plate Number'**
+  String get carFormPlateNumberTextFieldLabel;
+
+  /// No description provided for @carFormEnterPlateNumberValidationError.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter plate number'**
+  String get carFormEnterPlateNumberValidationError;
+
+  /// No description provided for @carFormEnterDailyPriceValidationError.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter price'**
+  String get carFormEnterDailyPriceValidationError;
+
+  /// No description provided for @carFormEnterValidDailyPriceValidationError.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter valid price (greater than 0)'**
+  String get carFormEnterValidDailyPriceValidationError;
+
+  /// No description provided for @carFormStatusDropdownLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Status'**
+  String get carFormStatusDropdownLabel;
+
+  /// No description provided for @carFormPickImageButtonLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick Image'**
+  String get carFormPickImageButtonLabel;
+
+  /// No description provided for @carFormChangeImageButtonLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Change Image'**
+  String get carFormChangeImageButtonLabel;
 }
 
 class _AppLocalizationsDelegate
