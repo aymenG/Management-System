@@ -287,7 +287,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get editCarPageTitle => 'Modifier les Détails de la Voiture';
 
   @override
-  String get rentalsPageTitle => 'Active & Past Rentals';
+  String get rentalsPageTitle => 'Locations Actives & Passées';
 
   @override
   String get exportRentalsButton => 'Exporter les Locations vers Excel';
@@ -675,4 +675,82 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get carFormChangeImageButtonLabel => 'Changer l\'Image';
+
+  @override
+  String editRentalDialogTitle(int id) {
+    return 'Modifier la location ID : $id';
+  }
+
+  @override
+  String editRentalDialogErrorFetchingCars(String error) {
+    return 'Échec du chargement des voitures pour la modification : $error';
+  }
+
+  @override
+  String get editRentalDialogCustomerNameLabel => 'Nom du client *';
+
+  @override
+  String get editRentalDialogCustomerNameValidation =>
+      'Veuillez entrer le nom du client';
+
+  @override
+  String get editRentalDialogCarLabel => 'Voiture *';
+
+  @override
+  String get editRentalDialogNoCarsAvailable =>
+      'Aucune voiture disponible. Ajoutez des voitures d\'abord.';
+
+  @override
+  String get editRentalDialogPleaseSelectCarValidation =>
+      'Veuillez sélectionner une voiture';
+
+  @override
+  String get editRentalDialogRentDateLabel => 'Date de location *';
+
+  @override
+  String get editRentalDialogReturnDateLabel => 'Date de retour *';
+
+  @override
+  String get editRentalDialogRentDateValidation =>
+      'Veuillez sélectionner une date de location';
+
+  @override
+  String get editRentalDialogReturnDateValidation =>
+      'Veuillez sélectionner une date de retour';
+
+  @override
+  String get editRentalDialogTotalPriceLabel => 'Prix Total (DZD) *';
+
+  @override
+  String get editRentalDialogTotalPriceValidation =>
+      'Veuillez entrer le prix total';
+
+  @override
+  String get editRentalDialogInvalidNumberValidation =>
+      'Veuillez entrer un nombre valide';
+
+  @override
+  String get editRentalDialogSelectCarSnackBar =>
+      'Veuillez sélectionner une voiture.';
+
+  @override
+  String get editRentalDialogRentDateRequiredSnackBar =>
+      'La date de location est requise.';
+
+  @override
+  String get editRentalDialogReturnDateRequiredSnackBar =>
+      'La date de retour est requise.';
+
+  @override
+  String get editRentalDialogReturnDateBeforeRentDateSnackBar =>
+      'La date de retour doit être après la date de location.';
+
+  @override
+  String get editRentalDialogUpdateSuccessSnackBar =>
+      'Location mise à jour avec succès !';
+
+  @override
+  String editRentalDialogUpdateErrorSnackBar(String error) {
+    return 'Erreur lors de la mise à jour de la location : $error';
+  }
 }

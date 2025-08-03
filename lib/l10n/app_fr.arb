@@ -116,7 +116,7 @@
     "carUpdateSuccess": "Voiture mise à jour avec succès !",
     "errorUpdateCar": "Erreur lors de la mise à jour de la voiture",
     "editCarPageTitle": "Modifier les Détails de la Voiture",
-    "rentalsPageTitle": "Active & Past Rentals",
+    "rentalsPageTitle": "Locations Actives & Passées",
     "exportRentalsButton": "Exporter les Locations vers Excel",
     "pickDateRangeTitle": "Sélectionner la Plage de Dates",
     "noRentalsInDateRange": "Aucune location trouvée dans la plage de dates sélectionnée.",
@@ -259,6 +259,52 @@
     "carFormEnterValidDailyPriceValidationError": "Entrez un prix valide (supérieur à 0)",
     "carFormStatusDropdownLabel": "Statut",
     "carFormPickImageButtonLabel": "Choisir une Image",
-    "carFormChangeImageButtonLabel": "Changer l'Image"
-
+    "carFormChangeImageButtonLabel": "Changer l'Image",
+    "editRentalDialogTitle": "Modifier la location ID : {id}",
+    "@editRentalDialogTitle": {
+        "description": "Titre du dialogue de modification de location, inclut l'ID de location.",
+        "placeholders": {
+            "id": {
+                "type": "int",
+                "example": "123"
+            }
+        }
+    },
+    "editRentalDialogErrorFetchingCars": "Échec du chargement des voitures pour la modification : {error}",
+    "@editRentalDialogErrorFetchingCars": {
+        "description": "Message du snackbar lorsque les données de voiture ne peuvent pas être chargées.",
+        "placeholders": {
+            "error": {
+                "type": "String",
+                "example": "Erreur réseau"
+            }
+        }
+    },
+    "editRentalDialogCustomerNameLabel": "Nom du client *",
+    "editRentalDialogCustomerNameValidation": "Veuillez entrer le nom du client",
+    "editRentalDialogCarLabel": "Voiture *",
+    "editRentalDialogNoCarsAvailable": "Aucune voiture disponible. Ajoutez des voitures d'abord.",
+    "editRentalDialogPleaseSelectCarValidation": "Veuillez sélectionner une voiture",
+    "editRentalDialogRentDateLabel": "Date de location *",
+    "editRentalDialogReturnDateLabel": "Date de retour *",
+    "editRentalDialogRentDateValidation": "Veuillez sélectionner une date de location",
+    "editRentalDialogReturnDateValidation": "Veuillez sélectionner une date de retour",
+    "editRentalDialogTotalPriceLabel": "Prix Total (DZD) *",
+    "editRentalDialogTotalPriceValidation": "Veuillez entrer le prix total",
+    "editRentalDialogInvalidNumberValidation": "Veuillez entrer un nombre valide",
+    "editRentalDialogSelectCarSnackBar": "Veuillez sélectionner une voiture.",
+    "editRentalDialogRentDateRequiredSnackBar": "La date de location est requise.",
+    "editRentalDialogReturnDateRequiredSnackBar": "La date de retour est requise.",
+    "editRentalDialogReturnDateBeforeRentDateSnackBar": "La date de retour doit être après la date de location.",
+    "editRentalDialogUpdateSuccessSnackBar": "Location mise à jour avec succès !",
+    "editRentalDialogUpdateErrorSnackBar": "Erreur lors de la mise à jour de la location : {error}",
+    "@editRentalDialogUpdateErrorSnackBar": {
+        "description": "Message du snackbar lorsque la mise à jour de la location échoue.",
+        "placeholders": {
+            "error": {
+                "type": "String",
+                "example": "Échec de la base de données"
+            }
+        }
     }
+}

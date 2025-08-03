@@ -1305,6 +1305,126 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Change Image'**
   String get carFormChangeImageButtonLabel;
+
+  /// Title for the edit rental dialog, includes rental ID.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Rental ID: {id}'**
+  String editRentalDialogTitle(int id);
+
+  /// Snackbar message when car data fails to load.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to load cars for editing: {error}'**
+  String editRentalDialogErrorFetchingCars(String error);
+
+  /// No description provided for @editRentalDialogCustomerNameLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Customer Name *'**
+  String get editRentalDialogCustomerNameLabel;
+
+  /// No description provided for @editRentalDialogCustomerNameValidation.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter customer name'**
+  String get editRentalDialogCustomerNameValidation;
+
+  /// No description provided for @editRentalDialogCarLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Car *'**
+  String get editRentalDialogCarLabel;
+
+  /// No description provided for @editRentalDialogNoCarsAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'No cars available. Add cars first.'**
+  String get editRentalDialogNoCarsAvailable;
+
+  /// No description provided for @editRentalDialogPleaseSelectCarValidation.
+  ///
+  /// In en, this message translates to:
+  /// **'Please select a car'**
+  String get editRentalDialogPleaseSelectCarValidation;
+
+  /// No description provided for @editRentalDialogRentDateLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Rent Date *'**
+  String get editRentalDialogRentDateLabel;
+
+  /// No description provided for @editRentalDialogReturnDateLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Return Date *'**
+  String get editRentalDialogReturnDateLabel;
+
+  /// No description provided for @editRentalDialogRentDateValidation.
+  ///
+  /// In en, this message translates to:
+  /// **'Please select a rent date'**
+  String get editRentalDialogRentDateValidation;
+
+  /// No description provided for @editRentalDialogReturnDateValidation.
+  ///
+  /// In en, this message translates to:
+  /// **'Please select a return date'**
+  String get editRentalDialogReturnDateValidation;
+
+  /// No description provided for @editRentalDialogTotalPriceLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Total Price (DZD) *'**
+  String get editRentalDialogTotalPriceLabel;
+
+  /// No description provided for @editRentalDialogTotalPriceValidation.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter total price'**
+  String get editRentalDialogTotalPriceValidation;
+
+  /// No description provided for @editRentalDialogInvalidNumberValidation.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter a valid number'**
+  String get editRentalDialogInvalidNumberValidation;
+
+  /// No description provided for @editRentalDialogSelectCarSnackBar.
+  ///
+  /// In en, this message translates to:
+  /// **'Please select a car.'**
+  String get editRentalDialogSelectCarSnackBar;
+
+  /// No description provided for @editRentalDialogRentDateRequiredSnackBar.
+  ///
+  /// In en, this message translates to:
+  /// **'Rent Date is required.'**
+  String get editRentalDialogRentDateRequiredSnackBar;
+
+  /// No description provided for @editRentalDialogReturnDateRequiredSnackBar.
+  ///
+  /// In en, this message translates to:
+  /// **'Return Date is required.'**
+  String get editRentalDialogReturnDateRequiredSnackBar;
+
+  /// No description provided for @editRentalDialogReturnDateBeforeRentDateSnackBar.
+  ///
+  /// In en, this message translates to:
+  /// **'Return Date must be after Rent Date.'**
+  String get editRentalDialogReturnDateBeforeRentDateSnackBar;
+
+  /// No description provided for @editRentalDialogUpdateSuccessSnackBar.
+  ///
+  /// In en, this message translates to:
+  /// **'Rental updated successfully!'**
+  String get editRentalDialogUpdateSuccessSnackBar;
+
+  /// Snackbar message when rental update fails.
+  ///
+  /// In en, this message translates to:
+  /// **'Error updating rental: {error}'**
+  String editRentalDialogUpdateErrorSnackBar(String error);
 }
 
 class _AppLocalizationsDelegate

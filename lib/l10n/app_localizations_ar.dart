@@ -660,4 +660,77 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get carFormChangeImageButtonLabel => 'تغيير الصورة';
+
+  @override
+  String editRentalDialogTitle(int id) {
+    return 'تعديل الإيجار رقم: $id';
+  }
+
+  @override
+  String editRentalDialogErrorFetchingCars(String error) {
+    return 'فشل تحميل السيارات للتعديل: $error';
+  }
+
+  @override
+  String get editRentalDialogCustomerNameLabel => 'اسم العميل *';
+
+  @override
+  String get editRentalDialogCustomerNameValidation =>
+      'الرجاء إدخال اسم العميل';
+
+  @override
+  String get editRentalDialogCarLabel => 'السيارة *';
+
+  @override
+  String get editRentalDialogNoCarsAvailable =>
+      'لا توجد سيارات متاحة. الرجاء إضافة سيارات أولاً.';
+
+  @override
+  String get editRentalDialogPleaseSelectCarValidation => 'الرجاء اختيار سيارة';
+
+  @override
+  String get editRentalDialogRentDateLabel => 'تاريخ الإيجار *';
+
+  @override
+  String get editRentalDialogReturnDateLabel => 'تاريخ الإرجاع *';
+
+  @override
+  String get editRentalDialogRentDateValidation =>
+      'الرجاء اختيار تاريخ الإيجار';
+
+  @override
+  String get editRentalDialogReturnDateValidation =>
+      'الرجاء اختيار تاريخ الإرجاع';
+
+  @override
+  String get editRentalDialogTotalPriceLabel => 'السعر الإجمالي (د.ج) *';
+
+  @override
+  String get editRentalDialogTotalPriceValidation =>
+      'الرجاء إدخال السعر الإجمالي';
+
+  @override
+  String get editRentalDialogInvalidNumberValidation => 'الرجاء إدخال رقم صحيح';
+
+  @override
+  String get editRentalDialogSelectCarSnackBar => 'الرجاء اختيار سيارة.';
+
+  @override
+  String get editRentalDialogRentDateRequiredSnackBar => 'تاريخ الإيجار مطلوب.';
+
+  @override
+  String get editRentalDialogReturnDateRequiredSnackBar =>
+      'تاريخ الإرجاع مطلوب.';
+
+  @override
+  String get editRentalDialogReturnDateBeforeRentDateSnackBar =>
+      'يجب أن يكون تاريخ الإرجاع بعد تاريخ الإيجار.';
+
+  @override
+  String get editRentalDialogUpdateSuccessSnackBar => 'تم تحديث الإيجار بنجاح!';
+
+  @override
+  String editRentalDialogUpdateErrorSnackBar(String error) {
+    return 'خطأ أثناء تحديث الإيجار: $error';
+  }
 }

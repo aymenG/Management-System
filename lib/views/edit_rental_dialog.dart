@@ -5,9 +5,11 @@ import 'package:intl/intl.dart';
 import 'package:management_system/controllers/database_helper.dart';
 import 'package:management_system/models/car.dart';
 import 'package:management_system/models/rental.dart';
+import 'package:management_system/l10n/app_localizations.dart'; // Import AppLocalizations
 
 Future<bool?> showEditRentalDialog({
-  required BuildContext context,
+  required BuildContext
+  context, // Use this context for initializations outside builder
   required DatabaseHelper dbHelper,
   required Map<String, dynamic> rentalData,
 }) async {
@@ -41,9 +43,14 @@ Future<bool?> showEditRentalDialog({
     print("Error fetching cars for dialog: $e");
     carsLoading = false;
     if (context.mounted) {
+      final localizations = AppLocalizations.of(
+        context,
+      )!; // Get localizations for the snakbar
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Failed to load cars for editing: $e'),
+          content: Text(
+            localizations.editRentalDialogErrorFetchingCars(e.toString()),
+          ), // Localized Error
           backgroundColor: Colors.red,
         ),
       );
@@ -54,10 +61,16 @@ Future<bool?> showEditRentalDialog({
     context: context,
     barrierDismissible: false,
     builder: (BuildContext dialogContext) {
+      final AppLocalizations localizations = AppLocalizations.of(
+        dialogContext,
+      )!; // Get localizations inside builder
+
       return StatefulBuilder(
         builder: (context, setStateInDialog) {
           return AlertDialog(
-            title: Text('Edit Rental ID: ${rentalData['id']}'),
+            title: Text(
+              localizations.editRentalDialogTitle(rentalData['id']),
+            ), // Localized Title with ID
             content: SingleChildScrollView(
               child: Form(
                 key: _formKey,
@@ -66,12 +79,14 @@ Future<bool?> showEditRentalDialog({
                   children: [
                     TextFormField(
                       controller: customerNameController,
-                      decoration: const InputDecoration(
-                        labelText: 'Customer Name *',
+                      decoration: InputDecoration(
+                        labelText: localizations
+                            .editRentalDialogCustomerNameLabel, // Localized Label
                       ),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please enter customer name';
+                          return localizations
+                              .editRentalDialogCustomerNameValidation; // Localized Validation
                         }
                         return null;
                       },
@@ -80,16 +95,21 @@ Future<bool?> showEditRentalDialog({
                     carsLoading
                         ? const CircularProgressIndicator()
                         : availableCars.isEmpty
-                        ? const Text("No cars available. Add cars first.")
+                        ? Text(
+                            localizations.editRentalDialogNoCarsAvailable,
+                          ) // Localized Text
                         : DropdownButtonFormField<int>(
                             value: selectedCarId,
-                            decoration: const InputDecoration(
-                              labelText: 'Car *',
+                            decoration: InputDecoration(
+                              labelText: localizations
+                                  .editRentalDialogCarLabel, // Localized Label
                             ),
                             items: availableCars.map((car) {
                               return DropdownMenuItem<int>(
                                 value: car.id,
                                 child: Text(
+                                  // Corrected line: 'car.brand' is likely a String,
+                                  // so no '.displayName' is needed.
                                   '${car.brand} ${car.model} (${car.plateNumber})',
                                 ),
                               );
@@ -101,7 +121,8 @@ Future<bool?> showEditRentalDialog({
                             },
                             validator: (value) {
                               if (value == null) {
-                                return 'Please select a car';
+                                return localizations
+                                    .editRentalDialogPleaseSelectCarValidation; // Localized Validation
                               }
                               return null;
                             },
@@ -109,9 +130,10 @@ Future<bool?> showEditRentalDialog({
                     const SizedBox(height: 16),
                     TextFormField(
                       controller: rentDateController,
-                      decoration: const InputDecoration(
-                        labelText: 'Rent Date *',
-                        suffixIcon: Icon(Icons.calendar_today),
+                      decoration: InputDecoration(
+                        labelText: localizations
+                            .editRentalDialogRentDateLabel, // Localized Label
+                        suffixIcon: const Icon(Icons.calendar_today),
                       ),
                       readOnly: true,
                       onTap: () async {
@@ -134,7 +156,8 @@ Future<bool?> showEditRentalDialog({
                       },
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please select a rent date';
+                          return localizations
+                              .editRentalDialogRentDateValidation; // Localized Validation
                         }
                         return null;
                       },
@@ -142,9 +165,10 @@ Future<bool?> showEditRentalDialog({
                     const SizedBox(height: 16),
                     TextFormField(
                       controller: returnDateController,
-                      decoration: const InputDecoration(
-                        labelText: 'Return Date *',
-                        suffixIcon: Icon(Icons.calendar_today),
+                      decoration: InputDecoration(
+                        labelText: localizations
+                            .editRentalDialogReturnDateLabel, // Localized Label
+                        suffixIcon: const Icon(Icons.calendar_today),
                       ),
                       readOnly: true,
                       onTap: () async {
@@ -167,7 +191,8 @@ Future<bool?> showEditRentalDialog({
                       },
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please select a return date';
+                          return localizations
+                              .editRentalDialogReturnDateValidation; // Localized Validation
                         }
                         return null;
                       },
@@ -175,16 +200,19 @@ Future<bool?> showEditRentalDialog({
                     const SizedBox(height: 16),
                     TextFormField(
                       controller: totalPriceController,
-                      decoration: const InputDecoration(
-                        labelText: 'Total Price (DZD) *',
+                      decoration: InputDecoration(
+                        labelText: localizations
+                            .editRentalDialogTotalPriceLabel, // Localized Label
                       ),
                       keyboardType: TextInputType.number,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please enter total price';
+                          return localizations
+                              .editRentalDialogTotalPriceValidation; // Localized Validation
                         }
                         if (double.tryParse(value) == null) {
-                          return 'Please enter a valid number';
+                          return localizations
+                              .editRentalDialogInvalidNumberValidation; // Localized Validation
                         }
                         return null;
                       },
@@ -196,7 +224,9 @@ Future<bool?> showEditRentalDialog({
             actions: [
               TextButton(
                 onPressed: () => Navigator.of(dialogContext).pop(false),
-                child: const Text('Cancel'),
+                child: Text(
+                  localizations.cancelButton,
+                ), // Re-used existing label
               ),
               ElevatedButton(
                 onPressed: () async {
@@ -204,8 +234,10 @@ Future<bool?> showEditRentalDialog({
                     if (selectedCarId == null) {
                       if (context.mounted) {
                         ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text('Please select a car.'),
+                          SnackBar(
+                            content: Text(
+                              localizations.editRentalDialogSelectCarSnackBar,
+                            ), // Localized SnackBar
                             backgroundColor: Colors.orange,
                           ),
                         );
@@ -223,8 +255,11 @@ Future<bool?> showEditRentalDialog({
                     if (rentDate == null) {
                       if (context.mounted) {
                         ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text('Rent Date is required.'),
+                          SnackBar(
+                            content: Text(
+                              localizations
+                                  .editRentalDialogRentDateRequiredSnackBar,
+                            ), // Localized SnackBar
                             backgroundColor: Colors.red,
                           ),
                         );
@@ -235,8 +270,11 @@ Future<bool?> showEditRentalDialog({
                     if (returnDate == null) {
                       if (context.mounted) {
                         ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text('Return Date is required.'),
+                          SnackBar(
+                            content: Text(
+                              localizations
+                                  .editRentalDialogReturnDateRequiredSnackBar,
+                            ), // Localized SnackBar
                             backgroundColor: Colors.red,
                           ),
                         );
@@ -247,9 +285,10 @@ Future<bool?> showEditRentalDialog({
                     if (returnDate.isBefore(rentDate)) {
                       if (context.mounted) {
                         ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
+                          SnackBar(
                             content: Text(
-                              'Return Date must be after Rent Date.',
+                              localizations
+                                  .editRentalDialogReturnDateBeforeRentDateSnackBar, // Localized SnackBar
                             ),
                             backgroundColor: Colors.red,
                           ),
@@ -271,8 +310,11 @@ Future<bool?> showEditRentalDialog({
                       await dbHelper.updateRental(updatedRental);
                       if (context.mounted) {
                         ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text('Rental updated successfully!'),
+                          SnackBar(
+                            content: Text(
+                              localizations
+                                  .editRentalDialogUpdateSuccessSnackBar,
+                            ), // Localized SnackBar
                             backgroundColor: Colors.green,
                           ),
                         );
@@ -282,7 +324,11 @@ Future<bool?> showEditRentalDialog({
                       if (context.mounted) {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
-                            content: Text('Error updating rental: $e'),
+                            content: Text(
+                              localizations.editRentalDialogUpdateErrorSnackBar(
+                                e.toString(),
+                              ),
+                            ), // Localized Error
                             backgroundColor: Colors.red,
                           ),
                         );
@@ -295,7 +341,7 @@ Future<bool?> showEditRentalDialog({
                   backgroundColor: Colors.deepPurple,
                   foregroundColor: Colors.white,
                 ),
-                child: const Text('Save'),
+                child: Text(localizations.saveButton), // Re-used existing label
               ),
             ],
           );

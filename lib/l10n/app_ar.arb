@@ -259,6 +259,52 @@
     "carFormEnterValidDailyPriceValidationError": "أدخل سعراً صحيحاً (أكبر من 0)",
     "carFormStatusDropdownLabel": "الحالة",
     "carFormPickImageButtonLabel": "اختيار صورة",
-    "carFormChangeImageButtonLabel": "تغيير الصورة"
-
+    "carFormChangeImageButtonLabel": "تغيير الصورة",
+    "editRentalDialogTitle": "تعديل الإيجار رقم: {id}",
+    "@editRentalDialogTitle": {
+        "description": "عنوان مربع حوار تعديل الإيجار، يتضمن معرف الإيجار.",
+        "placeholders": {
+            "id": {
+                "type": "int",
+                "example": "123"
+            }
+        }
+    },
+    "editRentalDialogErrorFetchingCars": "فشل تحميل السيارات للتعديل: {error}",
+    "@editRentalDialogErrorFetchingCars": {
+        "description": "رسالة شريط الإشعارات عند فشل تحميل بيانات السيارة.",
+        "placeholders": {
+            "error": {
+                "type": "String",
+                "example": "خطأ في الاتصال"
+            }
+        }
+    },
+    "editRentalDialogCustomerNameLabel": "اسم العميل *",
+    "editRentalDialogCustomerNameValidation": "الرجاء إدخال اسم العميل",
+    "editRentalDialogCarLabel": "السيارة *",
+    "editRentalDialogNoCarsAvailable": "لا توجد سيارات متاحة. الرجاء إضافة سيارات أولاً.",
+    "editRentalDialogPleaseSelectCarValidation": "الرجاء اختيار سيارة",
+    "editRentalDialogRentDateLabel": "تاريخ الإيجار *",
+    "editRentalDialogReturnDateLabel": "تاريخ الإرجاع *",
+    "editRentalDialogRentDateValidation": "الرجاء اختيار تاريخ الإيجار",
+    "editRentalDialogReturnDateValidation": "الرجاء اختيار تاريخ الإرجاع",
+    "editRentalDialogTotalPriceLabel": "السعر الإجمالي (د.ج) *",
+    "editRentalDialogTotalPriceValidation": "الرجاء إدخال السعر الإجمالي",
+    "editRentalDialogInvalidNumberValidation": "الرجاء إدخال رقم صحيح",
+    "editRentalDialogSelectCarSnackBar": "الرجاء اختيار سيارة.",
+    "editRentalDialogRentDateRequiredSnackBar": "تاريخ الإيجار مطلوب.",
+    "editRentalDialogReturnDateRequiredSnackBar": "تاريخ الإرجاع مطلوب.",
+    "editRentalDialogReturnDateBeforeRentDateSnackBar": "يجب أن يكون تاريخ الإرجاع بعد تاريخ الإيجار.",
+    "editRentalDialogUpdateSuccessSnackBar": "تم تحديث الإيجار بنجاح!",
+    "editRentalDialogUpdateErrorSnackBar": "خطأ أثناء تحديث الإيجار: {error}",
+    "@editRentalDialogUpdateErrorSnackBar": {
+        "description": "رسالة شريط الإشعارات عند فشل تحديث الإيجار.",
+        "placeholders": {
+            "error": {
+                "type": "String",
+                "example": "خطأ في قاعدة البيانات"
+            }
+        }
+    }
 }

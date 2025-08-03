@@ -663,4 +663,78 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get carFormChangeImageButtonLabel => 'Change Image';
+
+  @override
+  String editRentalDialogTitle(int id) {
+    return 'Edit Rental ID: $id';
+  }
+
+  @override
+  String editRentalDialogErrorFetchingCars(String error) {
+    return 'Failed to load cars for editing: $error';
+  }
+
+  @override
+  String get editRentalDialogCustomerNameLabel => 'Customer Name *';
+
+  @override
+  String get editRentalDialogCustomerNameValidation =>
+      'Please enter customer name';
+
+  @override
+  String get editRentalDialogCarLabel => 'Car *';
+
+  @override
+  String get editRentalDialogNoCarsAvailable =>
+      'No cars available. Add cars first.';
+
+  @override
+  String get editRentalDialogPleaseSelectCarValidation => 'Please select a car';
+
+  @override
+  String get editRentalDialogRentDateLabel => 'Rent Date *';
+
+  @override
+  String get editRentalDialogReturnDateLabel => 'Return Date *';
+
+  @override
+  String get editRentalDialogRentDateValidation => 'Please select a rent date';
+
+  @override
+  String get editRentalDialogReturnDateValidation =>
+      'Please select a return date';
+
+  @override
+  String get editRentalDialogTotalPriceLabel => 'Total Price (DZD) *';
+
+  @override
+  String get editRentalDialogTotalPriceValidation => 'Please enter total price';
+
+  @override
+  String get editRentalDialogInvalidNumberValidation =>
+      'Please enter a valid number';
+
+  @override
+  String get editRentalDialogSelectCarSnackBar => 'Please select a car.';
+
+  @override
+  String get editRentalDialogRentDateRequiredSnackBar =>
+      'Rent Date is required.';
+
+  @override
+  String get editRentalDialogReturnDateRequiredSnackBar =>
+      'Return Date is required.';
+
+  @override
+  String get editRentalDialogReturnDateBeforeRentDateSnackBar =>
+      'Return Date must be after Rent Date.';
+
+  @override
+  String get editRentalDialogUpdateSuccessSnackBar =>
+      'Rental updated successfully!';
+
+  @override
+  String editRentalDialogUpdateErrorSnackBar(String error) {
+    return 'Error updating rental: $error';
+  }
 }

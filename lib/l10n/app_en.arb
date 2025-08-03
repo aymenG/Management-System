@@ -259,5 +259,51 @@
     "carFormEnterValidDailyPriceValidationError": "Enter valid price (greater than 0)",
     "carFormStatusDropdownLabel": "Status",
     "carFormPickImageButtonLabel": "Pick Image",
-    "carFormChangeImageButtonLabel": "Change Image"
+    "carFormChangeImageButtonLabel": "Change Image",
+    "editRentalDialogTitle": "Edit Rental ID: {id}",
+    "@editRentalDialogTitle": {
+        "description": "Title for the edit rental dialog, includes rental ID.",
+        "placeholders": {
+            "id": {
+                "type": "int"
+            }
+        }
+    },
+    "editRentalDialogErrorFetchingCars": "Failed to load cars for editing: {error}",
+    "@editRentalDialogErrorFetchingCars": {
+        "description": "Snackbar message when car data fails to load.",
+        "placeholders": {
+            "error": {
+                "type": "String", 
+                "example": "Connection timed out" 
+            }
+        }
+    },
+    "editRentalDialogCustomerNameLabel": "Customer Name *",
+    "editRentalDialogCustomerNameValidation": "Please enter customer name",
+    "editRentalDialogCarLabel": "Car *",
+    "editRentalDialogNoCarsAvailable": "No cars available. Add cars first.",
+    "editRentalDialogPleaseSelectCarValidation": "Please select a car",
+    "editRentalDialogRentDateLabel": "Rent Date *",
+    "editRentalDialogReturnDateLabel": "Return Date *",
+    "editRentalDialogRentDateValidation": "Please select a rent date",
+    "editRentalDialogReturnDateValidation": "Please select a return date",
+    "editRentalDialogTotalPriceLabel": "Total Price (DZD) *",
+    "editRentalDialogTotalPriceValidation": "Please enter total price",
+    "editRentalDialogInvalidNumberValidation": "Please enter a valid number",
+    "editRentalDialogSelectCarSnackBar": "Please select a car.",
+    "editRentalDialogRentDateRequiredSnackBar": "Rent Date is required.",
+    "editRentalDialogReturnDateRequiredSnackBar": "Return Date is required.",
+    "editRentalDialogReturnDateBeforeRentDateSnackBar": "Return Date must be after Rent Date.",
+    "editRentalDialogUpdateSuccessSnackBar": "Rental updated successfully!",
+    "editRentalDialogUpdateErrorSnackBar": "Error updating rental: {error}",
+    "@editRentalDialogUpdateErrorSnackBar": {
+        "description": "Snackbar message when rental update fails.",
+        "placeholders": {
+            "error": {
+                "type": "String", 
+                "example": "Database write error"
+            }
+        }
+    }
 }
