@@ -306,5 +306,46 @@
                 "example": "Échec de la base de données"
             }
         }
+    },
+    "rentCarDialogTitle": "Louer {carName}",
+  "@rentCarDialogTitle": {
+    "placeholders": {
+      "carName": {
+        "type": "String"
+      }
     }
+  },
+  "rentCarDialogCustomerNameLabel": "Nom du client *",
+  "rentCarDialogCustomerNameValidation": "Veuillez entrer le nom du client",
+  "rentCarDialogRentDateLabel": "Date de location *",
+  "rentCarDialogRentDateValidation": "Veuillez sélectionner une date de location",
+  "rentCarDialogReturnDateLabel": "Date de retour *",
+  "rentCarDialogReturnDateValidation": "Veuillez sélectionner une date de retour",
+  "rentCarDialogDailyPriceLabel": "Prix journalier : {currencyCode} {price}",
+  "@rentCarDialogDailyPriceLabel": {
+    "placeholders": {
+      "currencyCode": {
+        "type": "String",
+        "example": "DZD"
+      },
+      "price": {
+        "type": "double",
+        "format": "decimalPattern"
+      }
+    }
+  },
+  "rentCarDialogSelectDatesSnackBar": "Veuillez sélectionner les dates de location et de retour.",
+  "rentCarDialogReturnDateBeforeRentDateSnackBar": "La date de retour ne peut pas être antérieure à la date de location.",
+  "rentCarDialogRentSuccessSnackBar": "Voiture louée avec succès !",
+  "rentCarDialogRentErrorSnackBar": "Erreur lors de la location de la voiture : {error}",
+  "@rentCarDialogRentErrorSnackBar": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "rentButton": "Louer la voiture",
+   "cancelButton": "Annuler"
+
 }

@@ -166,7 +166,7 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get rentButton => 'Rent';
+  String get rentButton => 'Rent Car';
 
   @override
   String get returnButton => 'Return';
@@ -736,5 +736,54 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String editRentalDialogUpdateErrorSnackBar(String error) {
     return 'Error updating rental: $error';
+  }
+
+  @override
+  String rentCarDialogTitle(String carName) {
+    return 'Rent $carName';
+  }
+
+  @override
+  String get rentCarDialogCustomerNameLabel => 'Customer Name *';
+
+  @override
+  String get rentCarDialogCustomerNameValidation =>
+      'Please enter customer name';
+
+  @override
+  String get rentCarDialogRentDateLabel => 'Rent Date *';
+
+  @override
+  String get rentCarDialogRentDateValidation => 'Please select a rent date';
+
+  @override
+  String get rentCarDialogReturnDateLabel => 'Return Date *';
+
+  @override
+  String get rentCarDialogReturnDateValidation => 'Please select a return date';
+
+  @override
+  String rentCarDialogDailyPriceLabel(String currencyCode, double price) {
+    final intl.NumberFormat priceNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
+    final String priceString = priceNumberFormat.format(price);
+
+    return 'Daily Price: $currencyCode $priceString';
+  }
+
+  @override
+  String get rentCarDialogSelectDatesSnackBar =>
+      'Please select both rent and return dates.';
+
+  @override
+  String get rentCarDialogReturnDateBeforeRentDateSnackBar =>
+      'Return date cannot be before rent date.';
+
+  @override
+  String get rentCarDialogRentSuccessSnackBar => 'Car rented successfully!';
+
+  @override
+  String rentCarDialogRentErrorSnackBar(String error) {
+    return 'Error renting car: $error';
   }
 }

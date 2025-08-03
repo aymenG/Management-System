@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:management_system/models/car.dart';
 import 'package:management_system/models/rental.dart';
 import 'package:management_system/controllers/database_helper.dart';
+import 'package:management_system/l10n/app_localizations.dart'; // Import AppLocalizations
 
 class RentCarDialog extends StatefulWidget {
   final Car car;
@@ -69,7 +70,6 @@ class _RentCarDialogState extends State<RentCarDialog> {
     }
   }
 
-  // lib/views/rent_car_dialog.dart
   bool isReturnDateValid(DateTime rentDate, DateTime returnDate) {
     final rent = DateTime(rentDate.year, rentDate.month, rentDate.day);
     final ret = DateTime(returnDate.year, returnDate.month, returnDate.day);
@@ -77,23 +77,31 @@ class _RentCarDialogState extends State<RentCarDialog> {
   }
 
   Future<void> _rentCar() async {
+    final localizations = AppLocalizations.of(context)!;
+
     if (_formKey.currentState!.validate()) {
       if (_selectedRentDate == null || _selectedReturnDate == null) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Please select both rent and return dates.'),
-            backgroundColor: Colors.red,
-          ),
-        );
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(localizations.rentCarDialogSelectDatesSnackBar),
+              backgroundColor: Colors.red,
+            ),
+          );
+        }
         return;
       }
       if (!isReturnDateValid(_selectedRentDate!, _selectedReturnDate!)) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Return date cannot be before rent date.'),
-            backgroundColor: Colors.red,
-          ),
-        );
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                localizations.rentCarDialogReturnDateBeforeRentDateSnackBar,
+              ),
+              backgroundColor: Colors.red,
+            ),
+          );
+        }
         return;
       }
 
@@ -112,8 +120,8 @@ class _RentCarDialogState extends State<RentCarDialog> {
         await _dbHelper.insertRental(rental);
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Car rented successfully!'),
+            SnackBar(
+              content: Text(localizations.rentCarDialogRentSuccessSnackBar),
               backgroundColor: Colors.green,
             ),
           );
@@ -124,7 +132,9 @@ class _RentCarDialogState extends State<RentCarDialog> {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text('Error renting car: $e'),
+              content: Text(
+                localizations.rentCarDialogRentErrorSnackBar(e.toString()),
+              ),
               backgroundColor: Colors.red,
             ),
           );
@@ -135,8 +145,9 @@ class _RentCarDialogState extends State<RentCarDialog> {
 
   @override
   Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context)!;
     return AlertDialog(
-      title: Text('Rent ${widget.car.fullName}'),
+      title: Text(localizations.rentCarDialogTitle(widget.car.fullName)),
       content: SingleChildScrollView(
         child: Form(
           key: _formKey,
@@ -145,10 +156,12 @@ class _RentCarDialogState extends State<RentCarDialog> {
             children: [
               TextFormField(
                 controller: _customerNameController,
-                decoration: const InputDecoration(labelText: 'Customer Name *'),
+                decoration: InputDecoration(
+                  labelText: localizations.rentCarDialogCustomerNameLabel,
+                ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Please enter customer name';
+                    return localizations.rentCarDialogCustomerNameValidation;
                   }
                   return null;
                 },
@@ -156,9 +169,9 @@ class _RentCarDialogState extends State<RentCarDialog> {
               const SizedBox(height: 16),
               TextFormField(
                 controller: _rentDateController,
-                decoration: const InputDecoration(
-                  labelText: 'Rent Date *',
-                  suffixIcon: Icon(Icons.calendar_today),
+                decoration: InputDecoration(
+                  labelText: localizations.rentCarDialogRentDateLabel,
+                  suffixIcon: const Icon(Icons.calendar_today),
                 ),
                 readOnly: true,
                 onTap: () => _pickDate(context, _rentDateController, (date) {
@@ -173,7 +186,7 @@ class _RentCarDialogState extends State<RentCarDialog> {
                 }),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Please select a rent date';
+                    return localizations.rentCarDialogRentDateValidation;
                   }
                   return null;
                 },
@@ -181,9 +194,9 @@ class _RentCarDialogState extends State<RentCarDialog> {
               const SizedBox(height: 16),
               TextFormField(
                 controller: _returnDateController,
-                decoration: const InputDecoration(
-                  labelText: 'Return Date *',
-                  suffixIcon: Icon(Icons.calendar_today),
+                decoration: InputDecoration(
+                  labelText: localizations.rentCarDialogReturnDateLabel,
+                  suffixIcon: const Icon(Icons.calendar_today),
                 ),
                 readOnly: true,
                 onTap: () => _pickDate(context, _returnDateController, (date) {
@@ -191,14 +204,17 @@ class _RentCarDialogState extends State<RentCarDialog> {
                 }),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Please select a return date';
+                    return localizations.rentCarDialogReturnDateValidation;
                   }
                   return null;
                 },
               ),
               const SizedBox(height: 16),
               Text(
-                'Daily Price: DZD ${widget.car.dailyPrice.toStringAsFixed(2)}',
+                localizations.rentCarDialogDailyPriceLabel(
+                  'DZD',
+                  widget.car.dailyPrice,
+                ),
                 style: const TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
@@ -211,7 +227,7 @@ class _RentCarDialogState extends State<RentCarDialog> {
       actions: [
         TextButton(
           onPressed: () => Navigator.of(context).pop(),
-          child: const Text('Cancel'),
+          child: Text(localizations.cancelButton),
         ),
         ElevatedButton(
           onPressed: _rentCar,
@@ -219,7 +235,7 @@ class _RentCarDialogState extends State<RentCarDialog> {
             backgroundColor: Colors.deepPurple,
             foregroundColor: Colors.white,
           ),
-          child: const Text('Rent Car'),
+          child: Text(localizations.rentButton),
         ),
       ],
     );

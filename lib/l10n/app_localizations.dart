@@ -373,7 +373,7 @@ abstract class AppLocalizations {
   /// No description provided for @rentButton.
   ///
   /// In en, this message translates to:
-  /// **'Rent'**
+  /// **'Rent Car'**
   String get rentButton;
 
   /// No description provided for @returnButton.
@@ -1425,6 +1425,78 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Error updating rental: {error}'**
   String editRentalDialogUpdateErrorSnackBar(String error);
+
+  /// No description provided for @rentCarDialogTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Rent {carName}'**
+  String rentCarDialogTitle(String carName);
+
+  /// No description provided for @rentCarDialogCustomerNameLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Customer Name *'**
+  String get rentCarDialogCustomerNameLabel;
+
+  /// No description provided for @rentCarDialogCustomerNameValidation.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter customer name'**
+  String get rentCarDialogCustomerNameValidation;
+
+  /// No description provided for @rentCarDialogRentDateLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Rent Date *'**
+  String get rentCarDialogRentDateLabel;
+
+  /// No description provided for @rentCarDialogRentDateValidation.
+  ///
+  /// In en, this message translates to:
+  /// **'Please select a rent date'**
+  String get rentCarDialogRentDateValidation;
+
+  /// No description provided for @rentCarDialogReturnDateLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Return Date *'**
+  String get rentCarDialogReturnDateLabel;
+
+  /// No description provided for @rentCarDialogReturnDateValidation.
+  ///
+  /// In en, this message translates to:
+  /// **'Please select a return date'**
+  String get rentCarDialogReturnDateValidation;
+
+  /// No description provided for @rentCarDialogDailyPriceLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Daily Price: {currencyCode} {price}'**
+  String rentCarDialogDailyPriceLabel(String currencyCode, double price);
+
+  /// No description provided for @rentCarDialogSelectDatesSnackBar.
+  ///
+  /// In en, this message translates to:
+  /// **'Please select both rent and return dates.'**
+  String get rentCarDialogSelectDatesSnackBar;
+
+  /// No description provided for @rentCarDialogReturnDateBeforeRentDateSnackBar.
+  ///
+  /// In en, this message translates to:
+  /// **'Return date cannot be before rent date.'**
+  String get rentCarDialogReturnDateBeforeRentDateSnackBar;
+
+  /// No description provided for @rentCarDialogRentSuccessSnackBar.
+  ///
+  /// In en, this message translates to:
+  /// **'Car rented successfully!'**
+  String get rentCarDialogRentSuccessSnackBar;
+
+  /// No description provided for @rentCarDialogRentErrorSnackBar.
+  ///
+  /// In en, this message translates to:
+  /// **'Error renting car: {error}'**
+  String rentCarDialogRentErrorSnackBar(String error);
 }
 
 class _AppLocalizationsDelegate

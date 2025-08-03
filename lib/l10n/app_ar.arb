@@ -306,5 +306,45 @@
                 "example": "خطأ في قاعدة البيانات"
             }
         }
+    },
+     "rentCarDialogTitle": "استئجار {carName}",
+  "@rentCarDialogTitle": {
+    "placeholders": {
+      "carName": {
+        "type": "String"
+      }
     }
+  },
+  "rentCarDialogCustomerNameLabel": "اسم العميل *",
+  "rentCarDialogCustomerNameValidation": "الرجاء إدخال اسم العميل",
+  "rentCarDialogRentDateLabel": "تاريخ الاستئجار *",
+  "rentCarDialogRentDateValidation": "الرجاء تحديد تاريخ الاستئجار",
+  "rentCarDialogReturnDateLabel": "تاريخ الإرجاع *",
+  "rentCarDialogReturnDateValidation": "الرجاء تحديد تاريخ الإرجاع",
+  "rentCarDialogDailyPriceLabel": "السعر اليومي: {currencyCode} {price}",
+  "@rentCarDialogDailyPriceLabel": {
+    "placeholders": {
+      "currencyCode": {
+        "type": "String",
+        "example": "DZD"
+      },
+      "price": {
+        "type": "double",
+        "format": "decimalPattern"
+      }
+    }
+  },
+  "rentCarDialogSelectDatesSnackBar": "الرجاء تحديد تاريخي الاستئجار والإرجاع.",
+  "rentCarDialogReturnDateBeforeRentDateSnackBar": "تاريخ الإرجاع لا يمكن أن يكون قبل تاريخ الاستئجار.",
+  "rentCarDialogRentSuccessSnackBar": "تم استئجار السيارة بنجاح!",
+  "rentCarDialogRentErrorSnackBar": "خطأ في استئجار السيارة: {error}",
+  "@rentCarDialogRentErrorSnackBar": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "rentButton": "استئجار السيارة",
+  "cancelButton": "إلغاء"
 }

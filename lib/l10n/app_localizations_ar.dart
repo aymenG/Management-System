@@ -168,7 +168,7 @@ class AppLocalizationsAr extends AppLocalizations {
   }
 
   @override
-  String get rentButton => 'تأجير';
+  String get rentButton => 'استئجار السيارة';
 
   @override
   String get returnButton => 'إرجاع';
@@ -732,5 +732,53 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String editRentalDialogUpdateErrorSnackBar(String error) {
     return 'خطأ أثناء تحديث الإيجار: $error';
+  }
+
+  @override
+  String rentCarDialogTitle(String carName) {
+    return 'استئجار $carName';
+  }
+
+  @override
+  String get rentCarDialogCustomerNameLabel => 'اسم العميل *';
+
+  @override
+  String get rentCarDialogCustomerNameValidation => 'الرجاء إدخال اسم العميل';
+
+  @override
+  String get rentCarDialogRentDateLabel => 'تاريخ الاستئجار *';
+
+  @override
+  String get rentCarDialogRentDateValidation => 'الرجاء تحديد تاريخ الاستئجار';
+
+  @override
+  String get rentCarDialogReturnDateLabel => 'تاريخ الإرجاع *';
+
+  @override
+  String get rentCarDialogReturnDateValidation => 'الرجاء تحديد تاريخ الإرجاع';
+
+  @override
+  String rentCarDialogDailyPriceLabel(String currencyCode, double price) {
+    final intl.NumberFormat priceNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
+    final String priceString = priceNumberFormat.format(price);
+
+    return 'السعر اليومي: $currencyCode $priceString';
+  }
+
+  @override
+  String get rentCarDialogSelectDatesSnackBar =>
+      'الرجاء تحديد تاريخي الاستئجار والإرجاع.';
+
+  @override
+  String get rentCarDialogReturnDateBeforeRentDateSnackBar =>
+      'تاريخ الإرجاع لا يمكن أن يكون قبل تاريخ الاستئجار.';
+
+  @override
+  String get rentCarDialogRentSuccessSnackBar => 'تم استئجار السيارة بنجاح!';
+
+  @override
+  String rentCarDialogRentErrorSnackBar(String error) {
+    return 'خطأ في استئجار السيارة: $error';
   }
 }

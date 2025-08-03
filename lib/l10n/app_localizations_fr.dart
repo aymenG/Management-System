@@ -167,7 +167,7 @@ class AppLocalizationsFr extends AppLocalizations {
   }
 
   @override
-  String get rentButton => 'Louer';
+  String get rentButton => 'Louer la voiture';
 
   @override
   String get returnButton => 'Retourner';
@@ -752,5 +752,56 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String editRentalDialogUpdateErrorSnackBar(String error) {
     return 'Erreur lors de la mise à jour de la location : $error';
+  }
+
+  @override
+  String rentCarDialogTitle(String carName) {
+    return 'Louer $carName';
+  }
+
+  @override
+  String get rentCarDialogCustomerNameLabel => 'Nom du client *';
+
+  @override
+  String get rentCarDialogCustomerNameValidation =>
+      'Veuillez entrer le nom du client';
+
+  @override
+  String get rentCarDialogRentDateLabel => 'Date de location *';
+
+  @override
+  String get rentCarDialogRentDateValidation =>
+      'Veuillez sélectionner une date de location';
+
+  @override
+  String get rentCarDialogReturnDateLabel => 'Date de retour *';
+
+  @override
+  String get rentCarDialogReturnDateValidation =>
+      'Veuillez sélectionner une date de retour';
+
+  @override
+  String rentCarDialogDailyPriceLabel(String currencyCode, double price) {
+    final intl.NumberFormat priceNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
+    final String priceString = priceNumberFormat.format(price);
+
+    return 'Prix journalier : $currencyCode $priceString';
+  }
+
+  @override
+  String get rentCarDialogSelectDatesSnackBar =>
+      'Veuillez sélectionner les dates de location et de retour.';
+
+  @override
+  String get rentCarDialogReturnDateBeforeRentDateSnackBar =>
+      'La date de retour ne peut pas être antérieure à la date de location.';
+
+  @override
+  String get rentCarDialogRentSuccessSnackBar => 'Voiture louée avec succès !';
+
+  @override
+  String rentCarDialogRentErrorSnackBar(String error) {
+    return 'Erreur lors de la location de la voiture : $error';
   }
 }

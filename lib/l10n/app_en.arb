@@ -305,5 +305,46 @@
                 "example": "Database write error"
             }
         }
+    },
+    "rentCarDialogTitle": "Rent {carName}",
+  "@rentCarDialogTitle": {
+    "placeholders": {
+      "carName": {
+        "type": "String"
+      }
     }
+  },
+  "rentCarDialogCustomerNameLabel": "Customer Name *",
+  "rentCarDialogCustomerNameValidation": "Please enter customer name",
+  "rentCarDialogRentDateLabel": "Rent Date *",
+  "rentCarDialogRentDateValidation": "Please select a rent date",
+  "rentCarDialogReturnDateLabel": "Return Date *",
+  "rentCarDialogReturnDateValidation": "Please select a return date",
+  "rentCarDialogDailyPriceLabel": "Daily Price: {currencyCode} {price}",
+  "@rentCarDialogDailyPriceLabel": {
+    "placeholders": {
+      "currencyCode": {
+        "type": "String",
+        "example": "DZD"
+      },
+      "price": {
+        "type": "double",
+        "format": "decimalPattern"
+      }
+    }
+  },
+  "rentCarDialogSelectDatesSnackBar": "Please select both rent and return dates.",
+  "rentCarDialogReturnDateBeforeRentDateSnackBar": "Return date cannot be before rent date.",
+  "rentCarDialogRentSuccessSnackBar": "Car rented successfully!",
+  "rentCarDialogRentErrorSnackBar": "Error renting car: {error}",
+  "@rentCarDialogRentErrorSnackBar": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "rentButton": "Rent Car",
+  "cancelButton": "Cancel"
+ 
 }
