@@ -16,11 +16,13 @@ dependencies:
   # Your other dependencies
   fl_chart: ^1.0.0 
   excel: ^4.0.6 
-  crypto: ^3.0.3
+  crypto: ^3.0.6
+  encrypt: ^5.0.3
   sqflite_common_ffi: ^2.3.6
   path_provider: ^2.1.5
   path: ^1.9.1
   flutter_svg: ^2.0.7
+  universal_io: ^2.2.2
   shared_preferences: ^2.5.3
   cached_network_image: ^3.4.1
   file_picker: ^10.2.0
@@ -28,7 +30,8 @@ dependencies:
   window_manager: ^0.5.1
   screen_retriever: ^0.2.0
   flutter_gen: ^5.10.0
-
+  uuid: ^4.5.1
+  
 dev_dependencies:
   flutter_test:
     sdk: flutter

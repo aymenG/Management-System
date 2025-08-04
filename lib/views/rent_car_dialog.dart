@@ -1,11 +1,9 @@
-// lib/views/rent_car_dialog.dart
-
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:management_system/models/car.dart';
 import 'package:management_system/models/rental.dart';
 import 'package:management_system/controllers/database_helper.dart';
-import 'package:management_system/l10n/app_localizations.dart'; // Import AppLocalizations
+import 'package:management_system/l10n/app_localizations.dart';
 
 class RentCarDialog extends StatefulWidget {
   final Car car;

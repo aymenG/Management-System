@@ -316,10 +316,10 @@ class AppLocalizationsFr extends AppLocalizations {
   String get customerHeader => 'Client';
 
   @override
-  String get carBrandHeader => 'Marque de la Voiture';
+  String get carBrandHeader => 'Marque';
 
   @override
-  String get carModelHeader => 'Modèle de la Voiture';
+  String get carModelHeader => 'Modèle';
 
   @override
   String get plateNumberHeader => 'Numéro de Plaque';
