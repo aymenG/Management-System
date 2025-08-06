@@ -1,5 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:management_system/license/license_validator.dart';
+import 'package:management_system/views/activation_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 import 'package:window_manager/window_manager.dart';
@@ -8,7 +10,6 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'l10n/app_localizations.dart';
 import 'views/LoginForm.dart';
 import 'views/license_error_screen.dart';
-import 'license/validate_license.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 Locale? savedLocale;
@@ -53,8 +54,7 @@ void main() async {
   await windowManager.setPreventClose(true);
   windowManager.addListener(AppWindowListener());
 
-  // ✅ License check before runApp
-  final licenseValid = await LicenseValidator.isLicenseValid();
+  final licenseValid = await LicenseValidator.validateStoredLicense();
 
   runApp(MainApp(licenseValid: licenseValid));
 }
@@ -159,7 +159,7 @@ class _MainAppState extends State<MainApp> {
       // ✅ Load login or blocked screen based on license
       home: widget.licenseValid
           ? const Scaffold(body: LoginFormWidget())
-          : const LicenseErrorScreen(),
+          : const ActivationScreen(),
     );
   }
 }

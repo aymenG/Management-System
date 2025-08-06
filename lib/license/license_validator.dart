@@ -1,39 +1,26 @@
-import 'dart:convert';
-import 'dart:io';
-import 'package:encrypt/encrypt.dart';
-import 'package:management_system/license/machine_id.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LicenseValidator {
-  static const String licenseFilePath = 'license.key'; // next to executable
-  static const String secretKey =
-      'your-very-secure-key'; // same key as generator
+  static const List<String> validKeys = [
+    "8ZPD-WX27-MQK3",
+    "T5XK-JH29-QWLM",
+    // Add more keys here
+  ];
 
-  static Future<bool> validateLicense() async {
-    try {
-      final licenseFile = File(licenseFilePath);
-      if (!licenseFile.existsSync()) return false;
-
-      final encrypted = await licenseFile.readAsString();
-      final decrypted = _decryptLicense(encrypted);
-      final licenseMap = jsonDecode(decrypted);
-
-      final savedHwId = licenseMap['hardwareId'];
-      final expiresAt = DateTime.parse(licenseMap['expiresAt']);
-      final currentHwId = await getMachineId();
-
-      final now = DateTime.now();
-
-      return savedHwId == currentHwId && now.isBefore(expiresAt);
-    } catch (e) {
-      print("🔐 License validation failed: $e");
-      return false;
+  static Future<bool> validateAndStoreLicense(String inputKey) async {
+    final key = inputKey.trim().toUpperCase();
+    if (validKeys.contains(key)) {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString('license', key);
+      return true;
     }
+    return false;
   }
 
-  static String _decryptLicense(String encrypted) {
-    final key = Key.fromUtf8(secretKey.padRight(32).substring(0, 32));
-    final iv = IV.fromLength(16);
-    final encrypter = Encrypter(AES(key));
-    return encrypter.decrypt64(encrypted, iv: iv);
+  static Future<bool> validateStoredLicense() async {
+    final prefs = await SharedPreferences.getInstance();
+    final storedKey = prefs.getString('license');
+    if (storedKey == null) return false;
+    return validKeys.contains(storedKey.toUpperCase());
   }
 }
