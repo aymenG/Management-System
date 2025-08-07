@@ -23,7 +23,7 @@ class DatabaseHelper {
   }
 
   Future<String> _getDatabasePath() async {
-    final dir = await getApplicationDocumentsDirectory();
+    final dir = await getApplicationSupportDirectory();
     return join(dir.path, 'CRS_db.db');
   }
 
