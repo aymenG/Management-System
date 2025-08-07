@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:management_system/views/LoginForm.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:management_system/license/license_validator.dart';
 
 class ActivationScreen extends StatefulWidget {
@@ -22,7 +21,9 @@ class _ActivationScreenState extends State<ActivationScreen> {
       if (!mounted) return;
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (_) => LoginFormWidget()),
+        MaterialPageRoute(
+          builder: (_) => const Scaffold(body: LoginFormWidget()),
+        ),
       );
     } else {
       setState(() {
