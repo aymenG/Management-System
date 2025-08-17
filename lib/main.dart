@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:management_system/controllers/database_helper.dart';
 import 'package:management_system/license/license_validator.dart';
 import 'package:management_system/views/activation_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -9,7 +10,6 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'l10n/app_localizations.dart';
 import 'views/LoginForm.dart';
-import 'views/license_error_screen.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 Locale? savedLocale;
@@ -37,7 +37,6 @@ void main() async {
 
   WindowOptions windowOptions = WindowOptions(
     center: true,
-    backgroundColor: Colors.transparent,
     skipTaskbar: false,
     title: tempLocalizations.appTitle,
     minimumSize: const Size(800, 600),
@@ -89,6 +88,8 @@ class AppWindowListener with WindowListener {
     );
 
     if (shouldClose == true) {
+      final dbHelper = DatabaseHelper(); // gets the singleton instance
+      await dbHelper.close();
       await windowManager.destroy();
     }
   }
